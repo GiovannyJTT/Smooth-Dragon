@@ -28,7 +28,7 @@ Summary (building Threejs.min using google closure compiler):
 ```bash
 git clone --depth=30 https://github.com/mrdoob/three.js.git
 cd ./three.js
-npm install  # install Nodejs previously for using npm
+npm install  # This will install google closure compiler dependencies (Youy need to install NodeJS for npm)
 npm run build-closure
 # "created build/three.module.js in 2.3s"
 
