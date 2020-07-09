@@ -76,7 +76,6 @@ GPT_Renderer.prototype.update = function(ms)
 GPT_Renderer.prototype.render = function()
 {
     this.wglrenderer.render(this.gpt_scene.scene, this.camera);
-    console.log("rendering");
 }
 
 /**

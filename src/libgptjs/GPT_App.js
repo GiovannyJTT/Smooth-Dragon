@@ -57,6 +57,7 @@ GPT_App.prototype.drawFrame = function(timestamp)
 
     this.gpt_render.render();
     this.currentFrameNumber++;
+    console.log("Rendered Frame: " + this.currentFrameNumber);
 
     if(!this.done)
     {
