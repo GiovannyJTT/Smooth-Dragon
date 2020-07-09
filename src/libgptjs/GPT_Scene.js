@@ -44,7 +44,7 @@ GPT_Scene.prototype.setupScene = function()
  * Use this method for transform (translate, rotate) the objects in the scene
  * @param {Number} ms time in milliseconds passed since last frame
  */
-GPT_Scene.prototype.animateObjects = function(ms)
+GPT_Scene.prototype.updateObjects = function(ms)
 {
     console.error("Not implemented");
 }
