@@ -8,11 +8,14 @@
 
 
 /**
- * Creates our Scene with an empty array of GPT_Model
+ * Creates our GPT Scene with an empty array of GPT_Model and a THREE.Scene.
+ * We will used the models array to update them
  */
 function GPT_Scene()
 {
-    this.models = [];
+    this.gpt_models = [];
+    this.gpt_lights = [];
+    this.scene = new THREE.Scene();
 }
 
 /**
@@ -21,7 +24,33 @@ function GPT_Scene()
  */
 GPT_Scene.prototype.createObjects = function()
 {
-    console.error("Not implemented");
+    console.error("You have to implemente this method");
+}
+
+/**
+ * Use this method for transforming (translate, rotate) the objects in the scene
+ * @param {Number} ms time in milliseconds passed since last frame
+ */
+GPT_Scene.prototype.updateObjects = function(ms)
+{
+    console.error("You have to implemente this method");
+}
+
+/**
+ * Here you create the lights with their corresponding source type (point, directional, etc) and their correspoding initial positions
+ */
+GPT_Scene.prototype.createLights = function()
+{
+    console.error("You have to implemente this method");
+}
+
+/**
+ * Use this method for transforming (translate, rotate) the lights in the scene
+ * @param {Number} ms time in milliseconds passed since last frame
+ */
+GPT_Scene.prototype.updateLights = function(ms)
+{
+    console.error("You have to implemente this method");
 }
 
 /**
@@ -33,18 +62,21 @@ GPT_Scene.prototype.setupScene = function()
 {
     this.createObjects();
 
-    this.scene = new THREE.Scene();
-    for(let i = 0; i < this.models.length; i++)
+    for(let i = 0; i < this.gpt_models.length; i++)
     {
-        this.scene.add(this.models[i]);
+        this.scene.add(this.gpt_models[i]);
+    }
+
+    this.createLights();
+    
+    for(let i=0; i < this.gpt_lights.length; i++)
+    {
+        this.scene.add(this.gpt_lights[i].light);
     }
 }
 
-/**
- * Use this method for transform (translate, rotate) the objects in the scene
- * @param {Number} ms time in milliseconds passed since last frame
- */
-GPT_Scene.prototype.updateObjects = function(ms)
+GPT_Scene.prototype.updateScene = function(ms)
 {
-    console.error("Not implemented");
+    this.updateObjects(ms);
+    this.updateLights(ms);
 }
