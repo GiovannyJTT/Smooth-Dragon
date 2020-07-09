@@ -6,19 +6,10 @@
  */
 
 
-var sce = new GPT_Scene();
-sce.createObjects = function()
-{
-    console.log("Implementing: setup dragonModel.js here!")
-}
-
-sce.updateObjects = function(ms)
-{
-    console.log("Implementing: update dragon here! (elapsed " + ms + " ms)")
-}
-
-var ren = new GPT_Renderer(window.innerWidth, window.innerHeight, sce);
-var app = new GPT_App(ren);
+// declared as "const" because: block-scoped, cannot be updated but its properties yes, cannot be redeclared
+const sce = configScene();
+const ren = new GPT_Renderer(window.innerWidth, window.innerHeight, sce);
+const app = new GPT_App(ren);
 
 app.init();
 app.run();
