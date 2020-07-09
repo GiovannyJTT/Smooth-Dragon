@@ -50,8 +50,9 @@ GPT_Renderer.prototype.setup = function(div_container_name)
 {
     this.wglrenderer.setSize(this.w, this.h);
     this.wglrenderer.setClearColor(new THREE.Color(0x002233), 1.0); // blue
-
+    this.wglrenderer.shadowMapEnabled = true; // enabling shadows in the engine
     document.getElementById(div_container_name).appendChild(this.wglrenderer.domElement);
+    console.log("wglrenderer configured: clearColor and shadowMapEnabled");
 
     this.setCamera(this.w/this.h, 40, 1, 100);
     this.setCameraHandler();
