@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <meta charset="UTF-8">
+    <meta name="Description" content="WebGL, ThreeJS, mesh creation, texture UVs mapping, lighting and shadows, bump mapping, surface smoothing, and User Interface (widgets)">
+    <meta name="keywords" content="WebGL, texture mapping, lighting, shadows, bump mapping, surface smoothing, User Interface, widgets">
+    <meta name="author" content="Giovanny Javier Tipantuña Toapanta">
+
+    <head>
+        <title>
+            WebGL app using ThreeJS and HTML5 for surface smoothing
+        </title>
+        <style>
+            body {
+                background-color: white;
+                /* Costumize WxH in canvas label, if you do it here it will be out of place */
+                width: 100%;
+                height: 100%;
+                margin: 0px;
+                overflow: hidden;
+            }
+        </style>
+
+        <!-- make files available (threejs and utilities) -->
+        <!-- <script type="text/javascript" src="../external-libs/threejs-0.118.3/three.min.js"></script> -->
+        <script type="text/javascript" src="../external-libs/threejs-0.70.0/three.min.js"></script>
+
+        <script type="text/javascript" src="../external-libs/threejs-0.70.0/OrbitControls.js"></script>
+        <!-- <script type="module" src="../external-libs/threejs-0.118.3/OrbitControls.js"></script> -->
+
+        <!-- <script type="text/javascript" src="../external-libs/threejs-0.70.0/Coordinates.js"></script> -->
+        <script type="text/javascript" src="../external-libs/threejs-0.70.0/dat.gui.min.js"></script>
+
+        <!-- include our library in correct order -->
+        <script type="text/javascript" src="../libgptjs/GPT_Model.js"></script>
+        <script type="text/javascript" src="../libgptjs/GPT_Scene.js"></script>
+        <script type="text/javascript" src="../libgptjs/GPT_Renderer.js"></script>
+        <script type="text/javascript" src="../libgptjs/GPT_App.js"></script>
+
+        <body>
+            <section>
+                <div id="container"></div>
+                <!-- launch main program -->
+                <script type="text/javascript" src="../scripts/main.js"></script>
+            </section>
+        </body>
+    </head>
+</html>
