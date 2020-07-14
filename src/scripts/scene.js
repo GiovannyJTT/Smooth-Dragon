@@ -18,6 +18,7 @@ function configScene()
     {
         const axisHelp = new THREE.AxisHelper(20);
         axisHelp.position.set(0, 0.2, 0);
+        
         gpt_sce.gpt_models.push(axisHelp);
     }
     
