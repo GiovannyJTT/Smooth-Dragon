@@ -17,26 +17,25 @@ This WebGL app can be visualized in github pages because is a "front-end" only (
 
 ---
 ## LIBGPT
-
 We created a library to act as wrapper. Graphical Programming with Threejs (libgpt).
 
-It contains several objects (classes) for wrapping all the logic required for creating an scene with threejs
+It contains several objects (classes) for wrapping all the logic required for creating an scene with threejs.
 This allows modularity and we can reuse code creating instances of those clases.
 
 * GPT_Model: mesh + geometry + material
-    * It contains methods for configuring the models with thir corresponding group-node (joints), textures, initial position, etc.
+    * It contains methods for configuring the models with their corresponding group-node (joints), textures, initial position, etc.
 * GPT_Scene: list of GPT_Models and GPT_Lights
     * It contains abstract methods for initial configuration and updates in every frame
-        * This method has to be overriden when creating the instance of the GPT_SCene
+        * These methods have to be overriden when creating the instance of the GPT_SCene
 * GPT_Render: initializes the camera and camera-handler
-    * This is the main object that creates a webgl-renderer and invokes setup and update methods of GPT_Scene
+    * This is the main object that creates a webgl-renderer and invokes methods of GPT_Scene
 * GPT_App: top-level object that configures the "window" and uses GPT_Render
     * It contains the main loop for animation in what the "update" and "render" are being invoked
 ---
 ## Compiling smooth-dragon project
 * The project has been updated to be a NodeJS package
     * In that way we can use threejs as package (from npm) and use it as module in our application
-* We are also using webpack for building a optimized website (javscript compression)
+* We are also using webpack for building a optimized website (javascript code compression)
 
 
 Instructions:
