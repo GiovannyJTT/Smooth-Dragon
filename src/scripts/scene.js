@@ -5,6 +5,8 @@
  * Email: giovanny.jtt@gmail.com
  */
 
+import GPT_Scene from '../libgptjs/GPT_Scene'
+import THREE from '../external-libs/threejs-0.118.3/three-global'
 
 /**
  * All steps needed for setting up and updating the objects (models and lights) into the sceneç
@@ -24,7 +26,7 @@ function configScene()
     
     gpt_sce.updateObjects = function(ms)
     {
-        console.log("update dragonModel here! (elapsed " + ms + " ms)")
+        console.log("update dragonModel here! (elapsed " + ms + " ms)");
     }
 
     gpt_sce.createLights = function()
@@ -39,3 +41,5 @@ function configScene()
 
     return gpt_sce;
 }
+
+export default configScene;
