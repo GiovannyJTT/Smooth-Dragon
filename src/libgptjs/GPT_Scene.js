@@ -6,6 +6,10 @@
  * Groups all the functions needed to put the objects (geometry, lights, cameras, etc) in the scene.
  */
 
+/**
+ * Importing object THREE from our costumized global script
+ */
+import THREE from '../external-libs/threejs-0.118.3/three-global'
 
 /**
  * Creates our GPT_Scene object containing initially an empty array of GPT_Model, an empty array of GPT_Lights and a THREE.Scene.
@@ -82,3 +86,5 @@ GPT_Scene.prototype.updateScene = function(ms)
     this.updateObjects(ms);
     this.updateLights(ms);
 }
+
+export default GPT_Scene;

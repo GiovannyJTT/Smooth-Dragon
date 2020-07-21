@@ -6,7 +6,10 @@
  * Base class Renderer grouping all utilities needed in the "low level" of THREE.js
  */
 
-// import { OrbitControls } from '../external-libs/threejs-0.118.3/OrbitControls.js';
+/**
+ * Importing object THREE from our costumized global script
+ */
+import THREE from '../external-libs/threejs-0.118.3/three-global'
 
 /**
  * Create a GPT Renderer object with a scene already configured. It creates a THREE.WebGLRenderer internally tha twill be used in the other metho
@@ -92,3 +95,5 @@ GPT_Renderer.prototype.reshape = function()
 
     console.log("Window Resized: " + this.w + " x " + this.h)
 }
+
+export default GPT_Renderer;

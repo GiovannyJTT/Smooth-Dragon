@@ -6,6 +6,10 @@
  * Groups all high level functionalities of the application: init, run, pause
  */
 
+/**
+ * Importing object THREE from our costumized global script
+ */
+import THREE from '../external-libs/threejs-0.118.3/three-global'
 
  /**
   * Creates Our app object. The app will finish when "done = true", and the animation will stop while "paused = true" (that means
@@ -81,3 +85,5 @@ GPT_App.prototype.run = function()
 
     this.drawFrame(performance.now());
 }
+
+export default GPT_App;
