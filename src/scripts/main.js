@@ -5,6 +5,9 @@
  * Email: giovanny.jtt@gmail.com
  */
 
+import configScene from './scene'
+import GPT_Renderer from '../libgptjs/GPT_Renderer'
+import GPT_App from '../libgptjs/GPT_App'
 
 // declared as "const" because: block-scoped, cannot be updated but its properties yes, cannot be redeclared
 const sce = configScene();
