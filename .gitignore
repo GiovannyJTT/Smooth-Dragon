@@ -1,4 +1,8 @@
+**/.DS_Store
+/node_modules
+/dist
 /src/external-libs/src
 /src/external-libs/three.js
 /src/server
-.vscode
+.vscode/*
+!.vscode/launch.json
