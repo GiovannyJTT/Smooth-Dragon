@@ -20,22 +20,18 @@ module.exports = {
         new CleanWebpackPlugin(),
 
         // copy resources from target to destination
-        new copyWebpackPlugin(
-            {
-                from: paths.static,
-                to: 'assets',
-                ignore: ['*.DS_Store']
-            }
-        ),
+        new copyWebpackPlugin({
+            from: paths.static,
+            to: 'assets',
+            ignore: ['*.DS_Store']
+        }),
 
         // generates an html file from the template
-        new HtmlWebpackPlugin(
-            {
-                title: 'Smooth Dragon: WebGL app using Threejs for smoothing technique',  // inject this tittle when generating the html
-                template: paths.src + '/html/template.html',  // input file
-                filename: 'index.html'  // output file
-            }
-        )
+        new HtmlWebpackPlugin({
+            title: 'Smooth Dragon: WebGL app using Threejs for smoothing technique',  // inject this tittle when generating the html
+            template: paths.src + '/html/template.html',  // input file
+            filename: 'index.html'  // output file
+        })
     ],
 
     // define how modules are treated for this project
