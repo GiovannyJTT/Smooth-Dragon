@@ -20,11 +20,13 @@ module.exports = {
         new CleanWebpackPlugin(),
 
         // copy resources from target to destination
-        new copyWebpackPlugin({
-            from: paths.static,
-            to: 'assets',
-            ignore: ['*.DS_Store']
-        }),
+        new CopyWebpackPlugin([
+            {
+                from: paths.static,
+                to: 'assets',
+                ignore: ['*.DS_Store']
+            }
+        ]),
 
         // generates an html file from the template
         new HtmlWebpackPlugin({
