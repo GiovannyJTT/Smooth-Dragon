@@ -1,4 +1,4 @@
-import path from 'path';
+const path = require('path')
 
 module.exports = {
     src: path.resolve(__dirname, '../src'), // source files (libgptjs, main scripts)
