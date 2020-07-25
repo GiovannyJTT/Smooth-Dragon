@@ -25,9 +25,12 @@ function GPT_App(gpt_r)
     this.paused = false;
     this.currentFrameNumber = 0;
 
-    this.lastTS = undefined;
+    this.lastTS = undefined;  // used with frame period commonly 16 ms
     this.frameElapsedMS = 0;
     this.requestAF = undefined;
+
+    this.lastPeriodTS = undefined;  // used with long period commonly 2000 ms
+    this.MAX_PERIOD_MS = 5000;
 
     this.gpt_render = gpt_r;
     if(this.gpt_render === undefined)
@@ -53,7 +56,7 @@ GPT_App.prototype.init = function()
  */
 GPT_App.prototype.drawFrame = function(timestamp)
 {
-    let nowTS = performance.now();
+    let nowTS = timestamp;
     if(!this.paused)
     {
         this.frameElapsedMS = nowTS - this.lastTS;
@@ -64,9 +67,11 @@ GPT_App.prototype.drawFrame = function(timestamp)
     this.gpt_render.render();
     this.currentFrameNumber++;
 
-    if()
+    let periodElapsedMS = nowTS - this.lastPeriodTS;
+    if(periodElapsedMS > this.MAX_PERIOD_MS)
     {
-        console.log("Rendered Frame: " + this.currentFrameNumber);
+        this.lastPeriodTS = nowTS;
+        console.log("Rendered Frame: " + this.currentFrameNumber + " TS: " + timestamp);
     }
 
     if(!this.done)
@@ -88,6 +93,8 @@ GPT_App.prototype.run = function()
     this.currentFrameNumber = 0;
     this.lastTS = performance.now();
     this.frameElapsedMS = 0;
+
+    this.lastPeriodTS = performance.now();
 
     this.drawFrame(performance.now());
 }
