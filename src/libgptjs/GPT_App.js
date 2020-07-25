@@ -11,6 +11,7 @@
  */
 import THREE from '../external-libs/threejs-0.118.3/three-global'
 import GPT_Renderer from '../libgptjs/GPT_Renderer'
+import { times } from 'async';
 
  /**
   * Creates Our app object. The app will finish when "done = true", and the animation will stop while "paused = true" (that means
@@ -25,7 +26,7 @@ function GPT_App(gpt_r)
     this.currentFrameNumber = 0;
 
     this.lastTS = undefined;
-    this.elapsedMS = 0;
+    this.frameElapsedMS = 0;
     this.requestAF = undefined;
 
     this.gpt_render = gpt_r;
@@ -55,14 +56,18 @@ GPT_App.prototype.drawFrame = function(timestamp)
     let nowTS = performance.now();
     if(!this.paused)
     {
-        this.elapsedMS = nowTS - this.lastTS;
-        this.gpt_render.update(this.elapsedMS);
+        this.frameElapsedMS = nowTS - this.lastTS;
+        this.gpt_render.update(this.frameElapsedMS);
     }
     this.lastTS = nowTS;
 
     this.gpt_render.render();
     this.currentFrameNumber++;
-    console.log("Rendered Frame: " + this.currentFrameNumber);
+
+    if()
+    {
+        console.log("Rendered Frame: " + this.currentFrameNumber);
+    }
 
     if(!this.done)
     {
@@ -82,7 +87,7 @@ GPT_App.prototype.run = function()
 {
     this.currentFrameNumber = 0;
     this.lastTS = performance.now();
-    this.elapsedMS = 0;
+    this.frameElapsedMS = 0;
 
     this.drawFrame(performance.now());
 }
