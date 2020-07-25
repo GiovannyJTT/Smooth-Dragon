@@ -10,6 +10,7 @@
  * Importing object THREE from our costumized global script
  */
 import THREE from '../external-libs/threejs-0.118.3/three-global'
+import GPT_Renderer from '../libgptjs/GPT_Renderer'
 
  /**
   * Creates Our app object. The app will finish when "done = true", and the animation will stop while "paused = true" (that means
