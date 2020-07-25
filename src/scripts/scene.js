@@ -26,19 +26,24 @@ function configScene()
     
     gpt_sce.updateObjects = function(ms)
     {
-        console.log("update dragonModel here! (elapsed " + ms + " ms)");
+        //console.log("update dragonModel here! (elapsed " + ms + " ms)");
     }
 
     gpt_sce.createLights = function()
     {
-        // dim white light, doesnt need position, will supply 5% of the lighting
-        const lAmbient = new THREE.AmbientLight(new THREE.Color(0x0d0d0d));
+        // 5% white light (almost black), doesnt need position
+        const lAmbient = new THREE.AmbientLight(new THREE.Color(0x0d0d0d), 1.0);
         gpt_sce.gpt_lights.set("lAmbient", lAmbient);
+
+        // 75% white light
+        const lPoint = new THREE.PointLight(new THREE.Color(0xbfbfbf), 1.0);
+        lPoint.position.set(0, 100, 50);
+        gpt_sce.gpt_lights.set("lPoint", lPoint);
     }
 
     gpt_sce.updateLights = function(ms)
     {
-        console.log("update dragonLights here! (elapsed " + ms + " ms)");
+        //console.log("update dragonLights here! (elapsed " + ms + " ms)");
     }
 
     return gpt_sce;
