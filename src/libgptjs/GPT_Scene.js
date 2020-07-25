@@ -12,13 +12,16 @@
 import THREE from '../external-libs/threejs-0.118.3/three-global'
 
 /**
- * Creates our GPT_Scene object containing initially an empty array of GPT_Model, an empty array of GPT_Lights and a THREE.Scene.
- * We will use th arrays to update the objects using widgets (we need to keep the references to them)
+ * Creates our GPT_Scene object containing initially an empty map of GPT_Model, an empty map of GPT_Lights and a THREE.Scene.
+ * We will use th arrays to update the objects using widgets (we need to keep the references to them).
+ * 
+ * Using a map it preserves the original insertion order, has merging functionalities and better performance
+ * when adding/removing operations are performed frequently
  */
 function GPT_Scene()
 {
-    this.gpt_models = [];
-    this.gpt_lights = [];
+    this.gpt_models = new Map();
+    this.gpt_lights = new Map();
     this.scene = new THREE.Scene();
 }
 
@@ -66,19 +69,19 @@ GPT_Scene.prototype.setupScene = function()
 {
     this.createObjects();
 
-    for(let i = 0; i < this.gpt_models.length; i++)
+    for(let [key, value] of this.gpt_models)
     {
-        this.scene.add(this.gpt_models[i]);
+        this.scene.add(value);
     }
-    console.log("Scene added " + this.gpt_models.length + " models");
+    console.log("Scene added " + this.gpt_models.size + " models");
 
     this.createLights();
     
-    for(let i=0; i < this.gpt_lights.length; i++)
+    for(let [key, value] of this.gpt_lights)
     {
-        this.scene.add(this.gpt_lights[i].light);
+        this.scene.add(value);
     }
-    console.log("Scene added " + this.gpt_lights.length + " lights");
+    console.log("Scene added " + this.gpt_lights.size + " lights");
 }
 
 GPT_Scene.prototype.updateScene = function(ms)

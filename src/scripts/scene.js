@@ -21,7 +21,7 @@ function configScene()
         const axisHelp = new THREE.AxisHelper(20);
         axisHelp.position.set(0, 0.2, 0);
         
-        gpt_sce.gpt_models.push(axisHelp);
+        gpt_sce.gpt_models.set("axishelper", axisHelp);
     }
     
     gpt_sce.updateObjects = function(ms)
@@ -31,7 +31,9 @@ function configScene()
 
     gpt_sce.createLights = function()
     {
-        console.log("setup dragonLights here!");
+        // dim white light, doesnt need position, will supply 5% of the lighting
+        const lAmbient = new THREE.AmbientLight(new THREE.Color(0x0d0d0d));
+        gpt_sce.gpt_lights.set("lAmbient", lAmbient);
     }
 
     gpt_sce.updateLights = function(ms)
