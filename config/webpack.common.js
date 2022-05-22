@@ -31,7 +31,7 @@ module.exports = {
         // generates an html file from the template
         new HtmlWebpackPlugin({
             title: 'Smooth Dragon: WebGL app using Threejs for smoothing technique',  // inject this tittle when generating the html
-            template: paths.src + '/html/template.html',  // input file
+            template: paths.src + '/html/init_template.html',  // input file
             filename: 'index.html'  // output file
         })
     ],
