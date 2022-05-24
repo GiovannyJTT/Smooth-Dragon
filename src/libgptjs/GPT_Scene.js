@@ -74,7 +74,7 @@ GPT_Scene.prototype.setupScene = function()
     {
         this.scene.add(value);
     }
-    console.debug("Scene added " + this.gpt_models.size + " models");
+    console.debug("GPT_Scene: added " + this.gpt_models.size + " models");
 
     this.createLights();
     
@@ -82,7 +82,7 @@ GPT_Scene.prototype.setupScene = function()
     {
         this.scene.add(value);
     }
-    console.debug("Scene added " + this.gpt_lights.size + " lights");
+    console.debug("GTP_Scene: added " + this.gpt_lights.size + " lights");
 }
 
 GPT_Scene.prototype.updateScene = function(ms)
