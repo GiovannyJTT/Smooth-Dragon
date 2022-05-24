@@ -45,6 +45,8 @@ function GPT_App(gpt_r)
  */
 GPT_App.prototype.init = function()
 {
+    console.debug("GPT_App.init")
+
     this.gpt_render.setup("container");
     window.addEventListener("resize", () => { this.gpt_render.reshape(); } );
 }
@@ -64,9 +66,10 @@ GPT_App.prototype.drawFrame = function(timestamp)
     }
     this.lastTS = nowTS;
 
-    this.gpt_render.render();
+    this.gpt_render.renderFrame();
     this.currentFrameNumber++;
 
+    // print every X seconds
     let periodElapsedMS = nowTS - this.lastPeriodTS;
     if(periodElapsedMS > this.MAX_PERIOD_MS)
     {
@@ -76,6 +79,7 @@ GPT_App.prototype.drawFrame = function(timestamp)
 
     if(!this.done)
     {
+        // render period as fast as possible (commonly 16 ms in chrome)
         this.requestAF = window.requestAnimationFrame( (ts) => { this.drawFrame(ts); } );
     }
     else
@@ -90,12 +94,15 @@ GPT_App.prototype.drawFrame = function(timestamp)
  */
 GPT_App.prototype.run = function()
 {
+    console.debug("GPT_APP.run")
+
     this.currentFrameNumber = 0;
     this.lastTS = performance.now();
     this.frameElapsedMS = 0;
 
     this.lastPeriodTS = performance.now();
 
+    // trigger the first periodic call
     this.drawFrame(performance.now());
 }
 
