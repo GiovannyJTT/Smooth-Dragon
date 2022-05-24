@@ -20,6 +20,11 @@ import OrbitControls from '../external-libs/threejs-0.118.3/OrbitControls'
  */
 function GPT_Renderer(w, h, sce)
 {
+    if ( typeof(sce) === "undefined" ){
+        console.error("GPT_Renderer: scene is undefined when creating GPT_Renderer");
+        return;
+    }
+
     this.w = w;
     this.h = h;
     this.gpt_scene = sce;
