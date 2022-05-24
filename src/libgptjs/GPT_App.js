@@ -63,14 +63,17 @@ GPT_App.prototype.drawFrame = function(timestamp)
     if(!this.paused)
     {
         this.frameElapsedMS = nowTS - this.lastTS;
+
+        // 1. update (transform, translate) models
         this.gpt_render.update(this.frameElapsedMS);
     }
     this.lastTS = nowTS;
 
+    // 2. render scene into a webGL frame
     this.gpt_render.renderFrame();
     this.currentFrameNumber++;
 
-    // print every X seconds
+    // Trigger actions periodically (with periods higher than 1 second)
     let periodElapsedMS = nowTS - this.lastPeriodTS;
     if(periodElapsedMS > this.MAX_PERIOD_MS)
     {
@@ -80,13 +83,13 @@ GPT_App.prototype.drawFrame = function(timestamp)
 
     if(!this.done)
     {
-        // render period as fast as possible (commonly 16 ms in chrome)
+        // 3. Trigger callback for next frame as fast as webbrowser allows (commonly 16 ms)
         this.requestAF = window.requestAnimationFrame( (ts) => { this.drawFrame(ts); } );
     }
     else
     {
         window.cancelAnimationFrame(this.requestAF)
-        console.log("Cancelling Animation Frame")
+        console.log("GPT_App: cancelling animation frame")
     }
 }
 
