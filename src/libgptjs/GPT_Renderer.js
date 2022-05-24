@@ -57,7 +57,7 @@ GPT_Renderer.prototype.setup = function(div_container_name)
     this.wglrenderer.shadowMap.enabled = true; // enabling shadows in the engine
 
     document.getElementById(div_container_name).appendChild(this.wglrenderer.domElement);
-    console.infor("GPT_Renderer.wglrenderer configured: clearColor and shadowMapEnabled");
+    console.info("GPT_Renderer.wglrenderer configured: clearColor and shadowMapEnabled");
     
     this.setCamera(this.w/this.h, 40, 1, 100);
     this.setCameraHandler();
@@ -71,6 +71,7 @@ GPT_Renderer.prototype.setup = function(div_container_name)
  */
 GPT_Renderer.prototype.update = function(ms)
 {
+    console.debug("GPT_Renderer.update:  " + ms.toString())
     this.gpt_scene.updateScene(ms);
     this.cameraHandler.update();
 }
