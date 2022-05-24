@@ -10,6 +10,7 @@
  * Importing object THREE from our costumized global script
  */
 import THREE from '../external-libs/threejs-0.118.3/three-global'
+import OrbitControls from '../external-libs/threejs-0.118.3/OrbitControls'
 
 /**
  * Create a GPT Renderer object with a scene already configured. It creates a THREE.WebGLRenderer internally tha twill be used in the other metho
@@ -52,11 +53,12 @@ GPT_Renderer.prototype.setCameraHandler = function()
 GPT_Renderer.prototype.setup = function(div_container_name)
 {
     this.wglrenderer.setSize(this.w, this.h);
-    this.wglrenderer.setClearColor(new THREE.Color(0x002233), 1.0); // blue
-    this.wglrenderer.shadowMapEnabled = true; // enabling shadows in the engine
-    document.getElementById(div_container_name).appendChild(this.wglrenderer.domElement);
-    console.log("GPT_Renderer.wglrenderer configured: clearColor and shadowMapEnabled");
+    this.wglrenderer.setClearColor(new THREE.Color(0x002233), 1.0); // BLUE
+    this.wglrenderer.shadowMap.enabled = true; // enabling shadows in the engine
 
+    document.getElementById(div_container_name).appendChild(this.wglrenderer.domElement);
+    console.infor("GPT_Renderer.wglrenderer configured: clearColor and shadowMapEnabled");
+    
     this.setCamera(this.w/this.h, 40, 1, 100);
     this.setCameraHandler();
 
@@ -76,7 +78,7 @@ GPT_Renderer.prototype.update = function(ms)
 /**
  * Render the content of the scene in the current state
  */
-GPT_Renderer.prototype.render = function()
+GPT_Renderer.prototype.renderFrame = function()
 {
     this.wglrenderer.render(this.gpt_scene.scene, this.camera);
 }
