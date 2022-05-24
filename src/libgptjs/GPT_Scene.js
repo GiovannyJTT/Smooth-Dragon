@@ -2,8 +2,9 @@
  * Library: Graphical Programming with ThreeJS (GPT)
  * Author: Giovanny Javier Tipantuña Toapanta
  * Email: giovanny.jtt@gmail.com
- * Content: class GPT_Scene
- * Groups all the functions needed to put the objects (geometry, lights, cameras, etc) in the scene.
+ * Content:
+ *  class GPT_Scene
+ *      Groups all the functions needed to put the objects (geometry, lights, cameras, etc) in the scene.
  */
 
 /**

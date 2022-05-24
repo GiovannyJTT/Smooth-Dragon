@@ -2,9 +2,10 @@
  * Library: Graphical Programming with ThreeJS (GPT)
  * Author: Giovanny Javier Tipantuña Toapanta
  * Email: giovanny.jtt@gmail.com
- * Content: class GPT_Model
- * A model is an object containing all the meshes that form the "3D object" and share the same coordinates system
- * It can contain several "Mesh" objects. Every Mesh has to have 2 objects: Geometry and Material
+ * Content:
+ *  class GPT_Model
+ *      A model is an object containing all the meshes that form the "3D object" and share the same coordinates system
+ *      It can contain several "Mesh" objects. Every Mesh has to have 2 objects: Geometry and Material
  */
 
  /**

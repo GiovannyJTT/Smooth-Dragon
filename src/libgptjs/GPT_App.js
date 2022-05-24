@@ -2,8 +2,9 @@
  * Library: Graphical Programming with ThreeJS (GPT)
  * Author: Giovanny Javier Tipantuña Toapanta
  * Email: giovanny.jtt@gmail.com
- * Content: class GPT_App
- * Groups all high level functionalities of the application: init, run, pause
+ * Content:
+ *  class GPT_App
+ *      Groups all high level functionalities of the application: init, run, pause
  */
 
 /**
