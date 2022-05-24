@@ -77,7 +77,7 @@ GPT_Renderer.prototype.setup = function(div_container_name)
  */
 GPT_Renderer.prototype.update = function(ms)
 {
-    console.debug("GPT_Renderer.update:  " + ms.toString())
+    // console.debug("GPT_Renderer.update:  " + ms.toString())
     this.gpt_scene.updateScene(ms);
     this.cameraHandler.update();
 }

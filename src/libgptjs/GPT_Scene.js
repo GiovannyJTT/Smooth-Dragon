@@ -32,7 +32,7 @@ function GPT_Scene()
  */
 GPT_Scene.prototype.createObjects = function()
 {
-    console.error("Not implemented");
+    console.error("GPT_Scene.createObjects: Not implemented");
 }
 
 /**
@@ -41,7 +41,7 @@ GPT_Scene.prototype.createObjects = function()
  */
 GPT_Scene.prototype.updateObjects = function(ms)
 {
-    console.error("Not implemented");
+    console.error("GPT_Scene.updateObjects: Not implemented");
 }
 
 /**
@@ -49,7 +49,7 @@ GPT_Scene.prototype.updateObjects = function(ms)
  */
 GPT_Scene.prototype.createLights = function()
 {
-    console.error("Not implemented");
+    console.error("GPT_Scene.createLights: Not implemented");
 }
 
 /**
@@ -58,7 +58,7 @@ GPT_Scene.prototype.createLights = function()
  */
 GPT_Scene.prototype.updateLights = function(ms)
 {
-    console.error("Not implemented");
+    console.error("GPT_Scene.updateLights: Not implemented");
 }
 
 /**
