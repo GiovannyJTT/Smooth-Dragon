@@ -78,7 +78,7 @@ GPT_App.prototype.drawFrame = function(timestamp)
     if(periodElapsedMS > this.MAX_PERIOD_MS)
     {
         this.lastPeriodTS = nowTS;
-        console.log("Rendered Frame: " + this.currentFrameNumber + " TS: " + timestamp);
+        console.log("GPT_App: Rendered Frame: " + this.currentFrameNumber + " TS: " + timestamp);
     }
 
     if(!this.done)
