@@ -31,7 +31,7 @@ function GPT_Scene()
  */
 GPT_Scene.prototype.createObjects = function()
 {
-    console.error("You have to implemente this method");
+    console.error("Not implemented");
 }
 
 /**
@@ -40,7 +40,7 @@ GPT_Scene.prototype.createObjects = function()
  */
 GPT_Scene.prototype.updateObjects = function(ms)
 {
-    console.error("You have to implemente this method");
+    console.error("Not implemented");
 }
 
 /**
@@ -48,7 +48,7 @@ GPT_Scene.prototype.updateObjects = function(ms)
  */
 GPT_Scene.prototype.createLights = function()
 {
-    console.error("You have to implemente this method");
+    console.error("Not implemented");
 }
 
 /**
@@ -57,7 +57,7 @@ GPT_Scene.prototype.createLights = function()
  */
 GPT_Scene.prototype.updateLights = function(ms)
 {
-    console.error("You have to implemente this method");
+    console.error("Not implemented");
 }
 
 /**
@@ -73,7 +73,7 @@ GPT_Scene.prototype.setupScene = function()
     {
         this.scene.add(value);
     }
-    console.log("Scene added " + this.gpt_models.size + " models");
+    console.debug("Scene added " + this.gpt_models.size + " models");
 
     this.createLights();
     
@@ -81,7 +81,7 @@ GPT_Scene.prototype.setupScene = function()
     {
         this.scene.add(value);
     }
-    console.log("Scene added " + this.gpt_lights.size + " lights");
+    console.debug("Scene added " + this.gpt_lights.size + " lights");
 }
 
 GPT_Scene.prototype.updateScene = function(ms)
