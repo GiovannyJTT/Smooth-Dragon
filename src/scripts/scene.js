@@ -22,11 +22,11 @@ function configSceneDragon()
     // overriding functionality
     gpt_sce.createObjects = function()
     {
-        const axesHelp = new THREE.AxesHelper(200);
-        axesHelp.position.set(0.0, 0.0, 0.0);
-        axesHelp.setColors(THREE.Color.r, THREE.Color.g, THREE.Color.b)
+        const axisH = new THREE.AxesHelper(200);
+        axisH.position.set(0.0, 0.0, 0.0);
+        axisH.setColors(new THREE.Color(0xff0000), new THREE.Color(0x00ff00), new THREE.Color(0x0000ff))
         
-        gpt_sce.gpt_models.set("axishelper", axesHelp);
+        gpt_sce.gpt_models.set("axis_helper", axisH);
     }
 
     // overriding functionality
