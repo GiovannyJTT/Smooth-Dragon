@@ -26,7 +26,7 @@ function configSceneDragon()
         axisH.position.set(0.0, 0.0, 0.0);
         axisH.setColors(new THREE.Color(0xff0000), new THREE.Color(0x00ff00), new THREE.Color(0x0000ff))
         
-        gpt_sce.gpt_models.set("axis_helper", axisH);
+        gpt_sce.gpt_models.set("AxesHelper", axisH);
     }
 
     // overriding functionality

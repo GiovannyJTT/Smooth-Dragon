@@ -19,3 +19,13 @@ rm -rf node_modules/
 # install node modules before compiling
 cd ~/Smooth-Dragon
 npm install
+
+# run in development mode   (check section scripts/dev in package.json)
+npm run dev
+
+# build code optimized for production mode   (check section scripts/build in package.json). Code will be placed at dist/
+# first install needed libraries 
+npm install
+
+# then build
+npm run build
