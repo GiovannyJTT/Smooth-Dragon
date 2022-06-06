@@ -12,7 +12,6 @@
  */
 import THREE from '../external-libs/threejs-0.118.3/three-global'
 import GPT_Renderer from '../libgptjs/GPT_Renderer'
-import { times } from 'async';
 
  /**
   * Creates Our app object. The app will finish when "done = true", and the animation will stop while "paused = true" (that means
@@ -48,7 +47,7 @@ GPT_App.prototype.init = function()
 {
     console.debug("GPT_App.init")
 
-    this.gpt_render.setup("container");
+    this.gpt_render.setup("container");    
     window.addEventListener("resize", () => { this.gpt_render.reshape(); } );
 }
 

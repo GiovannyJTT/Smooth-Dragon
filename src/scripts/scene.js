@@ -1,33 +1,38 @@
 /**
- * Description: WebGL app using ThreeJS, Html5 and OOJS for exploring surface smoothing technique
  * Using library: Graphical Programming with ThreeJS (GPT)
  * Author: Giovanny Javier Tipantuña Toapanta
  * Email: giovanny.jtt@gmail.com
+ * Content:
+ *  configScene     creation of models and lights and methods for updating them
  */
 
-import GPT_Scene from '../libgptjs/GPT_Scene'
 import THREE from '../external-libs/threejs-0.118.3/three-global'
-import { LinearFilter } from 'three';
+import GPT_Scene from '../libgptjs/GPT_Scene'
 
 /**
  * All steps needed for setting up and updating the objects (models and lights) into the sceneç
  * @return {GPT_Scene} the scene fully configured with its corresponding objects and update functions implemented
  */
-function configScene()
+function configSceneDragon()
 {
+    console.debug("configSceneDragon");
+
     const gpt_sce = new GPT_Scene();
-    
+
+    // overriding functionality
     gpt_sce.createObjects = function()
     {
-        const axisHelp = new THREE.AxisHelper(20);
-        axisHelp.position.set(0, 0.2, 0);
+        const axesHelp = new THREE.AxesHelper(200);
+        axesHelp.position.set(0.0, 0.0, 0.0);
+        axesHelp.setColors(THREE.Color.r, THREE.Color.g, THREE.Color.b)
         
-        gpt_sce.gpt_models.set("axishelper", axisHelp);
+        gpt_sce.gpt_models.set("axishelper", axesHelp);
     }
-    
+
+    // overriding functionality
     gpt_sce.updateObjects = function(ms)
     {
-        //console.log("update dragonModel here! (elapsed " + ms + " ms)");
+        // console.log("update dragonModel here! (elapsed " + ms + " ms)");
     }
 
     /**
@@ -74,10 +79,10 @@ function configScene()
 
     gpt_sce.updateLights = function(ms)
     {
-        //console.log("update dragonLights here! (elapsed " + ms + " ms)");
+        // console.log("update dragonLights here! (elapsed " + ms + " ms)");
     }
 
     return gpt_sce;
 }
 
-export default configScene;
+export default configSceneDragon;

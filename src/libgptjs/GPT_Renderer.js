@@ -35,9 +35,9 @@ function GPT_Renderer(w, h, sce)
 /**
  * Creates a THREE.Camera with by default values (perspective camera)
  */
-GPT_Renderer.prototype.setCamera = function(ar, yfov = 40, near = 1, far = 100)
+GPT_Renderer.prototype.setCameraForDragon = function()
 {
-    this.camera = new THREE.PerspectiveCamera(yfov, ar, near, far);
+    this.camera = new THREE.PerspectiveCamera(75, this.w / this.h, 0.1, 5000);
     this.camera.position.set(0, 275, 500); // consider we are working in cm
     this.camera.lookAt(new THREE.Vector3(0, 80, 0)); // looking at the origin
 }
@@ -65,7 +65,7 @@ GPT_Renderer.prototype.setup = function(div_container_name)
     document.getElementById(div_container_name).appendChild(this.wglrenderer.domElement);
     console.info("GPT_Renderer.wglrenderer configured: clearColor and shadowMapEnabled");
     
-    this.setCamera(this.w/this.h, 40, 1, 100);
+    this.setCameraForDragon();
     this.setCameraHandler();
 
     this.gpt_scene.setupScene();
