@@ -27,7 +27,7 @@ function GPT_Scene()
 }
 
 /**
- * Here you create the models with their corresponding meshes, and their initial positions in the scene.
+ * Override this method for creating models with their corresponding meshes, and their initial positions in the scene.
  * Then add each model in the models array
  */
 GPT_Scene.prototype.createObjects = function()
@@ -36,7 +36,7 @@ GPT_Scene.prototype.createObjects = function()
 }
 
 /**
- * Use this method for transforming (translate, rotate) the objects in the scene
+ * Override this method for transforming (translate, rotate) the objects in the scene
  * @param {Number} ms time in milliseconds passed since last frame
  */
 GPT_Scene.prototype.updateObjects = function(ms)
@@ -45,7 +45,7 @@ GPT_Scene.prototype.updateObjects = function(ms)
 }
 
 /**
- * Here you create the lights with their corresponding source type (point, directional, etc) and their correspoding initial positions
+ * Override this method for creating lights with their corresponding source type (point, directional, etc) and their correspoding initial positions
  */
 GPT_Scene.prototype.createLights = function()
 {
@@ -53,7 +53,7 @@ GPT_Scene.prototype.createLights = function()
 }
 
 /**
- * Use this method for transforming (translate, rotate) the lights in the scene
+ * Override this method for transforming (translate, rotate) the lights in the scene
  * @param {Number} ms time in milliseconds passed since last frame
  */
 GPT_Scene.prototype.updateLights = function(ms)
@@ -62,7 +62,7 @@ GPT_Scene.prototype.updateLights = function(ms)
 }
 
 /**
- * Creates a THREE.Scene and adds all the Object3D/Mesh from the models array (same with the lights array)
+ * Invokes the methods for creating the scene, adds a THREE.Scene and all the Object3D/Mesh from the models array (same with the lights array)
  * THREE.Scene can add objects of type THREE.Mesh or THREE.Object3D (grouping object. Ex: robot = base + arm)
  * The same objects will be updated (animated) in renderer.update() method
  */
