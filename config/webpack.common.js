@@ -10,8 +10,8 @@ module.exports = {
     // Webpack will put the bundle (compressed file) and resources (images) here
     output: {
         path: paths.build,
-        filename: '[name].bundle.js',
         publicPath: '/',
+        filename: '[name].bundle.js',
     },
 
     // Customization of the webpack build process
