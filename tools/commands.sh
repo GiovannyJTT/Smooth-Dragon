@@ -29,3 +29,7 @@ npm install
 
 # then build
 npm run build
+
+# run code of production with simulated-server
+# you need vscode plugin "live server"
+# then open "dist/index.html" in vscode and press "Go-live" button on the bottom panel
