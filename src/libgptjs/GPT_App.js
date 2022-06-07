@@ -77,7 +77,7 @@ GPT_App.prototype.drawFrame = function(timestamp)
     if(periodElapsedMS > this.MAX_PERIOD_MS)
     {
         this.lastPeriodTS = nowTS;
-        console.log("GPT_App: Rendered Frame: " + this.currentFrameNumber + " TS: " + timestamp);
+        console.log("GPT_App: Rendered Frames: " + this.currentFrameNumber + " TS: " + timestamp);
     }
 
     if(!this.done)
@@ -88,7 +88,7 @@ GPT_App.prototype.drawFrame = function(timestamp)
     else
     {
         window.cancelAnimationFrame(this.requestAF)
-        console.log("GPT_App: cancelling animation frame")
+        console.log("GPT_App: uninstalled animation frame callback")
     }
 }
 
