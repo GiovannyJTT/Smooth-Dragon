@@ -16,20 +16,18 @@ npm cache clean -f
 cd ~/Smooth-Dragon
 rm -rf node_modules/
 
-# install node modules before compiling
+# install node-modules reflected into the package.json needed for before compiling this
 cd ~/Smooth-Dragon
 npm install
 
 # run in development mode   (check section scripts/dev in package.json)
 npm run dev
 
-# build code optimized for production mode   (check section scripts/build in package.json). Code will be placed at dist/
-# first install needed libraries 
-npm install
-
-# then build
+# build optimized code for production   (check section scripts/build in package.json). Code will be placed at ./dist/ folder
 npm run build
 
 # run code of production with simulated-server
-# you need vscode plugin "live server"
-# then open "dist/index.html" in vscode and press "Go-live" button on the bottom panel
+:'
+you need vscode plugin "live server"
+then open "dist/index.html" in vscode and press "Go-live" button on the bottom panel
+'
