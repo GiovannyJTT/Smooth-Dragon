@@ -21,6 +21,7 @@ import THREE from '../external-libs/threejs-0.118.3/three-global'
  */
 function GPT_Scene()
 {
+    // maps can have any object type as key and can be iterated in order of insertion
     this.gpt_models = new Map();
     this.gpt_lights = new Map();
     this.scene = new THREE.Scene();
