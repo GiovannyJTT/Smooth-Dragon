@@ -74,16 +74,18 @@ GPT_Scene.prototype.setupScene = function()
     for(let [key, value] of this.gpt_models)
     {
         this.scene.add(value);
+        console.debug("GPT_Scene: added " + key);
     }
-    console.debug("GPT_Scene: added " + this.gpt_models.size + " models");
+    console.debug("GPT_Scene: total models: " + this.gpt_models.size);
 
     this.createLights();
     
     for(let [key, value] of this.gpt_lights)
     {
+        console.debug("GPT_Scene: added " + key);
         this.scene.add(value);
     }
-    console.debug("GTP_Scene: added " + this.gpt_lights.size + " lights");
+    console.debug("GTP_Scene: total lights: " + this.gpt_lights.size);
 }
 
 GPT_Scene.prototype.updateScene = function(ms)
