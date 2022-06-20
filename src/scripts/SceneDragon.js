@@ -11,21 +11,18 @@ import GPT_Scene from '../libgptjs/GPT_Scene'
 
 
 /**
- * Creating a child object (kind of child class) by Inheriting from GPT_Scene (by calling that constructor)
+ * Creating a child object (kind of child class) by Inheriting from GPT_Scene (Follow steps 1 to 3)
  * This child object adds functions for specfically configuring and updating the "dragon scene"
  */
 function SceneDragon () {
+    // 1. Call parent object
     GPT_Scene.call(this);
 }
 
-/**
- * Extend from parent object prototype (keeps the proto clean)
- */
+// 2. Extend from parent object prototype (keeps the proto clean)
 SceneDragon.prototype = Object.create(GPT_Scene.prototype);
 
-/**
- * Repair the inherited constructor
- */
+// 3. Repair the inherited constructor
 SceneDragon.prototype.constructor = SceneDragon;
 
 /**
@@ -33,11 +30,37 @@ SceneDragon.prototype.constructor = SceneDragon;
  */
 SceneDragon.prototype.createObjects = function()
 {
+    this.createAxes();
+    this.createFloor();
+}
+
+SceneDragon.prototype.createAxes = function ()
+{
     const axisH = new THREE.AxesHelper(200);
     axisH.position.set(0.0, 0.0, 0.0);
-    axisH.setColors(new THREE.Color(0xff0000), new THREE.Color(0x00ff00), new THREE.Color(0x0000ff))
+    axisH.setColors(new THREE.Color(0xff0000), new THREE.Color(0x00ff00), new THREE.Color(0x0000ff))    
+    this.gpt_models.set("AxesHelper", axisH); 
+}
+
+SceneDragon.prototype.createFloor = function (floor_width = 1000)
+{
+    const floor_tex = new THREE.TextureLoader().load("./assets/images/wood1.jpg");
+    const floor_geom = new THREE.PlaneGeometry(floor_width, floor_width, 20, 20);
+    const floor_mat = new THREE.MeshPhongMaterial(
+        {
+            color : 0xb35900, emissive : 0x101010, flatShading : false, specular : 0x111A11,
+            shininess : 50, map : floor_tex, side : THREE.FrontSide
+        }
+    );
+
+    // Mesh = Geometry + Material
+    const floor = new THREE.Mesh(floor_geom, floor_mat);
     
-    this.gpt_models.set("AxesHelper", axisH);
+    floor.castShadow = false;
+    floor.receiveShadow = true;
+    floor.rotation.set(- 1.57079632679, 0, 0);  
+
+    this.gpt_models.set("floor", floor);
 }
 
 /**
@@ -47,6 +70,7 @@ SceneDragon.prototype.createObjects = function()
 SceneDragon.prototype.updateObjects = function(ms)
 {
     // console.log("update dragonModel here! (elapsed " + ms + " ms)");
+    let axisH = this.gpt_models.get("AxesHelper");
 }
 
 /**
@@ -71,20 +95,34 @@ SceneDragon.prototype.createLights = function()
     // 75% white light. Directional-Light: emits only in the configured direction vector
     const lDirectional = new THREE.DirectionalLight(new THREE.Color(0xbfbfbf), 1.0);
 
-    lDirectional.position.set(-200, 200, 0); // direction of the lighting vector
+    // direction of the lighting vector
+    lDirectional.position.set(-200, 200, 0);
     this.gpt_lights.set("lDirectional", lDirectional);
 
     const lDirectionalHelper = new THREE.DirectionalLightHelper(lDirectional, 10);
     this.gpt_lights.set("lDirectionalHelper", lDirectionalHelper);
 
     // 75% white light. Focal-Light: emits light with "cone" volume
-    const lFocal = new THREE.SpotLight(new THREE.Color(0xbfbfbf), );
+    const lFocal = new THREE.SpotLight(new THREE.Color(0xbfbfbf));
     lFocal.position.set(50, 330, -150);
 
-    lFocal.target.position.set(0, 0, 0); // direction of the central lighting vector
+    // direction of the central lighting vector
+    lFocal.target.position.set(0, 0, 0);
+
     lFocal.angle = Math.PI/8; // radians
     lFocal.distance = 1000;
-    lFocal.decay = 7.5; // atenuation from the central vector to the borders of the cone
+
+    lFocal.castShadow = true;
+    lFocal.shadow.camera.near = 5;
+    lFocal.shadow.camera.far = 1000;
+    lFocal.shadow.camera.fov = 45; // degrees
+    lFocal.shadow.camera.visible = true;
+
+    // intensity 10 is ok for distance 1000
+    lFocal.intensity = 10;
+
+    // atenuation from the central vector to the borders of the cone
+    lFocal.decay = 7.5;
 
     this.gpt_lights.set("lFocal", lFocal);
 
