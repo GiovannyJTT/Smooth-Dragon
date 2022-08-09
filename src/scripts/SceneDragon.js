@@ -45,7 +45,7 @@ SceneDragon.prototype.createAxes = function ()
 SceneDragon.prototype.createFloor = function (floor_width = 1000)
 {
     const floor_tex = new THREE.TextureLoader().load("./assets/images/wood1.jpg");
-    const floor_geom = new THREE.PlaneGeometry(floor_width, floor_width, 20, 20);
+    const floor_geom = new THREE.PlaneGeometry(floor_width, floor_width, 2, 2);
     const floor_mat = new THREE.MeshPhongMaterial(
         {
             color : 0xb35900, emissive : 0x101010, flatShading : false, specular : 0x111A11,
