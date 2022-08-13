@@ -3,7 +3,13 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
+// configuring polyfill compatible with webpack5
+// const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
+
 module.exports = {
+    // target: "node" for in-nodejs environment
+    target: "web",
+
     // Webpack will start looking in here
     entry: [paths.src + '/index.js'],
 
@@ -16,6 +22,9 @@ module.exports = {
 
     // Customization of the webpack build process
     plugins: [
+        // configuring polyfill compatible with webpack5
+        // new NodePolyfillPlugin(),
+
         // cleans build folder and unused resources when re-building
         new CleanWebpackPlugin(),
 
