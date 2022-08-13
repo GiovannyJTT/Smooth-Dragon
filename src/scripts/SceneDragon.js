@@ -8,7 +8,7 @@
 
 import THREE from '../external-libs/threejs-0.118.3/three-global'
 import GPT_Scene from '../libgptjs/GPT_Scene'
-
+import ModelDragon from './ModelDragon'
 
 /**
  * Creating a child object (kind of child class) by Inheriting from GPT_Scene (Follow steps 1 to 3)
@@ -32,6 +32,7 @@ SceneDragon.prototype.createObjects = function()
 {
     this.createAxes();
     this.createFloor();
+    this.createDragon();
 }
 
 SceneDragon.prototype.createAxes = function ()
@@ -61,6 +62,15 @@ SceneDragon.prototype.createFloor = function (floor_width = 1000)
     floor.rotation.set(- 1.57079632679, 0, 0);  
 
     this.gpt_models.set("floor", floor);
+}
+
+SceneDragon.prototype.createDragon = function()
+{
+    const m_dragon = new ModelDragon();
+    m_dragon.mesh.castShadow = true;
+    m_dragon.mesh.receiveShadow = true;
+
+    this.gpt_models.set("dragon", m_dragon.mesh);
 }
 
 /**
