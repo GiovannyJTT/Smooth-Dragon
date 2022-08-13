@@ -16,14 +16,40 @@
 /**
  * Constructs a Model object. Saves the reference to individual geometry and material, and
  * creates the THREE.Mesh
- * @param {THREE.Geometry} geom 
- * @param {THREE.Material} mat 
  */
-function GPT_Model(geom, mat)
+function GPT_Model()
 {
-    this.geometry = geom;
-    this.material = mat;
-    this.mesh = new THREE.Mesh(geom, mat);
+    this.geometry = this.get_geometry();
+    if (this.geometry === undefined)
+    {
+        console.error("Geometry undefined when constructing model");
+        return;        
+    }
+
+    this.material = this.get_material();
+    if (this.material === undefined)
+    {
+        console.error("Material undefined when constructing model");
+        return;
+    }
+
+    this.mesh = new THREE.Mesh(this.geometry, this.material);
+}
+
+/**
+ * Override this method for creating the geometry
+ */
+GPT_Model.prototype.get_geometry = function()
+{
+    console.error("GPT_Model.get_geometry: Not implemented");
+}
+
+/**
+ * Overrid this method for creating the material
+ */
+GPT_Model.prototype.get_material = function()
+{
+    console.error("GPT_Model.get_material: Not implemented");
 }
 
 export default GPT_Model;
