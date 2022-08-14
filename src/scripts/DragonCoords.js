@@ -5,22 +5,29 @@ import THREE from "../external-libs/threejs-0.118.3/three-global";
  * 
  * @param {Float32Array} vertices_coordinates contains all needed `vertices_coordinates` that will be referenced to create edges
  * @param {Int32Array} edges_indices contains all the edges by referencing the indices of `vertices_coordinates` array (avoids to save duplicated vertices on disk) 
+ * @param {Array} points3d array of Vector3-items containing all 3d-points from `vertices_coordinates`
+ * @param {Array} triangles_indices array of Vector3-items containing all triangles-indices from `edges_indices`
  * 
  * It also calculates triangles and normals (check at the end of this file)
  */
 function DragonCoords() {
+    // initialization empty values
+    this.normals = undefined;
+    this.points3d = undefined;
+    this.triangles_indices = undefined;
+
+    // initial operations
     this.vertices_coordinates = this.getArrayVertices();
     this.edges_indices = this.getArrayEdges();
-
     this.calculateNormals();
 }
 
 DragonCoords.prototype.calculateNormals = function(){
 
     // group 3d points
-    const points3d = [];
+    this.points3d = [];
     for (let i = 0; i < this.vertices_coordinates.length; i += 3) {
-        points3d.push(
+        this.points3d.push(
             new THREE.Vector3(
                 this.vertices_coordinates[i],
                 this.vertices_coordinates[i + 1],
@@ -36,9 +43,9 @@ DragonCoords.prototype.calculateNormals = function(){
     }
 
     // group triangles indices
-    const triangles_indices = [];
+    this.triangles_indices = [];
     for (let i = 0; i < this.edges_indices.length; i += 3){
-        triangles_indices.push(
+        this.triangles_indices.push(
             new myVec3(
                 this.edges_indices[i],
                 this.edges_indices[i + 1],
@@ -48,13 +55,13 @@ DragonCoords.prototype.calculateNormals = function(){
     }
 
     // size of this.normals is num_triagles * 3 (since 3 floats per normal)
-    this.normals = new Float32Array(3 * triangles_indices.length);
+    this.normals = new Float32Array(3 * this.triangles_indices.length);
 
     // compute normals: in threejs normals are clockwise by default
-    for (let i = 0, n = 0; i < triangles_indices.length; i++, n += 3){
-        const p1 = points3d[ triangles_indices[i].a ];
-        const p2 = points3d[ triangles_indices[i].b ];
-        const p3 = points3d[ triangles_indices[i].c ];
+    for (let i = 0, n = 0; i < this.triangles_indices.length; i++, n += 3){
+        const p1 = this.points3d[ this.triangles_indices[i].a ];
+        const p2 = this.points3d[ this.triangles_indices[i].b ];
+        const p3 = this.points3d[ this.triangles_indices[i].c ];
 
         // v1 = p2 - p1 = destination - origin
         const v1 = new THREE.Vector3(p2.x - p1.x, p2.y - p1.y, p2.z - p1.z);
