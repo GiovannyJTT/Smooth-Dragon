@@ -45,15 +45,40 @@ ModelDragon.prototype.get_geometry = function () {
     return geom;
 }
 
+ModelDragon.prototype.getUVs = function(_geom){
+    
+    // computing reflection UVs for each face (triangle)
+    _geom.computeBoundingBox();
+    const max = geom.boundingBox.max;
+    const min = geom.boundingBox.min;
+    const displacement = new THREE.Vector2(0 - min.x, 0 - min.y);
+    const interval = new THREE.Vector2(max.x - min.x, max.y - min.y);
+
+    // each UV has 3 coordinates in this case, one UV per face (triangle)
+    const uvs = new Float32Array(2 * this.coords.triangles_indices.length);
+
+    for (let i = 0, n = 0; i < this.coords.triangles_indices.length; i++, n += 2){
+        const p1 = this.coords.points3d[ this.coords.triangles_indices[i].a ];
+        const p2 = this.coords.points3d[ this.coords.triangles_indices[i].b ];
+        const p3 = this.coords.points3d[ this.coords.triangles_indices[i].c ];
+
+        // pack all UV together for bufferAtrribute
+        uvs[n] = (p1.x + displacement.x) / interval.x;
+        uvs[n + 1] = (p1.y + displacement.x) / interval.y;
+    }
+
+    _geom.setAttribute("uv", new THREE.BufferAttribute(uvs, 2));
+}
+
 /**
- * Overriding in child object
+ * Overriding in child object. It assumes `get_geometry` has been completed
  */
 ModelDragon.prototype.get_material = function () {
     const mat = new THREE.MeshPhongMaterial(
         {
             color: 0xe5ffe5, emissive: 0xb4ef3e, flatShading: false,
             specular: 0x003300, shininess: 70,
-            side: THREE.FrontSide, transparent: true, opacity: 0.8,
+            side: THREE.FrontSide, transparent: true, opacity: 0.5,
             // envMap: mapaEntorno
         }
     );
