@@ -13,7 +13,6 @@ function DragonCoords() {
     this.edges_indices = this.getArrayEdges();
 
     this.calculateNormals();
-    this.calculateUVs();
 }
 
 DragonCoords.prototype.calculateNormals = function(){
@@ -48,9 +47,10 @@ DragonCoords.prototype.calculateNormals = function(){
         );
     }
 
-    // compute normals: in threejs normals are clockwise by default
+    // size of this.normals is num_triagles * 3 (since 3 floats per normal)
     this.normals = new Float32Array(3 * triangles_indices.length);
 
+    // compute normals: in threejs normals are clockwise by default
     for (let i = 0, n = 0; i < triangles_indices.length; i++, n += 3){
         const p1 = points3d[ triangles_indices[i].a ];
         const p2 = points3d[ triangles_indices[i].b ];
@@ -78,15 +78,11 @@ DragonCoords.prototype.calculateNormals = function(){
         normal.y = normal.y / mod;
         normal.z = normal.z / mod;
 
-        // pack all together for attributeBuffer
+        // pack all normals-coordinates together for attributeBuffer
         this.normals[n] = normal.x;
         this.normals[n + 1] = normal.y;
-        this.normals[n + 2] = normal.z; 
+        this.normals[n + 2] = normal.z;        
     }
-}
-
-DragonCoords.prototype.calculateUVs = function(){
-    // TODO:
 }
 
 DragonCoords.prototype.getArrayVertices = function(){
