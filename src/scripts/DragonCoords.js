@@ -85,7 +85,7 @@ DragonCoords.prototype.calculateNormals = function(){
         normal.y = normal.y / mod;
         normal.z = normal.z / mod;
 
-        // pack all normals-coordinates together for attributeBuffer
+        // pack all normals-coordinates adjacently for attributeBuffer
         this.normals[n] = normal.x;
         this.normals[n + 1] = normal.y;
         this.normals[n + 2] = normal.z;        
