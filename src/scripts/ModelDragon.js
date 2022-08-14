@@ -22,7 +22,7 @@ ModelDragon.prototype = Object.create(GPT_Model.prototype);
 ModelDragon.prototype.constructor = ModelDragon;
 
 /**
- * Overrides in child object
+ * Overriding in child object
  */
 ModelDragon.prototype.get_geometry = function () {
     const geom = new THREE.BufferGeometry();
@@ -33,17 +33,20 @@ ModelDragon.prototype.get_geometry = function () {
         new THREE.BufferAttribute(this.coords.vertices_coordinates, 3)
     );
 
-    // TODO: add UVs
+    // itemSize = 3 because there are 3 components per normal
+    geom.setAttribute(
+        "normal",
+        new THREE.BufferAttribute(this.coords.normals, 3)
+    );
 
-    // TODO: compute normals
+    // intemSize = 1 because there are 1 component per vertex-index
+    geom.setIndex(new THREE.BufferAttribute(this.coords.edges_indices, 1));
 
-    console.debug("num_points " + this.coords.vertices_coordinates.length);
     return geom;
 }
 
-
 /**
- * Overrides in child object
+ * Overriding in child object
  */
 ModelDragon.prototype.get_material = function () {
     const mat = new THREE.MeshPhongMaterial(
@@ -54,6 +57,7 @@ ModelDragon.prototype.get_material = function () {
             // envMap: mapaEntorno
         }
     );
+
     return mat;
 }
 
