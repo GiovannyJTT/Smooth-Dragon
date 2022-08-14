@@ -67,6 +67,9 @@ SceneDragon.prototype.createFloor = function (floor_width = 1000)
 SceneDragon.prototype.createDragon = function()
 {
     const m_dragon = new ModelDragon();
+    
+    m_dragon.mesh.scale.set(1000, 1000, 1000);
+    m_dragon.mesh.position.set(150, -50, -100);
     m_dragon.mesh.castShadow = true;
     m_dragon.mesh.receiveShadow = true;
 
