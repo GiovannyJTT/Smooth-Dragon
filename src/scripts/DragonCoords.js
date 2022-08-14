@@ -2692,7 +2692,7 @@ DragonCoords.prototype.calculateNormals = function(){
         // Cross Product of Two Vectors in the Three-Dimensional Cartesian Coordinate System 
         const normal = new THREE.Vector3(
             v1.y * v2.z - v1.z * v2.y,
-            v1.z * v2.x - v1.x * v2.z, // clockwise
+            v1.x * v2.z - v1.z * v2.x,
             v1.x * v2.y - v1.y * v2.x
         );
 
@@ -2713,7 +2713,7 @@ DragonCoords.prototype.calculateNormals = function(){
 }
 
 DragonCoords.prototype.calculateUVs = function(){
-        
+
 }
 
 export default DragonCoords;
