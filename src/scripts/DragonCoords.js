@@ -9,7 +9,88 @@ import THREE from "../external-libs/threejs-0.118.3/three-global";
  * It also calculates triangles and normals (check at the end of this file)
  */
 function DragonCoords() {
-    this.vertices_coordinates = new Float32Array([
+    this.vertices_coordinates = this.getArrayVertices();
+    this.edges_indices = this.getArrayEdges();
+
+    this.calculateNormals();
+    this.calculateUVs();
+}
+
+DragonCoords.prototype.calculateNormals = function(){
+
+    // group 3d points
+    const points3d = [];
+    for (let i = 0; i < this.vertices_coordinates.length; i += 3) {
+        points3d.push(
+            new THREE.Vector3(
+                this.vertices_coordinates[i],
+                this.vertices_coordinates[i + 1],
+                this.vertices_coordinates[i + 2]
+            )
+        );
+    }
+
+    function myVec3(a, b, c){
+        this.a = a;
+        this.b = b;
+        this.c = c;
+    }
+
+    // group triangles indices
+    const triangles_indices = [];
+    for (let i = 0; i < this.edges_indices.length; i += 3){
+        triangles_indices.push(
+            new myVec3(
+                this.edges_indices[i],
+                this.edges_indices[i + 1],
+                this.edges_indices[i + 2],
+            )
+        );
+    }
+
+    // compute normals: in threejs normals are clockwise by default
+    this.normals = new Float32Array(3 * triangles_indices.length);
+
+    for (let i = 0, n = 0; i < triangles_indices.length; i++, n += 3){
+        const p1 = points3d[ triangles_indices[i].a ];
+        const p2 = points3d[ triangles_indices[i].b ];
+        const p3 = points3d[ triangles_indices[i].c ];
+
+        // v1 = p2 - p1 = destination - origin
+        const v1 = new THREE.Vector3(p2.x - p1.x, p2.y - p1.y, p2.z - p1.z);
+
+        // v2 = p3 - p2
+        const v2 = new THREE.Vector3(p3.x - p2.x, p3.y - p2.y, p3.z - p2.z);
+
+        // Cross Product of Two Vectors in the Three-Dimensional Cartesian Coordinate System 
+        const normal = new THREE.Vector3(
+            v1.y * v2.z - v1.z * v2.y,
+            v1.x * v2.z - v1.z * v2.x,
+            v1.x * v2.y - v1.y * v2.x
+        );
+
+        const mod = Math.sqrt(
+            normal.x * normal.x + normal.y * normal.y + normal.z * normal.z
+        );
+
+        // apply module
+        normal.x = normal.x / mod;
+        normal.y = normal.y / mod;
+        normal.z = normal.z / mod;
+
+        // pack all together for attributeBuffer
+        this.normals[n] = normal.x;
+        this.normals[n + 1] = normal.y;
+        this.normals[n + 2] = normal.z; 
+    }
+}
+
+DragonCoords.prototype.calculateUVs = function(){
+    // TODO:
+}
+
+DragonCoords.prototype.getArrayVertices = function(){
+    return new Float32Array([
         0.00469467, 0.0921578, -0.0204182,
         -0.085233, 0.150314, -0.00360416,
         -0.0188786, 0.057975, 0.0081125,
@@ -1268,9 +1349,11 @@ function DragonCoords() {
         0.00373973, 0.156154, -0.0209063,
         -0.0904696, 0.171795, 0.0072346
     ]);
+}
 
+DragonCoords.prototype.getArrayEdges = function(){
     // references the indices of vertices_coordinates (less points to save on disk)
-    this.edges_indices = new Uint32Array([
+    return new Uint32Array([
         797, 643, 795, 406, 609, 1092,
         549, 1225, 1118, 762, 1223, 749,
         98, 79, 255, 207, 733, 1165,
@@ -2637,83 +2720,6 @@ function DragonCoords() {
         612, 947, 866, 1034, 385, 1035,
         1149, 969, 1186, 499, 1099, 578
     ]);
-
-    this.calculateNormals();
-
-    this.calculateUVs();
-}
-
-DragonCoords.prototype.calculateNormals = function(){
-
-    // group 3d points
-    const points3d = [];
-    for (let i = 0; i < this.vertices_coordinates.length; i += 3) {
-        points3d.push(
-            new THREE.Vector3(
-                this.vertices_coordinates[i],
-                this.vertices_coordinates[i + 1],
-                this.vertices_coordinates[i + 2]
-            )
-        );
-    }
-
-    function myVec3(a, b, c){
-        this.a = a;
-        this.b = b;
-        this.c = c;
-    }
-
-    // group triangles indices
-    const triangles_indices = [];
-    for (let i = 0; i < this.edges_indices.length; i += 3){
-        triangles_indices.push(
-            new myVec3(
-                this.edges_indices[i],
-                this.edges_indices[i + 1],
-                this.edges_indices[i + 2],
-            )
-        );
-    }
-
-    // compute normals: in threejs normals are clockwise by default
-    this.normals = new Float32Array(3 * triangles_indices.length);
-
-    for (let i = 0, n = 0; i < triangles_indices.length; i++, n += 3){
-        const p1 = points3d[ triangles_indices[i].a ];
-        const p2 = points3d[ triangles_indices[i].b ];
-        const p3 = points3d[ triangles_indices[i].c ];
-
-        // v1 = p2 - p1 = destination - origin
-        const v1 = new THREE.Vector3(p2.x - p1.x, p2.y - p1.y, p2.z - p1.z);
-
-        // v2 = p3 - p2
-        const v2 = new THREE.Vector3(p3.x - p2.x, p3.y - p2.y, p3.z - p2.z);
-
-        // Cross Product of Two Vectors in the Three-Dimensional Cartesian Coordinate System 
-        const normal = new THREE.Vector3(
-            v1.y * v2.z - v1.z * v2.y,
-            v1.x * v2.z - v1.z * v2.x,
-            v1.x * v2.y - v1.y * v2.x
-        );
-
-        const mod = Math.sqrt(
-            normal.x * normal.x + normal.y * normal.y + normal.z * normal.z
-        );
-
-        // apply normal module
-        normal.x = normal.x / mod;
-        normal.y = normal.y / mod;
-        normal.z = normal.z / mod;
-
-        // pack all together for geometrybuffer
-        this.normals[n] = normal.x;
-        this.normals[n + 1] = normal.y;
-        this.normals[n + 2] = normal.z; 
-    }
-}
-
-DragonCoords.prototype.calculateUVs = function(){
-
 }
 
 export default DragonCoords;
