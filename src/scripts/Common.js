@@ -2,7 +2,7 @@
  * Values to be reused in several objects
  */
 
-const FLOOR_WIDTH = 1000; // m
+const FLOOR_WIDTH = 1000; // cm
 const SKYBOX_WIDTH = 5 * FLOOR_WIDTH;
 
 const FLOOR_TEXTURE_PATH = "./assets/images/wood1.jpg";
