@@ -43,13 +43,22 @@ SceneDragon.prototype.createAxes = function ()
     const axisH = new THREE.AxesHelper(200);
     axisH.position.set(0.0, 0.0, 0.0);
     axisH.setColors(new THREE.Color(0xff0000), new THREE.Color(0x00ff00), new THREE.Color(0x0000ff))    
+
+    // add to set of gpt_objects to be added into the rendering graph
     this.gpt_models.set("AxesHelper", axisH); 
 }
 
 SceneDragon.prototype.createFloor = function ()
 {
-    const floor_tex = new THREE.TextureLoader().load(Common.FLOOR_TEXTURE_PATH);
+    // geometry
     const floor_geom = new THREE.PlaneGeometry(Common.FLOOR_WIDTH, Common.FLOOR_WIDTH, 2, 2);
+    
+    // material
+    const floor_tex = new THREE.TextureLoader().load(Common.FLOOR_TEXTURE_PATH);
+    floor_tex.wrapS = THREE.RepeatWrapping;
+    floor_tex.wrapT = THREE.RepeatWrapping;
+    floor_tex.repeat.set(2, 2);
+
     const floor_mat = new THREE.MeshPhongMaterial(
         {
             color : 0xb35900, emissive : 0x101010, flatShading : false, specular : 0x111A11,
@@ -59,16 +68,18 @@ SceneDragon.prototype.createFloor = function ()
 
     // Mesh = Geometry + Material
     const floor = new THREE.Mesh(floor_geom, floor_mat);
+    floor.rotation.set(- 1.57079632679, 0, 0);  
     
+    // shadows
     floor.castShadow = false;
     floor.receiveShadow = true;
-    floor.rotation.set(- 1.57079632679, 0, 0);  
 
     this.gpt_models.set("floor", floor);
 }
 
 SceneDragon.prototype.createDragon = function()
 {
+    // model = contains geometry, material and mesh
     const m_dragon = new ModelDragon();
     
     m_dragon.mesh.scale.set(1000, 1000, 1000);
