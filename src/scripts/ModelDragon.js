@@ -72,7 +72,8 @@ ModelDragon.prototype.get_material = function () {
     // creating material with all config
     const _mat = new THREE.MeshPhongMaterial(
         {
-            color: 0xe5ffe5, emissive: 0xb4ef3e, flatShading: false,
+            color: 0xe5ffe5, emissive: 0xb4ef3e,
+            flatShading: true, // initially per-triangle normals
             specular: 0x003300, shininess: 70,
             side: THREE.FrontSide, transparent: true, opacity: 0.5,
             envMap: _cubeTex
