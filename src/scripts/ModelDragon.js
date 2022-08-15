@@ -25,36 +25,36 @@ ModelDragon.prototype.constructor = ModelDragon;
  * Overriding in child object
  */
 ModelDragon.prototype.get_geometry = function () {
-    const geom = new THREE.BufferGeometry();
+    const _geom = new THREE.BufferGeometry();
 
     // itemSize = 3 because there are 3 components per vertex
-    geom.setAttribute(
+    _geom.setAttribute(
         "position",
         new THREE.BufferAttribute(this.coords.vertices_coordinates, 3)
     );
 
     // itemSize = 3 because there are 3 components per normal
-    geom.setAttribute(
+    _geom.setAttribute(
         "normal",
         new THREE.BufferAttribute(this.coords.normals, 3)
     );
 
     // intemSize = 1 because there are 1 component per vertex-index
-    geom.setIndex(new THREE.BufferAttribute(this.coords.edges_indices, 1));
+    _geom.setIndex(new THREE.BufferAttribute(this.coords.edges_indices, 1));
 
     // setting up the UV coordinates
-    const uvs = this.getUVs(geom);
+    const uvs = this.getUVs(_geom);
 
     // itemSize = 2 because each UV has 2 coordinates. uvs.lenght must be equalt to this.coords.edges_indices
-    geom.setAttribute(
+    _geom.setAttribute(
         "uv",
         new THREE.BufferAttribute(uvs, 2)
     );
 
     // geom.computeVertexNormals();
 
-    geom.needsUpdate = true;
-    return geom;
+    _geom.needsUpdate = true;
+    return _geom;
     // at this points geom will be assigned into this.geometry
 }
 
@@ -79,7 +79,7 @@ ModelDragon.prototype.get_material = function () {
     const _cubeTex = _texLoader.load(_cube_sides_img);
 
     // creating material with all config
-    const mat = new THREE.MeshPhongMaterial(
+    const _mat = new THREE.MeshPhongMaterial(
         {
             color: 0xe5ffe5, emissive: 0xb4ef3e, flatShading: false,
             specular: 0x003300, shininess: 70,
@@ -88,8 +88,8 @@ ModelDragon.prototype.get_material = function () {
         }
     );
 
-    mat.needsUpdate = true;
-    return mat;
+    _mat.needsUpdate = true;
+    return _mat;
 }
 
 /**
@@ -102,16 +102,16 @@ ModelDragon.prototype.get_material = function () {
  * @param {Array} this.coords.triangles_indices reusing to compute uvs
  * @return {Float32Array} Array containing all UVs for all faces
  */
- ModelDragon.prototype.getUVs = function(_geom){
-    if (_geom === undefined){
+ ModelDragon.prototype.getUVs = function(geom_){
+    if (geom_ === undefined){
         console.error("_geom undefined when getUvs()");
         return;
     }
 
-    _geom.computeBoundingBox();
+    geom_.computeBoundingBox();
 
-    const max = _geom.boundingBox.max;
-    const min = _geom.boundingBox.min;
+    const max = geom_.boundingBox.max;
+    const min = geom_.boundingBox.min;
     const offset = new THREE.Vector2(0 - min.x, 0 - min.y);
     const range = new THREE.Vector2(max.x - min.x, max.y - min.y);
 
