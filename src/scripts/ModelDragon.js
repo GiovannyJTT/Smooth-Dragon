@@ -79,7 +79,7 @@ ModelDragon.prototype.get_material = function () {
             shininess: 70,
             side: THREE.FrontSide,
             transparent: true,
-            opacity: 0.5,
+            opacity: 0.75,
             envMap: _cubeTex
         }
     );
