@@ -1,6 +1,6 @@
 import THREE from "../external-libs/threejs-0.118.3/three-global"
 import GPT_Model from "../libgptjs/GPT_Model"
-import DragonCoords from "./DragonCoords"
+import CoordsDragon from "./DragonCoords"
 import Common from "./Common"
 
 /**
@@ -10,7 +10,7 @@ import Common from "./Common"
  */
 function ModelDragon() {
     // instance coordinates only once
-    this.coords = new DragonCoords();
+    this.coords = new CoordsDragon();
 
     // 1. Call paren object
     GPT_Model.call(this);

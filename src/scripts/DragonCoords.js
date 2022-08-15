@@ -10,7 +10,7 @@ import THREE from "../external-libs/threejs-0.118.3/three-global";
  * 
  * It also calculates triangles and normals (check at the end of this file)
  */
-function DragonCoords() {
+function CoordsDragon() {
     // initialization empty values
     this.normals = undefined;
     this.points3d = undefined;
@@ -22,7 +22,7 @@ function DragonCoords() {
     this.normals = this.calculateNormals();
 }
 
-DragonCoords.prototype.calculateNormals = function(){
+CoordsDragon.prototype.calculateNormals = function(){
 
     // group 3d points
     this.points3d = [];
@@ -94,7 +94,7 @@ DragonCoords.prototype.calculateNormals = function(){
     return _normals;
 }
 
-DragonCoords.prototype.getArrayVertices = function(){
+CoordsDragon.prototype.getArrayVertices = function(){
     return new Float32Array([
         0.00469467, 0.0921578, -0.0204182,
         -0.085233, 0.150314, -0.00360416,
@@ -1356,7 +1356,7 @@ DragonCoords.prototype.getArrayVertices = function(){
     ]);
 }
 
-DragonCoords.prototype.getArrayEdges = function(){
+CoordsDragon.prototype.getArrayEdges = function(){
     // references the indices of vertices_coordinates (less points to save on disk)
     return new Uint32Array([
         797, 643, 795, 406, 609, 1092,
@@ -2727,4 +2727,4 @@ DragonCoords.prototype.getArrayEdges = function(){
     ]);
 }
 
-export default DragonCoords;
+export default CoordsDragon;
