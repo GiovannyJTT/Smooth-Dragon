@@ -1,6 +1,6 @@
 import THREE from "../external-libs/threejs-0.118.3/three-global"
 import GPT_Model from "../libgptjs/GPT_Model"
-import CoordsDragon from "./DragonCoords"
+import CoordsDragon from "./CoordsDragon"
 import Common from "./Common"
 
 /**
