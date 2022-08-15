@@ -1,6 +1,7 @@
 import THREE from "../external-libs/threejs-0.118.3/three-global"
 import GPT_Model from "../libgptjs/GPT_Model"
 import DragonCoords from "./DragonCoords"
+import Common from "./Common"
 
 /**
  * Creates a dragon model by computing the triangles and normals from its vertices
@@ -64,19 +65,9 @@ ModelDragon.prototype.get_geometry = function () {
  */
 ModelDragon.prototype.get_material = function () {
     // loading TextureCube as skybox
-    const _path = "./assets/images/Yokohama3/";
-    const _cube_sides_img = [
-        "posx.jpg",
-        "negx.jpg",
-        "posy.jpg",
-        "negy.jpg",
-        "posz.jpg",
-        "negz.jpg"
-    ];
-
     const _texLoader = new THREE.CubeTextureLoader();
-    _texLoader.setPath(_path);
-    const _cubeTex = _texLoader.load(_cube_sides_img);
+    _texLoader.setPath(Common.SKYBOX_TEXTURE_PATH);
+    const _cubeTex = _texLoader.load(Common.SKYBOX_TEXTURE_IMAGES_NAMES);
 
     // creating material with all config
     const _mat = new THREE.MeshPhongMaterial(
