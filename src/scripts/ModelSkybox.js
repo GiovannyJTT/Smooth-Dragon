@@ -20,7 +20,7 @@ ModelSkybox.prototype.constructor = ModelSkybox
 /**
  * Overriding in this child object
  */
-ModelSkybox.prototype.get_geometry = function() {
+ModelSkybox.prototype.get_geometry = function () {
     const _geom = new THREE.BoxGeometry(Common.SKYBOX_WIDTH, Common.SKYBOX_WIDTH, Common.SKYBOX_WIDTH);
 
     _geom.needsUpdate = true;
@@ -29,26 +29,25 @@ ModelSkybox.prototype.get_geometry = function() {
 
 /**
  * Overriding in this child object
- * Creates a ShaderMaterial in order to render the faces of "inside" the skybox
+ * Attaches textures into the Skybox side separately
+ * (same images of skybox are being used on the dragon as cubeTexture to simulate reflections)
  */
-ModelSkybox.prototype.get_material = function() {
-    // loading TextureCube as skybox
-    const _texLoader = new THREE.CubeTextureLoader();
-    _texLoader.setPath(Common.SKYBOX_TEXTURE_PATH);
-    const _cubeTex = _texLoader.load(Common.SKYBOX_TEXTURE_IMAGES_NAMES);
+ModelSkybox.prototype.get_material = function () {
+    const _cubeFacesMaterials = [];
+    const _loader = new THREE.TextureLoader();
+    
+    for (let i = 0; i < Common.SKYBOX_TEXTURE_IMAGES_NAMES.length; i++) {
+        const _img_path = Common.SKYBOX_TEXTURE_PATH + Common.SKYBOX_TEXTURE_IMAGES_NAMES[i];
+        _cubeFacesMaterials.push(
+            new THREE.MeshBasicMaterial({
+                map: _loader.load(_img_path),
+                color: 0xffffff, // white
+                side: THREE.BackSide // inside the cube
+            })
+        );
+    }
 
-    const _mat = new THREE.MeshBasicMaterial(
-        {
-            color: 0xffffff, // white 
-            flatShading: true,
-            side: THREE.BackSide,
-            transparent: false,
-            envMap: _cubeTex
-        }
-    );
-
-    _mat.needsUpdate = true;
-    return _mat;
+    return _cubeFacesMaterials;
 }
 
 export default ModelSkybox
