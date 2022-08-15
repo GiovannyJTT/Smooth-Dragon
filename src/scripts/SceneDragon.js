@@ -9,7 +9,8 @@
 import THREE from '../external-libs/threejs-0.118.3/three-global'
 import GPT_Scene from '../libgptjs/GPT_Scene'
 import ModelDragon from './ModelDragon'
-import Common from './Common' 
+import Common from './Common'
+import ModelSkybox from './ModelSkybox'
 
 /**
  * Creating a child object (kind of child class) by Inheriting from GPT_Scene (Follow steps 1 to 3)
@@ -32,8 +33,9 @@ SceneDragon.prototype.constructor = SceneDragon;
 SceneDragon.prototype.createObjects = function()
 {
     this.createAxes();
-    this.createFloor(Common.FLOOR_WIDTH);
+    this.createFloor();
     this.createDragon();
+    this.createSkybox();
 }
 
 SceneDragon.prototype.createAxes = function ()
@@ -44,10 +46,10 @@ SceneDragon.prototype.createAxes = function ()
     this.gpt_models.set("AxesHelper", axisH); 
 }
 
-SceneDragon.prototype.createFloor = function (floor_width = 1000)
+SceneDragon.prototype.createFloor = function ()
 {
     const floor_tex = new THREE.TextureLoader().load(Common.FLOOR_TEXTURE_PATH);
-    const floor_geom = new THREE.PlaneGeometry(floor_width, floor_width, 2, 2);
+    const floor_geom = new THREE.PlaneGeometry(Common.FLOOR_WIDTH, Common.FLOOR_WIDTH, 2, 2);
     const floor_mat = new THREE.MeshPhongMaterial(
         {
             color : 0xb35900, emissive : 0x101010, flatShading : false, specular : 0x111A11,
@@ -75,6 +77,15 @@ SceneDragon.prototype.createDragon = function()
     m_dragon.mesh.receiveShadow = true;
 
     this.gpt_models.set("dragon", m_dragon.mesh);
+}
+
+SceneDragon.prototype.createSkybox = function() {
+    const m_skybox = new ModelSkybox();
+
+    m_skybox.mesh.castShadow = false;
+    m_skybox.mesh.receiveShadow = false;
+
+    this.gpt_models.set("skybox", m_skybox.mesh);
 }
 
 /**
