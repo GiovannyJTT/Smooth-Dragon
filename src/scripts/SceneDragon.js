@@ -9,6 +9,7 @@
 import THREE from '../external-libs/threejs-0.118.3/three-global'
 import GPT_Scene from '../libgptjs/GPT_Scene'
 import ModelDragon from './ModelDragon'
+import Common from './Common' 
 
 /**
  * Creating a child object (kind of child class) by Inheriting from GPT_Scene (Follow steps 1 to 3)
@@ -31,7 +32,7 @@ SceneDragon.prototype.constructor = SceneDragon;
 SceneDragon.prototype.createObjects = function()
 {
     this.createAxes();
-    this.createFloor();
+    this.createFloor(Common.FLOOR_WIDTH);
     this.createDragon();
 }
 
@@ -45,7 +46,7 @@ SceneDragon.prototype.createAxes = function ()
 
 SceneDragon.prototype.createFloor = function (floor_width = 1000)
 {
-    const floor_tex = new THREE.TextureLoader().load("./assets/images/wood1.jpg");
+    const floor_tex = new THREE.TextureLoader().load(Common.FLOOR_TEXTURE_PATH);
     const floor_geom = new THREE.PlaneGeometry(floor_width, floor_width, 2, 2);
     const floor_mat = new THREE.MeshPhongMaterial(
         {
