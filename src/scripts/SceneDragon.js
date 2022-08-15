@@ -76,6 +76,10 @@ SceneDragon.prototype.createDragon = function()
     m_dragon.mesh.castShadow = true;
     m_dragon.mesh.receiveShadow = true;
 
+    // for surface smoothing: flatShading false and computeVertexNormals
+    // m_dragon.geometry.computeVertexNormals();
+    // m_dragon.material.flatShading = false;
+
     this.gpt_models.set("dragon", m_dragon.mesh);
 }
 

@@ -52,8 +52,6 @@ ModelDragon.prototype.get_geometry = function () {
         new THREE.BufferAttribute(uvs, 2)
     );
 
-    // geom.computeVertexNormals();
-
     _geom.needsUpdate = true;
     return _geom;
     // at this points geom will be assigned into this.geometry
