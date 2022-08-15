@@ -2,7 +2,14 @@
  * Values to be reused in several objects
  */
 
-const FLOOR_WIDTH = 1000; // cm
+/**
+ * Floor width in cm
+ */
+const FLOOR_WIDTH = 1000;
+
+/**
+ * Skybox width is 5 times floor width 
+ */
 const SKYBOX_WIDTH = 5 * FLOOR_WIDTH;
 
 const FLOOR_TEXTURE_PATH = "./assets/images/wood1.jpg";
