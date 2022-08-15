@@ -29,7 +29,7 @@ ModelSkybox.prototype.get_geometry = function () {
 
 /**
  * Overriding in this child object
- * Attaches textures into the Skybox side separately
+ * Attaches textures into the Skybox side with separated materials instead of single material
  * (same images of skybox are being used on the dragon as cubeTexture to simulate reflections)
  */
 ModelSkybox.prototype.get_material = function () {
