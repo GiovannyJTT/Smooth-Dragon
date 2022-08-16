@@ -11,6 +11,7 @@ import GPT_Scene from '../libgptjs/GPT_Scene'
 import ModelDragon from './ModelDragon'
 import Common from './Common'
 import ModelSkybox from './ModelSkybox'
+import { Scene } from 'three'
 
 /**
  * Creating a child object (kind of child class) by Inheriting from GPT_Scene (Follow steps 1 to 3)
@@ -109,11 +110,16 @@ SceneDragon.prototype.createSkybox = function() {
  */
 SceneDragon.prototype.updateObjects = function(ms)
 {
+    this.updateDragon();
+}
+
+SceneDragon.prototype.updateDragon = function () {
     // console.log("update dragonModel here! (elapsed " + ms + " ms)");
     let _dragon = this.gpt_models.get("dragon");
 
     // 0.5 degrees per frame
     _dragon.rotation.y += 0.00872665;
+    _dragon.rotation.y = (_dragon.rotation.y >= 2 * 3.141592)? 0.0 : _dragon.rotation.y;
 }
 
 /**
