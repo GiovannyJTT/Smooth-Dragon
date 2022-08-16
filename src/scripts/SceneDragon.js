@@ -83,7 +83,7 @@ SceneDragon.prototype.createDragon = function()
     const m_dragon = new ModelDragon();
     
     m_dragon.mesh.scale.set(1000, 1000, 1000);
-    m_dragon.mesh.position.set(150, -50, -100);
+    m_dragon.mesh.position.set(120, -50, -100);
     m_dragon.mesh.castShadow = true;
     m_dragon.mesh.receiveShadow = true;
 
@@ -110,7 +110,10 @@ SceneDragon.prototype.createSkybox = function() {
 SceneDragon.prototype.updateObjects = function(ms)
 {
     // console.log("update dragonModel here! (elapsed " + ms + " ms)");
-    let axisH = this.gpt_models.get("AxesHelper");
+    let _dragon = this.gpt_models.get("dragon");
+
+    // 0.5 degrees per frame
+    _dragon.rotation.y += 0.00872665;
 }
 
 /**

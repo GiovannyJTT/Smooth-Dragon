@@ -88,7 +88,7 @@ CoordsDragon.prototype.calculateNormals = function(){
         // pack all normals-coordinates adjacently for attributeBuffer
         _normals[n] = normal.x;
         _normals[n + 1] = normal.y;
-        _normals[n + 2] = normal.z;        
+        _normals[n + 2] = normal.z;   
     }
 
     return _normals;
