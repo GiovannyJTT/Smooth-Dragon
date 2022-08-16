@@ -11,7 +11,6 @@ import GPT_Scene from '../libgptjs/GPT_Scene'
 import ModelDragon from './ModelDragon'
 import Common from './Common'
 import ModelSkybox from './ModelSkybox'
-import { Scene } from 'three'
 
 /**
  * Creating a child object (kind of child class) by Inheriting from GPT_Scene (Follow steps 1 to 3)
