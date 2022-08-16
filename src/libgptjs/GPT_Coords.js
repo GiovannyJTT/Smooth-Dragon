@@ -5,7 +5,7 @@
  * Content:
  *  class GPT_Coords
  *      A Coordiantes object contains all vertices, edges and methods for
- *      computing triangles, normals, and UVs
+ *      computing triangles, normals, and UVs per face
  */
 
 import THREE from "../external-libs/threejs-0.118.3/three-global";
@@ -128,6 +128,50 @@ GPT_Coords.prototype.calculateNormals = function(){
     }
 
     return _normals;
+}
+
+/**
+ * Calculates UV for planar surface (x, y, z) where z = 0.
+ * Computes the UV values for each face (triangle)
+ * Assumes `get_geometry()` is finished so input param `_geom` is used
+ * 
+ * @param {Array} this.points3d reusing to compute uvs
+ * @param {Array} this.triangles_indices reusing to compute uvs
+ * @return {Float32Array} Array containing all UVs for all faces to be ready to copy in a THREE.BufferArray
+ */
+ GPT_Coords.prototype.getUVs = function(geom_){
+    if (geom_ === undefined){
+        console.error("GPT_Coords.getUVs: 'geom_' is undefined");
+        return;
+    }
+
+    geom_.computeBoundingBox();
+
+    const max = geom_.boundingBox.max;
+    const min = geom_.boundingBox.min;
+    const offset = new THREE.Vector2(0 - min.x, 0 - min.y);
+    const range = new THREE.Vector2(max.x - min.x, max.y - min.y);
+
+    // each UV has 2 coordinates, each face (triangle) has 3 vertice, one UV per face
+    const _uvs = new Float32Array(6 * this.triangles_indices.length);
+
+    for (let i = 0, n = 0; i < this.triangles_indices.length; i++, n += 6){
+        const p1 = this.points3d[ this.triangles_indices[i].a ];
+        const p2 = this.points3d[ this.triangles_indices[i].b ];
+        const p3 = this.points3d[ this.triangles_indices[i].c ];
+
+        // pack all UV together for bufferAtrribute
+        _uvs[n] = (p1.x + offset.x) / range.x;
+        _uvs[n + 1] = (p1.y + offset.y) / range.y;
+
+        _uvs[n + 2] = (p2.x + offset.x) / range.x;
+        _uvs[n + 3] = (p2.y + offset.y) / range.y;
+
+        _uvs[n + 4] = (p3.x + offset.x) / range.x;
+        _uvs[n + 5] = (p3.y + offset.y) / range.y;
+    }
+
+    return _uvs;
 }
 
 export default GPT_Coords
