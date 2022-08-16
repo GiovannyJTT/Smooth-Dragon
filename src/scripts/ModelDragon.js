@@ -12,7 +12,7 @@ function ModelDragon() {
     // instance coordinates only once
     this.coords = new CoordsDragon();
 
-    // 1. Call paren object
+    // 1. Call parent object constructor
     GPT_Model.call(this);
 }
 
@@ -91,10 +91,9 @@ ModelDragon.prototype.get_material = function () {
  * Computes the UV values for each face (triangle)
  * Assumes `get_geometry()` is finished so input param `_geom` is used
  * 
- * @param {THREE.BufferGeometry} this.geometry already set
  * @param {Array} this.coords.points3d reusing to compute uvs
  * @param {Array} this.coords.triangles_indices reusing to compute uvs
- * @return {Float32Array} Array containing all UVs for all faces
+ * @return {Float32Array} Array containing all UVs for all faces to be ready to copy in a THREE.BufferArray
  */
  ModelDragon.prototype.getUVs = function(geom_){
     if (geom_ === undefined){
