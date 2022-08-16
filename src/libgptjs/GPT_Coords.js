@@ -34,6 +34,7 @@ function GPT_Coords() {
 
 /**
  * To be overriden in child object
+ * @return {Float32Array} undefined
  */
 GPT_Coords.prototype.getArrayVertices = function () {
     console.error("GPT_Coords.getArrayVertices: not implemented");
@@ -42,6 +43,7 @@ GPT_Coords.prototype.getArrayVertices = function () {
 
 /**
  * To be overriden in child object
+ * @return {Uint32Array} undefined
  */
 GPT_Coords.prototype.getArrayEdges = function () {
     console.error("GPT_Coords.getArrayEdges: not implemented");
