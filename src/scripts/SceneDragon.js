@@ -106,6 +106,7 @@ SceneDragon.prototype.createSkybox = function() {
 }
 
 SceneDragon.prototype.createRobot = function () {
+    // THREE.Object3D
     const _robot = new ModelRobot();
     this.gpt_models.set("robot", _robot);
 }

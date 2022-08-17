@@ -1,5 +1,6 @@
 import THREE from "../external-libs/threejs-0.118.3/three-global";
 import GPT_LinkedModel from "../libgptjs/GPT_LinkedModel";
+import ModelGripper from "./ModelGripper";
 
 /**
  * Class that groups all parts of the robot arm
@@ -27,9 +28,18 @@ ModelRobot.prototype.getRobot = function () {
     // hand
     const _hand_o = new THREE.Object3D();
 
+    const _gripper_R = this.getGripperMesh();
+    const _gripper_L = this.getGripperMesh();
+
+    _gripper_R.position.set(0, -10, -7);
+    _gripper_L.position.set(0, 10, 7);
+    _gripper_L.rotation.x = -Math.PI;
+    
     const _wrist = this.getWristMesh();
     _wrist.rotation.x = Math.PI / 2.0;
 
+    _hand_o.add(_gripper_R);
+    _hand_o.add(_gripper_L);
     _hand_o.add(_wrist);
 
     _hand_o.position.set(0, 80, 0);
@@ -239,6 +249,16 @@ ModelRobot.prototype.getWristMesh = function () {
     _wrist_mesh.receiveShadow = true;
 
     return _wrist_mesh;
+}
+
+ModelRobot.prototype.getGripperMesh = function () {
+
+    const _gripper = new ModelGripper();
+
+    _gripper.mesh.castShadow = true;
+    _gripper.mesh.receiveShadow = true;
+
+    return _gripper.mesh;
 }
 
 export default ModelRobot
