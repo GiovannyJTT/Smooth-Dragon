@@ -24,6 +24,15 @@ ModelRobot.prototype.constructor = ModelRobot;
  */
 ModelRobot.prototype.getRobot = function () {
 
+    // hand
+    const _hand_o = new THREE.Object3D();
+
+    const _wrist = this.getWristMesh();
+    _wrist.rotation.x = Math.PI / 2.0;
+
+    _hand_o.add(_wrist);
+
+    _hand_o.position.set(0, 80, 0);
 
     // forearm
     const _forearm_o = new THREE.Object3D();
@@ -76,6 +85,7 @@ ModelRobot.prototype.getRobot = function () {
     this.pushLink("root", _base_o);
     this.pushLink("arm", _arm_o); // attach arm to root
     this.pushLink("forearm", _forearm_o); // attach forearm to arm
+    this.pushLink("hand", _hand_o); // attach hand to forearm
 
     // return root Object3D
     const _r = this.createLinksHierarchy();
@@ -207,6 +217,28 @@ ModelRobot.prototype.getNerveMesh = function () {
     _nerve_mesh.receiveShadow = true;
 
     return _nerve_mesh;
+}
+
+ModelRobot.prototype.getWristMesh = function () {
+
+    const _wrist_geom = new THREE.CylinderGeometry(15, 15, 40, 18, 1);
+
+    const _wrist_mat = new THREE.MeshPhongMaterial({
+        color: 0xffe5e5,
+        emissive: 0x101010,
+        flatShading: true,
+        specular: 0x111111,
+        shininess: 50,
+        // map : tMunyeca,
+        side: THREE.FrontSide,
+        // bumpMap : tDiscoBumpMap
+    });
+
+    const _wrist_mesh = new THREE.Mesh(_wrist_geom, _wrist_mat);
+    _wrist_mesh.castShadow = true;
+    _wrist_mesh.receiveShadow = true;
+
+    return _wrist_mesh;
 }
 
 export default ModelRobot
