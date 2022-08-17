@@ -50,7 +50,7 @@ GPT_LinkedModel.prototype.createLinksHierarchy = function () {
                 return;
             }
             else {
-                _prevKey = "root";
+                _prevKey = key;
                 _prevValue = value;
                 i++;
     
@@ -62,6 +62,10 @@ GPT_LinkedModel.prototype.createLinksHierarchy = function () {
         // next iterations
         _prevValue.add(value);
         console.debug("GPT_LinkedModel.createLinksHierarchy: linked " + key + " to " + _prevKey);
+
+        // update
+        _prevKey = key;
+        _prevValue = value;
         i++;
     }
 
