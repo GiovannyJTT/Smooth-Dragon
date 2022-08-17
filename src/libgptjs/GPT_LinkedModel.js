@@ -43,8 +43,7 @@ GPT_LinkedModel.prototype.createLinksHierarchy = function () {
     let _prevValue = undefined;
     let i = 0;
 
-    for(let [key, value] of this.links)
-    {
+    for(let [key, value] of this.links) {
         if (i == 0) {
             if ("root" != key) {
                 console.error("GPT_LinkedModel.createLinksHierarchy: first key is not 'root'. Found: " + key);
@@ -66,7 +65,7 @@ GPT_LinkedModel.prototype.createLinksHierarchy = function () {
         i++;
     }
 
-    console.debug("GPT_LinkedModel.createLinksHierarchy: total links: " + this.links.size);
+    console.debug("GPT_LinkedModel.createLinksHierarchy: total nodes: " + this.links.size + ", total links: " + (this.links.size-1));
     return this.links.get("root");
 }
 
