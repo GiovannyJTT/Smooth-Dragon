@@ -8,10 +8,10 @@
  *      It can contain several "Mesh" objects. Every Mesh has to have 2 objects: Geometry and Material
  */
 
- /**
+/**
  * Importing object THREE from our costumized global script
  */
- import THREE from '../external-libs/threejs-0.118.3/three-global'
+import THREE from '../external-libs/threejs-0.118.3/three-global'
 
 /**
  * Constructs a Model object. Saves the reference to individual geometry and material, and
