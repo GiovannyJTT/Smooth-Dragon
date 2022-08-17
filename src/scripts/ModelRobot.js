@@ -6,7 +6,7 @@ import GPT_LinkedModel from "../libgptjs/GPT_LinkedModel";
  * Inherits from GPT_LinkedModel
  * @return {THREE.Object3D} root
  */
-function ModelRobot () {
+function ModelRobot() {
     // 1. Call parent object constructors
     GPT_LinkedModel.call(this);
 
@@ -23,59 +23,77 @@ ModelRobot.prototype.constructor = ModelRobot;
  * @returns {THREE.Object3D} root
  */
 ModelRobot.prototype.getRobot = function () {
+
+
     // forearm
-    const _forearm = new THREE.Object3D();
-    
-    const _disc = this.getDisc();
-    
-    _forearm.add( _disc );
-    _forearm.position.set(0, 110, 0);
+    const _forearm_o = new THREE.Object3D();
+
+    const _nerve1 = this.getNerveMesh();
+    const _nerve2 = this.getNerveMesh();
+    const _nerve3 = this.getNerveMesh();
+    const _nerve4 = this.getNerveMesh();
+
+    _nerve1.position.set(8, 40, 8);
+    _nerve2.position.set(8, 40, -8);
+    _nerve3.position.set(-8, 40, 8);
+    _nerve4.position.set(-8, 40, -8);
+
+    const _disc = this.getDiscMesh();
+
+    _forearm_o.add(_disc);
+    _forearm_o.add(_nerve1);
+    _forearm_o.add(_nerve2);
+    _forearm_o.add(_nerve3);
+    _forearm_o.add(_nerve4);
+
+    _forearm_o.position.set(0, 110, 0);
 
     // arm
-    const _arm = new THREE.Object3D();
-    
-    const _axis = this.getAxis();
-    _axis.rotation.set( Math.PI / 2.0, 0, 0);
+    const _arm_o = new THREE.Object3D();
 
-    const _humerus = this.getHumerus();
+    const _axis = this.getAxisMesh();
+    _axis.rotation.set(Math.PI / 2.0, 0, 0);
+
+    const _humerus = this.getHumerusMesh();
     _humerus.position.set(0, 50, 0);
-    
-    _arm.add( _axis );
-    _arm.add( _humerus );
-    _arm.add( _forearm );
+
+    const _balljoint = this.getBallJointMesh();
+    _balljoint.position.set(0, 110, 0);
+
+    _arm_o.add(_axis);
+    _arm_o.add(_humerus);
+    _arm_o.add(_balljoint);
 
     // root
-    const _root = new THREE.Object3D();
-    
-    const _base = this.getBase();
+    const _base_o = new THREE.Object3D();
 
-    _root.add( _base );
-    _root.add( _arm );
+    const _base_m = this.getBaseMesh();
+    _base_o.add(_base_m);
 
-    _root.position.set(-50, 0, 50);
+    _base_o.position.set(-50, 0, 50);
 
     // build hierarchy
-    this.pushLink("root", _root);
-    this.pushLink("arm", _arm ); // attach arm to root
-    this.pushLink("forearm", _forearm); // attach forearm to arm
+    this.pushLink("root", _base_o);
+    this.pushLink("arm", _arm_o); // attach arm to root
+    this.pushLink("forearm", _forearm_o); // attach forearm to arm
 
     // return root Object3D
     const _r = this.createLinksHierarchy();
     return _r;
 }
 
-ModelRobot.prototype.getBase = function () {
+ModelRobot.prototype.getBaseMesh = function () {
 
     const _base_geom = new THREE.CylinderGeometry(50, 50, 15, 18, 1);
 
     const _base_mat = new THREE.MeshPhongMaterial({
-        color : 0xb35900,
-        emissive : 0x101010,
+        color: 0xb35900,
+        emissive: 0x101010,
         flatShading: true,
-        specular : 0x111A11,
-        shininess : 50,        
+        specular: 0x111A11,
+        shininess: 50,
         // map : tSuelo,
-        side : THREE.FrontSide
+        side: THREE.FrontSide
     });
 
     const _base_mesh = new THREE.Mesh(_base_geom, _base_mat);
@@ -85,18 +103,18 @@ ModelRobot.prototype.getBase = function () {
     return _base_mesh;
 }
 
-ModelRobot.prototype.getAxis = function () {
+ModelRobot.prototype.getAxisMesh = function () {
 
     const _axis_geom = new THREE.CylinderGeometry(20, 20, 18, 18, 1);
 
     const _axis_mat = new THREE.MeshPhongMaterial({
-		color : 0xffe5e5,
-        emissive : 0x101010,
+        color: 0xffe5e5,
+        emissive: 0x101010,
         flatShading: true,
-        specular : 0x111111,
-        shininess : 70,
+        specular: 0x111111,
+        shininess: 70,
         // map : tEje,
-        side : THREE.FrontSide
+        side: THREE.FrontSide
     });
 
     const _axis_mesh = new THREE.Mesh(_axis_geom, _axis_mat);
@@ -106,18 +124,18 @@ ModelRobot.prototype.getAxis = function () {
     return _axis_mesh;
 }
 
-ModelRobot.prototype.getHumerus = function () {
-    
+ModelRobot.prototype.getHumerusMesh = function () {
+
     const _humerus_geom = new THREE.BoxGeometry(18, 120, 12);
-    
+
     const _humerus_mat = new THREE.MeshPhongMaterial({
-        color : 0xffe5e5,
-        emissive : 0x101010,
+        color: 0xffe5e5,
+        emissive: 0x101010,
         flatShading: true,
-        specular : 0x111111,
-        shininess : 50,
+        specular: 0x111111,
+        shininess: 50,
         // map : tEsparrago,
-        side : THREE.FrontSide,
+        side: THREE.FrontSide,
         // bumpMap : tEsparragoBumpMap
     });
 
@@ -128,18 +146,18 @@ ModelRobot.prototype.getHumerus = function () {
     return _humerus_mesh;
 }
 
-ModelRobot.prototype.getDisc = function () {
+ModelRobot.prototype.getDiscMesh = function () {
 
     const _disc_geom = new THREE.CylinderGeometry(22, 22, 6, 18, 1);
 
     const _disc_mat = new THREE.MeshPhongMaterial({
-        color : 0xffe5e5,
-        emissive : 0x101010,
+        color: 0xffe5e5,
+        emissive: 0x101010,
         flatShading: true,
-        specular : 0x111111,
-        shininess : 90,
+        specular: 0x111111,
+        shininess: 90,
         // map : tDisco,
-        side : THREE.FrontSide,
+        side: THREE.FrontSide,
         // bumpMap : tDiscoBumpMap    
     });
 
@@ -148,6 +166,47 @@ ModelRobot.prototype.getDisc = function () {
     _disc_mesh.receiveShadow = true;
 
     return _disc_mesh;
+}
+
+ModelRobot.prototype.getBallJointMesh = function () {
+
+    const _balljoint_geom = new THREE.SphereGeometry(20, 10, 10);
+
+    const _balljoint_mat = new THREE.MeshPhongMaterial({
+        color: 0xffe5e5,
+        emissive: 0xff9999,
+        flatShading: true,
+        // envMap : tRotula,
+        side: THREE.FrontSide
+    });
+
+    const _balljoint_mesh = new THREE.Mesh(_balljoint_geom, _balljoint_mat);
+    _balljoint_mesh.castShadow = true;
+    _balljoint_mesh.receiveShadow = true;
+
+    return _balljoint_mesh;
+}
+
+ModelRobot.prototype.getNerveMesh = function () {
+
+    const _nerve_geom = new THREE.BoxGeometry(4, 80, 4);
+
+    const _nerve_mat = new THREE.MeshPhongMaterial({
+        color: 0xffe5e5,
+        emissive: 0x101010,
+        flatShading: true,
+        specular: 0x111111,
+        shininess: 80,
+        // map : tNervio,
+        side: THREE.FrontSide,
+        // bumpMap : tNervioBumpMap
+    });
+
+    const _nerve_mesh = new THREE.Mesh(_nerve_geom, _nerve_mat);
+    _nerve_mesh.castShadow = true;
+    _nerve_mesh.receiveShadow = true;
+
+    return _nerve_mesh;
 }
 
 export default ModelRobot
