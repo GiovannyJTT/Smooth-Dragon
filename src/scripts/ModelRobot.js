@@ -27,19 +27,18 @@ ModelRobot.prototype.getRobot = function () {
 
     // hand
     const _hand_o = new THREE.Object3D();
-
+    
     const _gripper_R = this.getGripperMesh();
-    const _gripper_L = this.getGripperMesh();
-
     _gripper_R.position.set(0, -10, -7);
+    _hand_o.add(_gripper_R);
+    
+    const _gripper_L = this.getGripperMesh();
     _gripper_L.position.set(0, 10, 7);
     _gripper_L.rotation.x = -Math.PI;
+    _hand_o.add(_gripper_L);
     
     const _wrist = this.getWristMesh();
     _wrist.rotation.x = Math.PI / 2.0;
-
-    _hand_o.add(_gripper_R);
-    _hand_o.add(_gripper_L);
     _hand_o.add(_wrist);
 
     _hand_o.position.set(0, 80, 0);
@@ -48,22 +47,23 @@ ModelRobot.prototype.getRobot = function () {
     const _forearm_o = new THREE.Object3D();
 
     const _nerve1 = this.getNerveMesh();
-    const _nerve2 = this.getNerveMesh();
-    const _nerve3 = this.getNerveMesh();
-    const _nerve4 = this.getNerveMesh();
-
     _nerve1.position.set(8, 40, 8);
-    _nerve2.position.set(8, 40, -8);
-    _nerve3.position.set(-8, 40, 8);
-    _nerve4.position.set(-8, 40, -8);
-
-    const _disc = this.getDiscMesh();
-
-    _forearm_o.add(_disc);
     _forearm_o.add(_nerve1);
+    
+    const _nerve2 = this.getNerveMesh();
+    _nerve2.position.set(8, 40, -8);
     _forearm_o.add(_nerve2);
+    
+    const _nerve3 = this.getNerveMesh();
+    _nerve3.position.set(-8, 40, 8);
     _forearm_o.add(_nerve3);
+    
+    const _nerve4 = this.getNerveMesh();
+    _nerve4.position.set(-8, 40, -8);
     _forearm_o.add(_nerve4);
+    
+    const _disc = this.getDiscMesh();
+    _forearm_o.add(_disc);
 
     _forearm_o.position.set(0, 110, 0);
 
@@ -72,15 +72,14 @@ ModelRobot.prototype.getRobot = function () {
 
     const _axis = this.getAxisMesh();
     _axis.rotation.set(Math.PI / 2.0, 0, 0);
+    _arm_o.add(_axis);
 
     const _humerus = this.getHumerusMesh();
     _humerus.position.set(0, 50, 0);
+    _arm_o.add(_humerus);
 
     const _balljoint = this.getBallJointMesh();
     _balljoint.position.set(0, 110, 0);
-
-    _arm_o.add(_axis);
-    _arm_o.add(_humerus);
     _arm_o.add(_balljoint);
 
     // root
