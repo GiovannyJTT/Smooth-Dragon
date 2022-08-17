@@ -11,6 +11,7 @@ import GPT_Scene from '../libgptjs/GPT_Scene'
 import ModelDragon from './ModelDragon'
 import Common from './Common'
 import ModelSkybox from './ModelSkybox'
+import ModelRobot from './ModelRobot'
 
 /**
  * Creating a child object (kind of child class) by Inheriting from GPT_Scene (Follow steps 1 to 3)
@@ -36,6 +37,7 @@ SceneDragon.prototype.createObjects = function()
     this.createFloor();
     this.createDragon();
     this.createSkybox();
+    this.createRobot();
 }
 
 SceneDragon.prototype.createAxes = function ()
@@ -101,6 +103,11 @@ SceneDragon.prototype.createSkybox = function() {
     m_skybox.mesh.receiveShadow = false;
 
     this.gpt_models.set("skybox", m_skybox.mesh);
+}
+
+SceneDragon.prototype.createRobot = function () {
+    const _robot = new ModelRobot();
+    this.gpt_models.set("robot", _robot);
 }
 
 /**
