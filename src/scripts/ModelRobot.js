@@ -20,8 +20,7 @@ ModelRobot.prototype = Object.create(GPT_LinkedModel.prototype);
 ModelRobot.prototype.constructor = ModelRobot;
 
 /**
- * 
- * @returns {THREE.Object3D}
+ * @returns {THREE.Object3D} root
  */
 ModelRobot.prototype.getRobot = function () {
 
@@ -45,7 +44,7 @@ ModelRobot.prototype.getRobot = function () {
     this.pushLink("arm", _arm );
 
     // return root Object3D
-    return this.createHierarchy();
+    return this.createLinksHierarchy();
 }
 
 ModelRobot.prototype.getBase = function () {

@@ -37,7 +37,7 @@ GPT_LinkedModel.prototype.pushLink = function (name_, obj_) {
  * From index 0 to N, it will be linking them 2 each time
  * @return {THREE.Object3D} root
  */
-GPT_LinkedModel.prototype.createHierarchy = function () {
+GPT_LinkedModel.prototype.createLinksHierarchy = function () {
 
     let _prevKey = undefined;
     let _prevValue = undefined;
@@ -47,7 +47,7 @@ GPT_LinkedModel.prototype.createHierarchy = function () {
     {
         if (i == 0) {
             if ("root" != key) {
-                console.error("GPT_LinkedModel.createHierarchy: first key is not 'root'. Found: " + key);
+                console.error("GPT_LinkedModel.createLinksHierarchy: first key is not 'root'. Found: " + key);
                 return;
             }
             else {
@@ -62,11 +62,11 @@ GPT_LinkedModel.prototype.createHierarchy = function () {
 
         // next iterations
         _prevValue.add(value);
-        console.debug("GPT_LinkedModel: linked " + key + " to " + _prevKey);
+        console.debug("GPT_LinkedModel.createLinksHierarchy: linked " + key + " to " + _prevKey);
         i++;
     }
 
-    console.debug("GPT_LinkedModel: total links: " + this.links.size);
+    console.debug("GPT_LinkedModel.createLinksHierarchy: total links: " + this.links.size);
     return this.links.get("root");
 }
 
