@@ -40,9 +40,6 @@ ModelTrajectory.prototype.get_geometry = function () {
 
     const _geom = new THREE.BufferGeometry();
 
-    console.log(_vertices);
-    console.log(_colors);
-
     _geom.setAttribute(
         "position",
         new THREE.BufferAttribute(_vertices, 3)
@@ -73,7 +70,7 @@ ModelTrajectory.prototype.get_material = function () {
  * Using NumDivisions = 10
  * @param {[THREE.Vector3]} this.vertices_trajectory cotaining the 3 vertices of the tracjtory (origin, middle, destination)
  *      It is used to compute the spline curve using N division and catmullrom technique
- * @returns {{Float32Array, Float32Array}} {positions, colors} these arrays have the same size (3 *  num vertices trajectory)
+ * @returns {{Float32Array, Float32Array}} {positions, colors} these arrays have the same size (3 * NUM DIVISIONS (10))
  */
 ModelTrajectory.prototype.get_points_and_colors_spline = function () {
     
@@ -103,7 +100,7 @@ ModelTrajectory.prototype.get_points_and_colors_spline = function () {
     }
 
     const resp = {
-        // size is 3 * num vertices_trajectory
+        // size is 3 * NUM DIVISIONS (10)
         "positions": _positions,
         "colors": _colors
     }
