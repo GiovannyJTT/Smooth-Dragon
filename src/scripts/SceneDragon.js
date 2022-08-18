@@ -105,9 +105,12 @@ SceneDragon.prototype.createSkybox = function () {
 }
 
 SceneDragon.prototype.createRobot = function () {
-    // THREE.Object3D
-    const _robot = new ModelRobot();
-    this.gpt_models.set("robot", _robot);
+    // GPT_LinkedModel instance
+    this.robotLinked = new ModelRobot();
+    
+    // TRHEE.Object3D
+    const _root = this.robotLinked.links.get("root");
+    this.gpt_models.set("robot", _root);
 }
 
 /**
@@ -115,16 +118,26 @@ SceneDragon.prototype.createRobot = function () {
  * @param {float} ms milliseconds passed since last frame
  */
 SceneDragon.prototype.updateObjects = function (ms) {
-    this.updateDragon();
+    this.updateDragon(ms);
+    this.updateRobot(ms);
 }
 
-SceneDragon.prototype.updateDragon = function () {
-    // console.log("update dragonModel here! (elapsed " + ms + " ms)");
-    let _dragon = this.gpt_models.get("dragon");
+SceneDragon.prototype.updateDragon = function (ms) {
+
+    const _dragon = this.gpt_models.get("dragon");
 
     // 0.5 degrees per frame
     _dragon.rotation.y += 0.00872665;
-    _dragon.rotation.y = (_dragon.rotation.y >= 2 * 3.141592) ? 0.0 : _dragon.rotation.y;
+    _dragon.rotation.y = (_dragon.rotation.y >= 2 * Math.PI) ? 0.0 : _dragon.rotation.y;
+}
+
+SceneDragon.prototype.updateRobot = function (ms) {
+
+    const _forearm = this.robotLinked.links.get("forearm");
+
+    // 5 degrees per frame
+    _forearm.rotation.x += 0.0872665;
+    _forearm.rotation.x = (_forearm.rotation.x >= 2 * Math.PI) ? 0.0 : _forearm.rotation.x;
 }
 
 /**
