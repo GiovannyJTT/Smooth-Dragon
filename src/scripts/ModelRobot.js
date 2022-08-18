@@ -22,24 +22,29 @@ ModelRobot.prototype = Object.create(GPT_LinkedModel.prototype);
 ModelRobot.prototype.constructor = ModelRobot;
 
 /**
- * @returns {THREE.Object3D} root
+ * @returns {GPT_LinkedModel} this instance 
  */
 ModelRobot.prototype.getRobot = function () {
+
+    // gripper
+    const _gripper_o = new THREE.Object3D();
+
+    const _gripper_R = this.getGripperMesh();
+    _gripper_R.position.set(10, -10, -9);
+    _gripper_o.add(_gripper_R)
+
+    const _gripper_L = this.getGripperMesh();
+    _gripper_L.position.set(10, 10, 9);
+    _gripper_L.rotation.set(-Math.PI, 0.0, 0.0);
+    _gripper_o.add(_gripper_L);
+
+    _gripper_o.rotation.set(0, 0, Math.PI / 2);
 
     // hand
     const _hand_o = new THREE.Object3D();
 
-    const _gripper_R = this.getGripperMesh();
-    _gripper_R.position.set(0, -10, -7);
-    _hand_o.add(_gripper_R);
-
-    const _gripper_L = this.getGripperMesh();
-    _gripper_L.position.set(0, 10, 7);
-    _gripper_L.rotation.x = -Math.PI;
-    _hand_o.add(_gripper_L);
-
     const _wrist = this.getWristMesh();
-    _wrist.rotation.x = Math.PI / 2.0;
+    // _wrist.rotation.x = Math.PI / 2.0;
     _hand_o.add(_wrist);
 
     _hand_o.position.set(0, 80, 0);
@@ -67,6 +72,7 @@ ModelRobot.prototype.getRobot = function () {
     _forearm_o.add(_disc);
 
     _forearm_o.position.set(0, 110, 0);
+    _forearm_o.rotation.set(0.0, 0.0, -Math.PI / 2.0);
 
     // arm
     const _arm_o = new THREE.Object3D();
@@ -96,10 +102,11 @@ ModelRobot.prototype.getRobot = function () {
     this.pushLink("arm", _arm_o); // attach arm to root
     this.pushLink("forearm", _forearm_o); // attach forearm to arm
     this.pushLink("hand", _hand_o); // attach hand to forearm
+    this.pushLink("gripper", _gripper_o); // attach gripper to hand
 
-    // return root Object3D
-    const _r = this.createLinksHierarchy();
-    return _r;
+    this.createLinksHierarchy();
+    // return GPT_LinkedModel instance
+    return this;
 }
 
 ModelRobot.prototype.getBaseMesh = function () {
@@ -243,7 +250,7 @@ ModelRobot.prototype.getNerveMesh = function () {
 
     const _mat = new THREE.MeshPhongMaterial({
         color: 0xffe5e5,
-        emissive: 0x101010,
+        emissive: 0x881010,
         flatShading: true,
         specular: 0x111111,
         shininess: 80,
@@ -272,9 +279,9 @@ ModelRobot.prototype.getWristMesh = function () {
 
     const _mat = new THREE.MeshPhongMaterial({
         color: 0xffe5e5,
-        emissive: 0x101010,
+        emissive: 0x111010,
         flatShading: false, // smooth transition in curvature
-        specular: 0x111111,
+        specular: 0xff1111,
         shininess: 50,
         map: _tex,
         side: THREE.FrontSide,
