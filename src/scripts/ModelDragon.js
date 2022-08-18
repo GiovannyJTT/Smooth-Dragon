@@ -63,10 +63,6 @@ ModelDragon.prototype.get_geometry = function () {
  */
 ModelDragon.prototype.get_material = function () {
     // loading TextureCube as skybox
-    const _texLoader = new THREE.CubeTextureLoader();
-    _texLoader.setPath(Common.SKYBOX_TEXTURE_PATH);
-    const _cubeTex = _texLoader.load(Common.SKYBOX_TEXTURE_IMAGES_NAMES);
-
     // creating material with all config
     const _mat = new THREE.MeshPhongMaterial(
         {
@@ -78,7 +74,7 @@ ModelDragon.prototype.get_material = function () {
             side: THREE.FrontSide,
             transparent: true,
             opacity: 0.75,
-            envMap: _cubeTex
+            envMap: Common.SKYBOX_CUBE_TEXTURE
         }
     );
 
