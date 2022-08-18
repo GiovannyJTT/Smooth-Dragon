@@ -17,7 +17,7 @@ import ModelRobot from './ModelRobot'
  * Creating a child object (kind of child class) by Inheriting from GPT_Scene (Follow steps 1 to 3)
  * This child object adds functions for specfically configuring and updating the "dragon scene"
  */
-function SceneDragon () {
+function SceneDragon() {
     // 1. Call parent object
     GPT_Scene.call(this);
 }
@@ -31,8 +31,7 @@ SceneDragon.prototype.constructor = SceneDragon;
 /**
  * Overrides createObjects funtion in child object
  */
-SceneDragon.prototype.createObjects = function()
-{
+SceneDragon.prototype.createObjects = function () {
     this.createAxes();
     this.createFloor();
     this.createDragon();
@@ -40,38 +39,39 @@ SceneDragon.prototype.createObjects = function()
     this.createRobot();
 }
 
-SceneDragon.prototype.createAxes = function ()
-{
+SceneDragon.prototype.createAxes = function () {
     const axisH = new THREE.AxesHelper(200);
     axisH.position.set(0.0, 0.0, 0.0);
-    axisH.setColors(new THREE.Color(0xff0000), new THREE.Color(0x00ff00), new THREE.Color(0x0000ff))    
+    axisH.setColors(new THREE.Color(0xff0000), new THREE.Color(0x00ff00), new THREE.Color(0x0000ff));
 
     // add to set of gpt_objects to be added into the rendering graph
-    this.gpt_models.set("AxesHelper", axisH); 
+    this.gpt_models.set("AxesHelper", axisH);
 }
 
-SceneDragon.prototype.createFloor = function ()
-{
+SceneDragon.prototype.createFloor = function () {
     // geometry
     const floor_geom = new THREE.PlaneGeometry(Common.FLOOR_WIDTH, Common.FLOOR_WIDTH, 2, 2);
-    
+
     // material
     const floor_tex = new THREE.TextureLoader().load(Common.FLOOR_TEXTURE_PATH);
     floor_tex.wrapS = THREE.RepeatWrapping;
     floor_tex.wrapT = THREE.RepeatWrapping;
     floor_tex.repeat.set(2, 2);
 
-    const floor_mat = new THREE.MeshPhongMaterial(
-        {
-            color : 0xb35900, emissive : 0x101010, flatShading : false, specular : 0x111A11,
-            shininess : 50, map : floor_tex, side : THREE.FrontSide
-        }
-    );
+    const floor_mat = new THREE.MeshPhongMaterial({
+        color: 0xb35900,
+        emissive: 0x101010,
+        flatShading: false,
+        specular: 0x111A11,
+        shininess: 50,
+        map: floor_tex,
+        side: THREE.FrontSide
+    });
 
     // Mesh = Geometry + Material
     const floor = new THREE.Mesh(floor_geom, floor_mat);
-    floor.rotation.set(- 1.57079632679, 0, 0);  
-    
+    floor.rotation.set(- 1.57079632679, 0, 0);
+
     // shadows
     floor.castShadow = false;
     floor.receiveShadow = true;
@@ -79,11 +79,10 @@ SceneDragon.prototype.createFloor = function ()
     this.gpt_models.set("floor", floor);
 }
 
-SceneDragon.prototype.createDragon = function()
-{
+SceneDragon.prototype.createDragon = function () {
     // model = contains geometry, material and mesh
     const m_dragon = new ModelDragon();
-    
+
     m_dragon.mesh.scale.set(1000, 1000, 1000);
     m_dragon.mesh.position.set(120, -50, -100);
     m_dragon.mesh.castShadow = true;
@@ -96,7 +95,7 @@ SceneDragon.prototype.createDragon = function()
     this.gpt_models.set("dragon", m_dragon.mesh);
 }
 
-SceneDragon.prototype.createSkybox = function() {
+SceneDragon.prototype.createSkybox = function () {
     const m_skybox = new ModelSkybox();
 
     m_skybox.mesh.castShadow = false;
@@ -115,8 +114,7 @@ SceneDragon.prototype.createRobot = function () {
  * Overrides updateObjects function in child object
  * @param {float} ms milliseconds passed since last frame
  */
-SceneDragon.prototype.updateObjects = function(ms)
-{
+SceneDragon.prototype.updateObjects = function (ms) {
     this.updateDragon();
 }
 
@@ -126,7 +124,7 @@ SceneDragon.prototype.updateDragon = function () {
 
     // 0.5 degrees per frame
     _dragon.rotation.y += 0.00872665;
-    _dragon.rotation.y = (_dragon.rotation.y >= 2 * 3.141592)? 0.0 : _dragon.rotation.y;
+    _dragon.rotation.y = (_dragon.rotation.y >= 2 * 3.141592) ? 0.0 : _dragon.rotation.y;
 }
 
 /**
@@ -134,8 +132,7 @@ SceneDragon.prototype.updateDragon = function () {
  * This function creates a light of each type (ambient, point, directional, focal) and adds helpers (wireframe representations)
  * for better understanding of where are located the light sources.
  */
-SceneDragon.prototype.createLights = function()
-{
+SceneDragon.prototype.createLights = function () {
     // 5% white light (almost black), doesnt need position. Ambient-Light: is added when shading the models surfaces
     const lAmbient = new THREE.AmbientLight(new THREE.Color(0x0d0d0d), 1.0);
     this.gpt_lights.set("lAmbient", lAmbient);
@@ -165,7 +162,7 @@ SceneDragon.prototype.createLights = function()
     // direction of the central lighting vector
     lFocal.target.position.set(0, 0, 0);
 
-    lFocal.angle = Math.PI/8; // radians
+    lFocal.angle = Math.PI / 8; // radians
     lFocal.distance = 1000;
 
     lFocal.castShadow = true;
@@ -190,8 +187,7 @@ SceneDragon.prototype.createLights = function()
  * Overrides updateLights function in child object
  * @param {float} ms milliseconds passed since last frame
  */
-SceneDragon.prototype.updateLights = function(ms)
-{
+SceneDragon.prototype.updateLights = function (ms) {
     // console.log("update dragonLights here! (elapsed " + ms + " ms)");
 }
 
