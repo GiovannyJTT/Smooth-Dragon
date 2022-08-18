@@ -1,3 +1,5 @@
+import THREE from "../external-libs/threejs-0.118.3/three-global";
+
 /**
  * Values to be reused in several objects
  */
@@ -23,10 +25,22 @@ const SKYBOX_TEXTURE_IMAGES_NAMES = [
     "negz.jpg"
 ];
 
-module.exports = {
+const BASE_TEXTURE_PATH = "./assets/images/granito1.jpg"
+const AXIS_TEXTURE_PATH = "./assets/images/metal2.jpg"
+const HUMERUS_TEXTURE_PATH = "./assets/images/metal1.jpg"
+
+const _texLoader = new THREE.CubeTextureLoader();
+_texLoader.setPath(SKYBOX_TEXTURE_PATH);
+const SKYBOX_CUBE_TEXTURE = _texLoader.load(SKYBOX_TEXTURE_IMAGES_NAMES);
+
+export default {
     FLOOR_WIDTH,
     SKYBOX_WIDTH,
     FLOOR_TEXTURE_PATH,
     SKYBOX_TEXTURE_PATH,
-    SKYBOX_TEXTURE_IMAGES_NAMES
+    SKYBOX_TEXTURE_IMAGES_NAMES,
+    SKYBOX_CUBE_TEXTURE,
+    BASE_TEXTURE_PATH,
+    AXIS_TEXTURE_PATH,
+    HUMERUS_TEXTURE_PATH
 }
