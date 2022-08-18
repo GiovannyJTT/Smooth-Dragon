@@ -2,6 +2,7 @@
 import THREE from "../external-libs/threejs-0.118.3/three-global";
 import GPT_Model from "../libgptjs/GPT_Model";
 import CoordsGripper from "./CoordsGripper";
+import Common from "./Common"
 
 /**
  * Creates a Robot model by computing its triangles and normals
@@ -61,14 +62,19 @@ ModelGripper.prototype.get_geometry = function () {
  */
 ModelGripper.prototype.get_material = function () {
 
+    const _texLoader = new THREE.CubeTextureLoader();
+    _texLoader.setPath(Common.SKYBOX_TEXTURE_PATH);
+    const _cubeTex = _texLoader.load(Common.SKYBOX_TEXTURE_IMAGES_NAMES);
+    _cubeTex.repeat.x = -1;
+
     const _mat = new THREE.MeshPhongMaterial({
         color: 0xffffe5,
         emissive: 0xff9999,
-        flatShading: true,
+        flatShading: true, // per face normals
         specular: 0xb3ffb3,
         shininess: 70,
         side: THREE.FrontSide,
-        // envMap: mapaEntorno
+        envMap: _cubeTex
     });
 
     _mat.needsUpdate = true;
