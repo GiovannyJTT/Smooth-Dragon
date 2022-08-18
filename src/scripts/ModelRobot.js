@@ -1,6 +1,7 @@
 import THREE from "../external-libs/threejs-0.118.3/three-global";
 import GPT_LinkedModel from "../libgptjs/GPT_LinkedModel";
 import ModelGripper from "./ModelGripper";
+import Common from "./Common";
 
 /**
  * Class that groups all parts of the robot arm
@@ -27,16 +28,16 @@ ModelRobot.prototype.getRobot = function () {
 
     // hand
     const _hand_o = new THREE.Object3D();
-    
+
     const _gripper_R = this.getGripperMesh();
     _gripper_R.position.set(0, -10, -7);
     _hand_o.add(_gripper_R);
-    
+
     const _gripper_L = this.getGripperMesh();
     _gripper_L.position.set(0, 10, 7);
     _gripper_L.rotation.x = -Math.PI;
     _hand_o.add(_gripper_L);
-    
+
     const _wrist = this.getWristMesh();
     _wrist.rotation.x = Math.PI / 2.0;
     _hand_o.add(_wrist);
@@ -49,19 +50,19 @@ ModelRobot.prototype.getRobot = function () {
     const _nerve1 = this.getNerveMesh();
     _nerve1.position.set(8, 40, 8);
     _forearm_o.add(_nerve1);
-    
+
     const _nerve2 = this.getNerveMesh();
     _nerve2.position.set(8, 40, -8);
     _forearm_o.add(_nerve2);
-    
+
     const _nerve3 = this.getNerveMesh();
     _nerve3.position.set(-8, 40, 8);
     _forearm_o.add(_nerve3);
-    
+
     const _nerve4 = this.getNerveMesh();
     _nerve4.position.set(-8, 40, -8);
     _forearm_o.add(_nerve4);
-    
+
     const _disc = this.getDiscMesh();
     _forearm_o.add(_disc);
 
@@ -103,151 +104,188 @@ ModelRobot.prototype.getRobot = function () {
 
 ModelRobot.prototype.getBaseMesh = function () {
 
-    const _base_geom = new THREE.CylinderGeometry(50, 50, 15, 18, 1);
+    const _geom = new THREE.CylinderGeometry(50, 50, 15, 18, 1);
 
-    const _base_mat = new THREE.MeshPhongMaterial({
-        color: 0xb35900,
+    const _tex = new THREE.TextureLoader().load(Common.BASE_TEXTURE_PATH);
+    _tex.wrapS = _tex.wrapT = THREE.RepeatWrapping;
+    _tex.magFilter = _tex.minFilter = THREE.LinearFilter;
+    _tex.repeat.set(5, 1);
+
+    const _mat = new THREE.MeshPhongMaterial({
+        color: 0x404040,
         emissive: 0x101010,
         flatShading: true,
-        specular: 0x111A11,
-        shininess: 50,
-        // map : tSuelo,
+        specular: 0x111111,
+        shininess: 0,
+        map: _tex,
         side: THREE.FrontSide
     });
 
-    const _base_mesh = new THREE.Mesh(_base_geom, _base_mat);
-    _base_mesh.castShadow = true;
-    _base_mesh.receiveShadow = true;
+    const _mesh = new THREE.Mesh(_geom, _mat);
+    _mesh.castShadow = true;
+    _mesh.receiveShadow = true;
 
-    return _base_mesh;
+    return _mesh;
 }
 
 ModelRobot.prototype.getAxisMesh = function () {
 
-    const _axis_geom = new THREE.CylinderGeometry(20, 20, 18, 18, 1);
+    const _geom = new THREE.CylinderGeometry(20, 20, 18, 18, 1);
 
-    const _axis_mat = new THREE.MeshPhongMaterial({
+    const _tex = new THREE.TextureLoader().load(Common.AXIS_TEXTURE_PATH);
+    _tex.wrapS = _tex.wrapT = THREE.RepeatWrapping;
+    _tex.magFilter = _tex.minFilter = THREE.LinearFilter;
+    _tex.repeat.set(2, 0.5);
+
+    const _mat = new THREE.MeshPhongMaterial({
         color: 0xffe5e5,
         emissive: 0x101010,
-        flatShading: true,
+        flatShading: false,
         specular: 0x111111,
         shininess: 70,
-        // map : tEje,
+        map: _tex,
         side: THREE.FrontSide
     });
 
-    const _axis_mesh = new THREE.Mesh(_axis_geom, _axis_mat);
-    _axis_mesh.castShadow = true;
-    _axis_mesh.receiveShadow = true;
+    const _mesh = new THREE.Mesh(_geom, _mat);
+    _mesh.castShadow = true;
+    _mesh.receiveShadow = true;
 
-    return _axis_mesh;
+    return _mesh;
 }
 
 ModelRobot.prototype.getHumerusMesh = function () {
 
-    const _humerus_geom = new THREE.BoxGeometry(18, 120, 12);
+    const _geom = new THREE.BoxGeometry(18, 120, 12);
 
-    const _humerus_mat = new THREE.MeshPhongMaterial({
+    const _tex = new THREE.TextureLoader().load(Common.HUMERUS_TEXTURE_PATH);
+    _tex.wrapS = _tex.wrapT = THREE.RepeatWrapping;
+    _tex.magFilter = _tex.minFilter = THREE.LinearFilter;
+    _tex.repeat.set(0.1, 1);
+
+    const _mat = new THREE.MeshPhongMaterial({
         color: 0xffe5e5,
         emissive: 0x101010,
         flatShading: true,
         specular: 0x111111,
         shininess: 50,
-        // map : tEsparrago,
+        map: _tex,
         side: THREE.FrontSide,
-        // bumpMap : tEsparragoBumpMap
+        bumpMap: _tex
     });
 
-    const _humerus_mesh = new THREE.Mesh(_humerus_geom, _humerus_mat);
-    _humerus_mesh.castShadow = true;
-    _humerus_mesh.receiveShadow = true;
+    const _mesh = new THREE.Mesh(_geom, _mat);
+    _mesh.castShadow = true;
+    _mesh.receiveShadow = true;
 
-    return _humerus_mesh;
-}
-
-ModelRobot.prototype.getDiscMesh = function () {
-
-    const _disc_geom = new THREE.CylinderGeometry(22, 22, 6, 18, 1);
-
-    const _disc_mat = new THREE.MeshPhongMaterial({
-        color: 0xffe5e5,
-        emissive: 0x101010,
-        flatShading: true,
-        specular: 0x111111,
-        shininess: 90,
-        // map : tDisco,
-        side: THREE.FrontSide,
-        // bumpMap : tDiscoBumpMap    
-    });
-
-    const _disc_mesh = new THREE.Mesh(_disc_geom, _disc_mat);
-    _disc_mesh.castShadow = true;
-    _disc_mesh.receiveShadow = true;
-
-    return _disc_mesh;
+    return _mesh;
 }
 
 ModelRobot.prototype.getBallJointMesh = function () {
 
-    const _balljoint_geom = new THREE.SphereGeometry(20, 10, 10);
+    const _geom = new THREE.SphereGeometry(20, 10, 10);
+    // per vertex normals instead per face
+    _geom.computeVertexNormals();
 
-    const _balljoint_mat = new THREE.MeshPhongMaterial({
+    const _mat = new THREE.MeshPhongMaterial({
         color: 0xffe5e5,
         emissive: 0xff9999,
-        flatShading: true,
-        // envMap : tRotula,
+        flatShading: false, // per vertex normals instead per face
+        envMap: Common.SKYBOX_CUBE_TEXTURE,
         side: THREE.FrontSide
     });
 
-    const _balljoint_mesh = new THREE.Mesh(_balljoint_geom, _balljoint_mat);
-    _balljoint_mesh.castShadow = true;
-    _balljoint_mesh.receiveShadow = true;
+    const _mesh = new THREE.Mesh(_geom, _mat);
+    _mesh.castShadow = true;
+    _mesh.receiveShadow = true;
 
-    return _balljoint_mesh;
+    return _mesh;
+}
+
+ModelRobot.prototype.getDiscMesh = function () {
+
+    const _geom = new THREE.CylinderGeometry(22, 22, 6, 18, 1);
+
+    // smooth in the curvature
+    _geom.computeVertexNormals();
+
+    const _tex = new THREE.TextureLoader().load(Common.DISC_TEXTURE_PATH);
+    _tex.wrapS = _tex.wrapT = THREE.RepeatWrapping;
+    _tex.magFilter = _tex.minFilter = THREE.LinearFilter;
+    _tex.repeat.set(5, 0.25);
+
+    const _mat = new THREE.MeshPhongMaterial({
+        color: 0xffe5e5,
+        emissive: 0x101010,
+        flatShading: false, // smooth in curvature
+        specular: 0x111111,
+        shininess: 90,
+        map: _tex,
+        side: THREE.FrontSide,
+        bumpMap: _tex
+    });
+
+    const _mesh = new THREE.Mesh(_geom, _mat);
+    _mesh.castShadow = true;
+    _mesh.receiveShadow = true;
+
+    return _mesh;
 }
 
 ModelRobot.prototype.getNerveMesh = function () {
 
-    const _nerve_geom = new THREE.BoxGeometry(4, 80, 4);
+    const _geom = new THREE.BoxGeometry(4, 80, 4);
 
-    const _nerve_mat = new THREE.MeshPhongMaterial({
+    const _tex = new THREE.TextureLoader().load(Common.NERVE_TEXTURE_PATH);
+    _tex.wrapS = _tex.wrapT = THREE.RepeatWrapping;
+    _tex.magFilter = _tex.minFilter = THREE.LinearFilter;
+    _tex.repeat.set(0.1, 5);
+
+    const _mat = new THREE.MeshPhongMaterial({
         color: 0xffe5e5,
         emissive: 0x101010,
         flatShading: true,
         specular: 0x111111,
         shininess: 80,
-        // map : tNervio,
+        map: _tex,
         side: THREE.FrontSide,
-        // bumpMap : tNervioBumpMap
+        bumpMap: _tex
     });
 
-    const _nerve_mesh = new THREE.Mesh(_nerve_geom, _nerve_mat);
-    _nerve_mesh.castShadow = true;
-    _nerve_mesh.receiveShadow = true;
+    const _mesh = new THREE.Mesh(_geom, _mat);
+    _mesh.castShadow = true;
+    _mesh.receiveShadow = true;
 
-    return _nerve_mesh;
+    return _mesh;
 }
 
 ModelRobot.prototype.getWristMesh = function () {
 
-    const _wrist_geom = new THREE.CylinderGeometry(15, 15, 40, 18, 1);
+    const _geom = new THREE.CylinderGeometry(15, 15, 40, 18, 1);
+    // smooth transition in curvature
+    _geom.computeVertexNormals()
 
-    const _wrist_mat = new THREE.MeshPhongMaterial({
+    const _tex = new THREE.TextureLoader().load(Common.WRIST_TEXTURE_PATH);
+    _tex.wrapS = _tex.wrapT = THREE.RepeatWrapping;
+    _tex.magFilter = _tex.minFilter = THREE.LinearFilter;
+    _tex.repeat.set(5, 1);
+
+    const _mat = new THREE.MeshPhongMaterial({
         color: 0xffe5e5,
         emissive: 0x101010,
-        flatShading: true,
+        flatShading: false, // smooth transition in curvature
         specular: 0x111111,
         shininess: 50,
-        // map : tMunyeca,
+        map: _tex,
         side: THREE.FrontSide,
-        // bumpMap : tDiscoBumpMap
+        bumpMap: _tex
     });
 
-    const _wrist_mesh = new THREE.Mesh(_wrist_geom, _wrist_mat);
-    _wrist_mesh.castShadow = true;
-    _wrist_mesh.receiveShadow = true;
+    const _mesh = new THREE.Mesh(_geom, _mat);
+    _mesh.castShadow = true;
+    _mesh.receiveShadow = true;
 
-    return _wrist_mesh;
+    return _mesh;
 }
 
 ModelRobot.prototype.getGripperMesh = function () {
