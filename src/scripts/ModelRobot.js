@@ -89,13 +89,16 @@ ModelRobot.prototype.getRobot = function () {
     _balljoint.position.set(0, 110, 0);
     _arm_o.add(_balljoint);
 
+    _arm_o.rotation.set(0, 0, Math.PI / 4);
+
     // root
     const _base_o = new THREE.Object3D();
 
     const _base_m = this.getBaseMesh();
     _base_o.add(_base_m);
 
-    _base_o.position.set(-50, 0, 50);
+    _base_o.position.set(-150, 0, 150);
+    _base_o.rotation.set(0, Math.PI / 4, 0);
 
     // build hierarchy
     this.pushLink("root", _base_o);
