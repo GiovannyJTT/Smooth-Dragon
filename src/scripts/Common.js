@@ -32,6 +32,7 @@ const HUMERUS_TEXTURE_PATH = "./assets/images/metal1.jpg"
 const _texLoader = new THREE.CubeTextureLoader();
 _texLoader.setPath(SKYBOX_TEXTURE_PATH);
 const SKYBOX_CUBE_TEXTURE = _texLoader.load(SKYBOX_TEXTURE_IMAGES_NAMES);
+SKYBOX_CUBE_TEXTURE.isCubeTexture = true;
 
 export default {
     FLOOR_WIDTH,
