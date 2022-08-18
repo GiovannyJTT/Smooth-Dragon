@@ -61,12 +61,9 @@ ModelGripper.prototype.get_geometry = function () {
  * Overriding it
  */
 ModelGripper.prototype.get_material = function () {
-
-    const _texLoader = new THREE.CubeTextureLoader();
-    _texLoader.setPath(Common.SKYBOX_TEXTURE_PATH);
-    const _cubeTex = _texLoader.load(Common.SKYBOX_TEXTURE_IMAGES_NAMES);
-    _cubeTex.repeat.x = -1;
-
+    
+    // loading TextureCube as skybox
+    // creating material with all config
     const _mat = new THREE.MeshPhongMaterial({
         color: 0xffffe5,
         emissive: 0xff9999,
@@ -74,7 +71,7 @@ ModelGripper.prototype.get_material = function () {
         specular: 0xb3ffb3,
         shininess: 70,
         side: THREE.FrontSide,
-        envMap: _cubeTex
+        envMap: Common.SKYBOX_CUBE_TEXTURE
     });
 
     _mat.needsUpdate = true;
