@@ -74,6 +74,11 @@ ModelTrajectory.prototype.get_material = function () {
  */
 ModelTrajectory.prototype.get_points_and_colors_spline = function () {
     
+    if (this.vertices_trajectory === undefined) {
+        console.error("ModelTrajectory.get_points_and_colors_spline: vertices_trajectory is undefined");
+        return;
+    }
+
     const _spline = new THREE.CatmullRomCurve3(this.vertices_trajectory);
     const _divisions = 10;
 
