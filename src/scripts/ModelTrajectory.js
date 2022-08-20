@@ -80,7 +80,7 @@ ModelTrajectory.prototype.get_points_and_colors_spline = function () {
     }
 
     const _spline = new THREE.CatmullRomCurve3(this.vertices_trajectory);
-    const _divisions = 10;
+    const _divisions = 30;
 
     const _positions = new Float32Array(_divisions * 3);
     const _colors = new Float32Array(_positions);
