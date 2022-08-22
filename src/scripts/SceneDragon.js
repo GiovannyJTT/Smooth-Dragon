@@ -125,77 +125,7 @@ SceneDragon.prototype.createTrajectory = function () {
     const _p2 = new THREE.Vector3();
     _hand.getWorldPosition(_p2)
 
-    // direction v
-    const _v = new THREE.Vector3(
-        _p2.x - _p1.x,
-        _p2.y - _p1.y,
-        _p2.z - _p1.z
-    );
-
-    const _v_lenght = Math.sqrt(
-        _v.x*_v.x + _v.y*_v.y + _v.z*_v.z
-    );
-
-    _v.normalize();
-
-    // p3 = p2 + v * lenght
-    const _p3 = _p2.clone().add(
-        new THREE.Vector3(
-            _v.x * _v_lenght,
-            _v.y * _v_lenght,
-            _v.z * _v_lenght
-        )
-    );
-
-    const TRAJECTORY_DIST_END = 1000;
-    const TRAJECTORY_DIST_MIDDLE = TRAJECTORY_DIST_END / 2;
-
-    // normal ground plane = (0,1,0)
-    const _n = new THREE.Vector3(0, 1, 0);
-    _n.normalize();
-
-    // decay angle = angle(v, n) / 2;
-    const _a = _v.clone().angleTo(_n) / 2;
-    console.debug("inclination angle " + (_a * 180 / Math.PI));
-
-    // Since n is perpendicular to ground plane then we have a right-angled triangle
-    // opposite = tan(a) * adjacent
-    const _opposite = Math.tan(_a) * TRAJECTORY_DIST_MIDDLE;
-
-    // projecting on the ground plane
-    const _v_plane = new THREE.Vector3(_v.x, 0, _v.z);
-    _v_plane.normalize();
-
-    // projecting on the ground plane
-    const _p3_plane = new THREE.Vector3(_p3.x, 0, _p3.z);
-
-    // end = p3_plane + v_plane * dist_end
-    const _end = _p3_plane.clone().add(
-        new THREE.Vector3(
-            _v_plane.x * TRAJECTORY_DIST_END,
-            0,
-            _v_plane.z * TRAJECTORY_DIST_END
-        )
-    );
-
-    // peak = p3_plane + v * dist_middle
-    const _peak = _p3_plane.clone().add(
-        new THREE.Vector3(
-            _v_plane.x * TRAJECTORY_DIST_MIDDLE,
-            _p3.y + _opposite,
-            _v_plane.z * TRAJECTORY_DIST_MIDDLE
-        )
-    );
-
-    const _points = [];
-    _points.push(_p1);
-    _points.push(_p2);
-    _points.push(_p3);
-    _points.push(_peak);
-    _points.push(_end);
-    _points.push(_end);
-    
-    this.trajectory = new ModelTrajectory(_points);
+    this.trajectory = new ModelTrajectory(_p1, _p2);
 
     this.trajectory.mesh.castShadow = false;
     this.trajectory.mesh.receiveShadow = false;
