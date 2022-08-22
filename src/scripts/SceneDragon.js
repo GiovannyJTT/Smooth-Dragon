@@ -156,7 +156,7 @@ SceneDragon.prototype.createTrajectory = function () {
 
     // decay angle = angle(v, n) / 2;
     const _a = _v.clone().angleTo(_n) / 2;
-    console.log(_a * 180 / Math.PI)
+    console.debug("inclination angle " + (_a * 180 / Math.PI));
 
     // Since n is perpendicular to ground plane then we have a right-angled triangle
     // opposite = tan(a) * adjacent
@@ -195,8 +195,6 @@ SceneDragon.prototype.createTrajectory = function () {
     _points.push(_end);
     _points.push(_end);
     
-    console.debug(_points);
-
     this.trajectory = new ModelTrajectory(_points);
 
     this.trajectory.mesh.castShadow = false;

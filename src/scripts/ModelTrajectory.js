@@ -1,6 +1,7 @@
 
 import THREE from "../external-libs/threejs-0.118.3/three-global";
-import GPT_Model from "../libgptjs/GPT_Model"
+import GPT_Model from "../libgptjs/GPT_Model";
+import Common from "./Common";
 
 /**
  * Class that computes the spline and creates the mesh to be rendered
@@ -67,7 +68,7 @@ ModelTrajectory.prototype.get_material = function () {
 }
 
 /**
- * Using NumDivisions = 10
+ * Using Common.SPLINE_NUM_SEGMENTS
  * @param {[THREE.Vector3]} this.vertices_trajectory cotaining the 3 vertices of the tracjtory (origin, middle, destination)
  *      It is used to compute the spline curve using N division and catmullrom technique
  * @returns {{Float32Array, Float32Array}} {positions, colors} these arrays have the same size (3 * NUM DIVISIONS (10))
@@ -80,15 +81,14 @@ ModelTrajectory.prototype.get_points_and_colors_spline = function () {
     }
 
     const _spline = new THREE.CatmullRomCurve3(this.vertices_trajectory);
-    const _divisions = 30;
 
-    const _positions = new Float32Array(_divisions * 3);
+    const _positions = new Float32Array(Common.TRACJETORY_SPLINE_NUM_SEGMENTS * 3);
     const _colors = new Float32Array(_positions);
 
     const _tmpColor = new THREE.Color();
 
-    for (let i = 0, v = 0; i < _divisions; i++, v += 3) {
-        const t = i / _divisions;
+    for (let i = 0, v = 0; i < Common.TRACJETORY_SPLINE_NUM_SEGMENTS; i++, v += 3) {
+        const t = i / Common.TRACJETORY_SPLINE_NUM_SEGMENTS;
 
         // get extrapolaed coordinates
         const _p = new THREE.Vector3();
