@@ -4,7 +4,7 @@
  * Email: giovanny.jtt@gmail.com
  * Content:
  *  class GPT_Coords
- *      A Coordiantes object contains all vertices, edges and methods for
+ *      A Coordinates object contains all vertices, edges and methods for
  *      computing triangles, normals, and UVs per face
  */
 
