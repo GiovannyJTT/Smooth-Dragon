@@ -57,71 +57,71 @@ ModelTrajectory.prototype.constructor = ModelTrajectory;
 ModelTrajectory.prototype.compute_control_points = function () {
 
     // direction v
-    this.v = new THREE.Vector3(
+    const _v = new THREE.Vector3(
         this.p2.x - this.p1.x,
         this.p2.y - this.p1.y,
         this.p2.z - this.p1.z
     );
 
-    this.v_length = Math.sqrt(
-        this.v.x * this.v.x + this.v.y * this.v.y + this.v.z * this.v.z
+    const _v_length = Math.sqrt(
+        _v.x * _v.x + _v.y * _v.y + _v.z * _v.z
     );
 
-    this.v.normalize();
+    _v.normalize();
 
     // p3 = p2 + v * lenght
-    this.p3 = this.p2.clone().add(
+    const _p3 = this.p2.clone().add(
         new THREE.Vector3(
-            this.v.x * this.v_length,
-            this.v.y * this.v_length,
-            this.v.z * this.v_length
+            _v.x * _v_length,
+            _v.y * _v_length,
+            _v.z * _v_length
         )
     );
 
     // normal ground plane = (0,1,0)
-    this.plane_normal = new THREE.Vector3(0, 1, 0);
-    this.plane_normal.normalize();
+    const _plane_normal = new THREE.Vector3(0, 1, 0);
+    _plane_normal.normalize();
 
     // decay angle = angle(v, n) / 2;
-    this.a = this.v.clone().angleTo(this.plane_normal) * ANGLE_DECAY;
-    console.debug("inclination angle " + (this.a * 180 / Math.PI));
+    const _a = _v.clone().angleTo(_plane_normal) * ANGLE_DECAY;
+    // console.debug("inclination angle " + (_a * 180 / Math.PI));
 
     // Since n is perpendicular to ground plane then we have a right-angled triangle
     // opposite = tan(a) * adjacent
-    this.perpendicular = Math.tan(this.a) * TRAJECTORY_DIST_MIDDLE;
+    const _perpendicular = Math.tan(_a) * TRAJECTORY_DIST_MIDDLE;
 
     // projecting on the ground plane
-    this.v_plane = new THREE.Vector3(this.v.x, 0, this.v.z);
-    this.v_plane.normalize();
+    const _v_plane = new THREE.Vector3(_v.x, 0, _v.z);
+    _v_plane.normalize();
 
     // projecting on the ground plane
-    this.p3_plane = new THREE.Vector3(this.p3.x, 0, this.p3.z);
+    const _p3_plane = new THREE.Vector3(_p3.x, 0, _p3.z);
 
     // end = p3_plane + v_plane * dist_end
-    this.end = this.p3_plane.clone().add(
+    const _end = _p3_plane.clone().add(
         new THREE.Vector3(
-            this.v_plane.x * TRAJECTORY_DIST_END,
+            _v_plane.x * TRAJECTORY_DIST_END,
             0,
-            this.v_plane.z * TRAJECTORY_DIST_END
+            _v_plane.z * TRAJECTORY_DIST_END
         )
     );
 
     // peak = p3_plane + v * dist_middle
-    this.peak = this.p3_plane.clone().add(
+    const _peak = _p3_plane.clone().add(
         new THREE.Vector3(
-            this.v_plane.x * TRAJECTORY_DIST_MIDDLE,
-            this.p3.y + this.perpendicular,
-            this.v_plane.z * TRAJECTORY_DIST_MIDDLE
+            _v_plane.x * TRAJECTORY_DIST_MIDDLE,
+            _p3.y + _perpendicular,
+            _v_plane.z * TRAJECTORY_DIST_MIDDLE
         )
     );
 
     const _points = [];
     _points.push(this.p1);
     _points.push(this.p2);
-    _points.push(this.p3);
-    _points.push(this.peak);
-    _points.push(this.end);
-    _points.push(this.end);
+    _points.push(_p3);
+    _points.push(_peak);
+    _points.push(_end);
+    _points.push(_end);
 
     return _points;
 }
@@ -146,6 +146,8 @@ ModelTrajectory.prototype.get_geometry = function () {
         "color",
         new THREE.BufferAttribute(_colors, 3)
     );
+
+    _geom.verticesNeedUpdate = true;
 
     return _geom;
 }
@@ -208,6 +210,19 @@ ModelTrajectory.prototype.get_spline_points_and_colors = function () {
     }
 
     return resp;
+}
+
+ModelTrajectory.prototype.dispose_buffers = function () {
+    this.geometry.dispose();
+    this.material.dispose();
+    
+    this.geometry = null;
+    this.material = null;
+    this.mesh = null;
+
+    this.trajectory_control_points = null;
+    this.p1 = null;
+    this.p2 = null;
 }
 
 export default ModelTrajectory
