@@ -94,4 +94,43 @@ GPT_Scene.prototype.updateScene = function(ms)
     this.updateLights(ms);
 }
 
+/**
+ * Removes object Model from THREE.Scene at runtime
+ * Also removes object from 'gpt_models'
+ * @param {String} object_name_ 
+ */
+GPT_Scene.prototype.removeModelFromScene = function (object_name_) {
+    const selectedObject = this.scene.getObjectByName(object_name_);
+    this.scene.remove( selectedObject );
+
+    this.gpt_models[object_name_] = null;
+    this.gpt_models.delete(object_name_)
+
+    if (this.gpt_models.get(object_name_)){
+        console.error("GPT_Scene.removeModelFromScene: could not remove '" + object_name_ + "'");
+        return;
+    }
+
+    if (this.scene.getObjectByName(object_name_)) {
+        console.error("GPT_Scene.removeModelFromScene: could not remove '" + object_name_ + "'");
+        return;
+    }
+
+    console.debug("GPT_Scene: removed: " + object_name_);
+}
+
+/**
+ * Adds objec Model to THREE.Scene at runtime
+ * Also adds object to 'gpt_models'
+ * @param {String} obj_name_ model name
+ * @param {THREE.Mesh} obj_mesh_ mesh
+ */
+GPT_Scene.prototype.AddModelToScene = function (obj_name_, obj_mesh_) {
+    this.gpt_models.set(obj_name_, obj_mesh_);
+    this.scene.add(this.gpt_models.get(obj_name_));
+
+    console.debug("GPT_Scene: added " + obj_name_);
+    console.debug("GPT_Scene: total models: " + this.gpt_models.size);
+}
+
 export default GPT_Scene;
