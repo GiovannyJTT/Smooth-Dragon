@@ -73,7 +73,10 @@ GPT_Scene.prototype.setupScene = function()
 
     for(let [key, value] of this.gpt_models)
     {
+        // IMPORTANT: give a name so later it can be removed from THREE.Scene
+        value.name = key;
         this.scene.add(value);
+
         console.debug("GPT_Scene: added " + key);
     }
     console.debug("GPT_Scene: total models: " + this.gpt_models.size);
@@ -82,8 +85,11 @@ GPT_Scene.prototype.setupScene = function()
     
     for(let [key, value] of this.gpt_lights)
     {
-        console.debug("GPT_Scene: added " + key);
+        // IMPORTANT: give a name so later it can be removed from THREE.Scene
+        value.name = key;
         this.scene.add(value);
+        
+        console.debug("GPT_Scene: added " + key);
     }
     console.debug("GTP_Scene: total lights: " + this.gpt_lights.size);
 }
@@ -100,19 +106,27 @@ GPT_Scene.prototype.updateScene = function(ms)
  * @param {String} object_name_ 
  */
 GPT_Scene.prototype.removeModelFromScene = function (object_name_) {
+
+    // remove from THREE.Scene
     const selectedObject = this.scene.getObjectByName(object_name_);
-    this.scene.remove( selectedObject );
-
-    this.gpt_models[object_name_] = null;
-    this.gpt_models.delete(object_name_)
-
-    if (this.gpt_models.get(object_name_)){
-        console.error("GPT_Scene.removeModelFromScene: could not remove '" + object_name_ + "'");
+    if (selectedObject === undefined){
+        console.error("GPT_Scene.removeModelFromScene: could not remove '" + object_name_ + "'. Object undefined in THREE.Scene");
         return;
     }
 
-    if (this.scene.getObjectByName(object_name_)) {
-        console.error("GPT_Scene.removeModelFromScene: could not remove '" + object_name_ + "'");
+    this.scene.remove( selectedObject );
+
+    if (this.scene.getObjectByName(object_name_) !== undefined) {
+        console.error("GPT_Scene.removeModelFromScene: could not remove '" + object_name_ + "'. Object still in THREE.Scene");
+        return;
+    }
+
+    // remove from gpt_models
+    this.gpt_models[object_name_] = null;
+    this.gpt_models.delete(object_name_)
+
+    if (this.gpt_models.get(object_name_) !== undefined){
+        console.error("GPT_Scene.removeModelFromScene: could not remove '" + object_name_ + "'. Object stil in gpt_models");
         return;
     }
 
@@ -127,7 +141,18 @@ GPT_Scene.prototype.removeModelFromScene = function (object_name_) {
  */
 GPT_Scene.prototype.AddModelToScene = function (obj_name_, obj_mesh_) {
     this.gpt_models.set(obj_name_, obj_mesh_);
-    this.scene.add(this.gpt_models.get(obj_name_));
+
+    // set name and id to be able to delete from scene later
+    let _o = this.gpt_models.get(obj_name_);
+    _o.name = obj_name_;
+
+    // add to THREE.Scene
+    this.scene.add(_o);
+
+    if (this.gpt_models.get(obj_name_) === undefined){
+        console.error("GPT_Scene.AddModelToScene: could add '" + obj_name_ + "");
+        return;
+    }
 
     console.debug("GPT_Scene: added " + obj_name_);
     console.debug("GPT_Scene: total models: " + this.gpt_models.size);
