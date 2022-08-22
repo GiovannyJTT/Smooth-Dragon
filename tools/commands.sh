@@ -16,6 +16,10 @@ npm cache clean -f
 cd ~/Smooth-Dragon
 rm -rf node_modules/
 
+# install utils libraries
+npm install dat.gui --save-dev
+npm install dat.gui --save-dev
+
 # install node-modules reflected into the package.json needed for before compiling this
 cd ~/Smooth-Dragon
 npm install
