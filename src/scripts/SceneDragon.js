@@ -39,6 +39,8 @@ SceneDragon.prototype.createObjects = function () {
     this.createSkybox();
     this.createRobot();
     this.createTrajectory();
+
+    this.prevTS = performance.now();
 }
 
 SceneDragon.prototype.createAxes = function () {
@@ -125,12 +127,11 @@ SceneDragon.prototype.createTrajectory = function () {
     const _p2 = new THREE.Vector3();
     _hand.getWorldPosition(_p2)
 
-    this.trajectory = new ModelTrajectory(_p1, _p2);
+    this._tr_model = new ModelTrajectory(_p1, _p2);
+    this._tr_model.mesh.castShadow = false;
+    this._tr_model.mesh.receiveShadow = false;
 
-    this.trajectory.mesh.castShadow = false;
-    this.trajectory.mesh.receiveShadow = false;
-
-    this.gpt_models.set("trajectory", this.trajectory.mesh);
+    this.gpt_models.set("trajectory", this._tr_model.mesh);
 }
 
 /**
@@ -140,6 +141,13 @@ SceneDragon.prototype.createTrajectory = function () {
 SceneDragon.prototype.updateObjects = function (ms) {
     this.updateDragon(ms);
     this.updateRobot(ms);
+
+    this.nowTS = performance.now();
+    this.elapsedMS = this.nowTS - this.prevTS;
+    if (this.elapsedMS > 1000) {
+        this.prevTS = performance.now();
+        this.updateTrajectory(ms);
+    }
 }
 
 SceneDragon.prototype.updateDragon = function (ms) {
@@ -159,9 +167,35 @@ SceneDragon.prototype.updateRobot = function (ms) {
     _forearm.rotation.x += 0.0872665;
     _forearm.rotation.x = (_forearm.rotation.x >= 2 * Math.PI) ? 0.0 : _forearm.rotation.x;
 
-    // const _arm = this.robotLinked.links.get("arm");
-    // _arm.rotation.y += 0.0872665;
-    // _arm.rotation.x = (_arm.rotation.x >= 2 * Math.PI) ? 0.0 : _arm.rotation.x;
+    const _arm = this.robotLinked.links.get("arm");
+    _arm.rotation.y += 0.00872665;
+    _arm.rotation.y = (_arm.rotation.y >= 2 * Math.PI) ? 0.0 : _arm.rotation.y;
+}
+
+SceneDragon.prototype.updateTrajectory = function (ms) {
+    
+    // destroy geom buffer, mat buffer, etc
+    this._tr_model.dispose_buffers();
+    this._tr_model = null;
+
+    // destroy trajectory at runtime from THREE.Scene (also from gpt_models)
+    this.removeModelFromScene("trajectory");
+
+    // create new
+    const _forearm = this.robotLinked.links.get("forearm");
+    const _p1 = new THREE.Vector3();
+    _forearm.getWorldPosition(_p1);
+
+    const _hand = this.robotLinked.links.get("hand");
+    const _p2 = new THREE.Vector3();
+    _hand.getWorldPosition(_p2)
+
+    this._tr_model = new ModelTrajectory(_p1, _p2);
+    this._tr_model.mesh.castShadow = false;
+    this._tr_model.mesh.receiveShadow = false;
+
+    // add new model at runtime to THREE.Scene (also to gpt_models)
+    this.AddModelToScene("trajectory", this._tr_model.mesh);
 }
 
 /**
