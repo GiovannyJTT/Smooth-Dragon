@@ -13,6 +13,7 @@ import Common from './Common'
 import ModelSkybox from './ModelSkybox'
 import ModelRobot from './ModelRobot'
 import ModelTrajectory from './ModelTrajectory'
+import InputManager from './InputManager'
 
 /**
  * Creating a child object (kind of child class) by Inheriting from GPT_Scene (Follow steps 1 to 3)
@@ -39,6 +40,7 @@ SceneDragon.prototype.createObjects = function () {
     this.createSkybox();
     this.createRobot();
     this.createTrajectory();
+    this.createInputManager();
 
     this.prevTS = performance.now();
 }
@@ -92,11 +94,13 @@ SceneDragon.prototype.createDragon = function () {
     m_dragon.mesh.castShadow = true;
     m_dragon.mesh.receiveShadow = true;
 
-    // for surface smoothing: flatShading false and computeVertexNormals
-    // m_dragon.geometry.computeVertexNormals();
-    // m_dragon.material.flatShading = false;
-
     this.gpt_models.set("dragon", m_dragon.mesh);
+
+    // initialization state of variables used periodically
+    this.dragon_rot_angle_rads = 0.0;
+
+    // pre-calculated for surface smoothing
+    m_dragon.geometry.computeVertexNormals();
 }
 
 SceneDragon.prototype.createSkybox = function () {
@@ -134,6 +138,34 @@ SceneDragon.prototype.createTrajectory = function () {
     this.gpt_models.set("trajectory", this._tr_model.mesh);
 }
 
+SceneDragon.prototype.createInputManager = function () {
+
+    const _cbs = {};
+    
+    _cbs.on_change_dragon_rot_angle = (new_val_) => {
+        // new_val_ is degrees
+        this.dragon_rot_angle_rads = new_val_ * Math.PI / 180.0;
+    };
+
+    _cbs.on_change_dragon_smoothing = (new_val_) => {
+        const _dragon = this.gpt_models.get("dragon");
+
+        // boolean
+        if (new_val_) {
+            // for surface smoothing: flatShading false and computeVertexNormals
+            _dragon.material.flatShading = false;
+            _dragon.material.needsUpdate = true;
+        }
+        else {
+            _dragon.material.flatShading = true;
+            _dragon.material.needsUpdate = true;
+        }
+    };
+
+    const _im = new InputManager(_cbs);
+    _im.controllers.get("dragon_status").setValue("ROTATING");
+}
+
 /**
  * Overrides updateObjects function in child object
  * @param {float} ms milliseconds passed since last frame
@@ -155,7 +187,7 @@ SceneDragon.prototype.updateDragon = function (ms) {
     const _dragon = this.gpt_models.get("dragon");
 
     // 0.5 degrees per frame
-    _dragon.rotation.y += 0.00872665;
+    _dragon.rotation.y += this.dragon_rot_angle_rads;
     _dragon.rotation.y = (_dragon.rotation.y >= 2 * Math.PI) ? 0.0 : _dragon.rotation.y;
 }
 
