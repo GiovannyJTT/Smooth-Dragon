@@ -1,5 +1,6 @@
 
 import { GUI } from 'dat.gui'
+import { ShortType } from 'three';
 
 /**
  * Manages input from UI or Keyboard and sends actions to update models
@@ -55,6 +56,13 @@ InputManager.prototype.create_ui_controller = function () {
     this.gui = new GUI();
     this.controllers = new Map();
 
+    // semi-transparent gui
+    Array.from(document.getElementsByClassName('dg')).forEach(
+        function(element, index, array) {
+            element.style.opacity = 0.85;
+        }
+    );
+
     // dragon
     // effect
     let _e = {
@@ -107,16 +115,48 @@ InputManager.prototype.create_ui_controller = function () {
         .setValue(45.0);
     this.controllers.set("robot_aim_angle", _c);
 
-    _c = _f.add(_e, "shoot").name("Shoot")
-        .onChange(
-            this.cbs.on_change_robot_shoot
-        );
-    this.controllers.set("robot_shoot", _c);
+    // NOTE: not used
+    // _c = _f.add(_e, "shoot").name("Shoot")
+    //     .onChange(
+    //         this.cbs.on_change_robot_shoot
+    //     );
 
-    // const _root = this.gui.getRoot();
-    // const _folders = _root.__folders;
-    // const _fdragon = _folders["dragon"];
-    // console.log(_fdragon);
+    _c = this.create_shoot_button_html();
+    this.controllers.set("robot_shoot", _c);
+}
+
+/**
+ * Creates "Shoot" button by html5 code and attaches it to dat.gui panels
+ */
+InputManager.prototype.create_shoot_button_html = function () {
+    // create html5 button
+    const _shoot_button = document.createElement("button");
+
+    _shoot_button.innerHTML = "Shoot";
+    _shoot_button.id = "shoot_button_id";    
+    // IMPORTANT attach callback to handle bullet trajectory
+    _shoot_button.onclick = this.cbs.on_change_robot_shoot;
+
+    // attach to dat.gui
+    const _r = this.gui.getRoot();
+    _r.domElement.appendChild(_shoot_button);
+
+    // positioning: when the child has position "absolute", its coordinates are relative to its offset parent
+    _shoot_button.style.position = "relative";
+    _shoot_button.style.width = "55px";
+    _shoot_button.style.height = "45px";
+    _shoot_button.style.borderRadius = "10px";
+    _shoot_button.style.borderWidth = "5px";
+    _shoot_button.style.borderColor = "white";
+    _shoot_button.style.fontSize = "12px";
+    _shoot_button.style.fontWeight = "bold";
+    _shoot_button.style.backgroundColor = "#d18773";
+
+    // offset from parent
+    _shoot_button.style.top = "70px";
+    _shoot_button.style.left = "190px";
+
+    return _shoot_button;
 }
 
 InputManager.prototype.create_kb_controller = function () {
