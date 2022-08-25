@@ -40,7 +40,7 @@ function GPT_Renderer(w, h, sce)
 GPT_Renderer.prototype.setCameraForDragon = function()
 {
     this.camera = new THREE.PerspectiveCamera(75, this.w / this.h, 0.1, 5000);
-    this.camera.position.set(0, 275, 500); // consider we are working in cm
+    this.camera.position.set(0, 275, 700); // consider we are working in cm
     this.camera.lookAt(new THREE.Vector3(0, 80, 0)); // looking at the origin
 }
 
