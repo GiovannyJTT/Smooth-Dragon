@@ -41,6 +41,13 @@ InputManager.prototype.check_is_mobile_device = function () {
 /**
  * The GUI stores values in `effect` variables, then on main update
  *      we apply the stored values to the model
+ * 
+ * Note: "dat.gui" assumes the GUI type based on the target's initial value type:
+ *      boolean: checkbox
+ *      int / float: slider
+ *      string: text input
+ *      function: button
+ * 
  * @attribute {Dictionary} this.cbs "on change" callbacks to be triggered when value changes
  * @returns {Map} contains a Map with keys (names of the effects / panels)
  */
@@ -84,25 +91,33 @@ InputManager.prototype.create_ui_controller = function () {
     // robot
     _e = {
         status: "armed",
-        aim_angle: 0.0
+        aim_angle: 0.0,
+        shoot: function () {} // button
     }
 
     _f = this.gui.addFolder("robot");
+
     _c = _f.add(_e, "status").name("Status");
     this.controllers.set("robot_status", _c);
-    _c = _f.add(_e, "aim_angle", 35.0, 80.0, 1.0).name("Aim Angle")
+    
+    _c = _f.add(_e, "aim_angle", 35.0, 80.0, 3.0).name("Aim Angle")
         .onChange(
             this.cbs.on_change_robot_aim_rotation
         )
         .setValue(45.0);
-    this.controllers.set("aim_angle", _c);
+    this.controllers.set("robot_aim_angle", _c);
+
+    _c = _f.add(_e, "shoot").name("Shoot")
+        .onChange(
+            this.cbs.on_change_robot_shoot
+        );
+    this.controllers.set("robot_shoot", _c);
 
     // const _root = this.gui.getRoot();
     // const _folders = _root.__folders;
     // const _fdragon = _folders["dragon"];
     // console.log(_fdragon);
 }
-
 
 InputManager.prototype.create_kb_controller = function () {
 

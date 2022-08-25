@@ -169,6 +169,10 @@ SceneDragon.prototype.createInputManager = function () {
         _base.rotation.y = _new_angle_rads;
     }
 
+    _cbs.on_change_robot_shoot = () => {
+        console.debug("bullet on trajectory");
+    }
+
     const _im = new InputManager(_cbs);
     _im.controllers.get("dragon_status").setValue("ROTATING");
 }
