@@ -97,7 +97,7 @@ ModelRobot.prototype.getRobot = function () {
     const _base_m = this.getBaseMesh();
     _base_o.add(_base_m);
 
-    _base_o.position.set(-100, 0, 250);
+    _base_o.position.set(-100, 0, 350);
     _base_o.rotation.set(0, Math.PI / 4, 0);
 
     // build hierarchy
