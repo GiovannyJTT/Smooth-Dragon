@@ -50,9 +50,9 @@ InputManager.prototype.create_ui_controller = function () {
 
     // dragon
     // effect
-    const _e = {
+    let _e = {
         status: "rotating",
-        rot_angle: -1.0,
+        rot_angle: 0.0,
         smoothing: false,
     }
 
@@ -63,7 +63,7 @@ InputManager.prototype.create_ui_controller = function () {
     
     this.controllers.set("dragon_status", _c);
 
-    _c = _f.add(_e, "rot_angle", -20.0, 20.0, 1.0).name("Rot Angle")
+    _c = _f.add(_e, "rot_angle", -10.0, 10.0, 1.0).name("RotY Angle")
         .onChange(
             // triggered when onChange event
             this.cbs.on_change_dragon_rot_angle
@@ -80,6 +80,22 @@ InputManager.prototype.create_ui_controller = function () {
         .setValue(false);
 
     this.controllers.set("dragon_smoothing", _c);
+
+    // robot
+    _e = {
+        status: "armed",
+        aim_angle: 0.0
+    }
+
+    _f = this.gui.addFolder("robot");
+    _c = _f.add(_e, "status").name("Status");
+    this.controllers.set("robot_status", _c);
+    _c = _f.add(_e, "aim_angle", 35.0, 80.0, 1.0).name("Aim Angle")
+        .onChange(
+            this.cbs.on_change_robot_aim_rotation
+        )
+        .setValue(45.0);
+    this.controllers.set("aim_angle", _c);
 
     // const _root = this.gui.getRoot();
     // const _folders = _root.__folders;

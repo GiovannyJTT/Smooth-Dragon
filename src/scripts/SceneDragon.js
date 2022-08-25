@@ -90,7 +90,7 @@ SceneDragon.prototype.createDragon = function () {
     const m_dragon = new ModelDragon();
 
     m_dragon.mesh.scale.set(1000, 1000, 1000);
-    m_dragon.mesh.position.set(120, -50, -100);
+    m_dragon.mesh.position.set(200, -50, -250);
     m_dragon.mesh.castShadow = true;
     m_dragon.mesh.receiveShadow = true;
 
@@ -162,6 +162,13 @@ SceneDragon.prototype.createInputManager = function () {
         }
     };
 
+    _cbs.on_change_robot_aim_rotation = (new_val_) => {
+        // float degrees
+        const _base = this.robotLinked.links.get("root");
+        const _new_angle_rads = new_val_ * Math.PI / 180;
+        _base.rotation.y = _new_angle_rads;
+    }
+
     const _im = new InputManager(_cbs);
     _im.controllers.get("dragon_status").setValue("ROTATING");
 }
@@ -198,10 +205,6 @@ SceneDragon.prototype.updateRobot = function (ms) {
     // 5 degrees per frame
     _forearm.rotation.x += 0.0872665;
     _forearm.rotation.x = (_forearm.rotation.x >= 2 * Math.PI) ? 0.0 : _forearm.rotation.x;
-
-    const _arm = this.robotLinked.links.get("arm");
-    _arm.rotation.y += 0.00872665;
-    _arm.rotation.y = (_arm.rotation.y >= 2 * Math.PI) ? 0.0 : _arm.rotation.y;
 }
 
 SceneDragon.prototype.updateTrajectory = function (ms) {
