@@ -170,8 +170,12 @@ SceneDragon.prototype.createInputManager = function () {
     }
 
     _cbs.on_change_robot_shoot = () => {
-        this.fsm_r.transit(FSM_Robot.R_Events.SHOOT_STARTED);
-        this.updateTrajectory();
+        if (this.fsm_r.current_is_idle()) {
+            this.fsm_r.transit(FSM_Robot.R_Events.SHOOT_STARTED);
+            this.fsm_r.state_has_changed();
+            
+            this.updateTrajectory();
+        }
     }
 
     const _im = new InputManager(_cbs);
@@ -185,10 +189,22 @@ SceneDragon.prototype.createInputManager = function () {
 SceneDragon.prototype.updateObjects = function (ms) {
     this.updateDragon(ms);
     this.updateRobot(ms);
-    
+    this.on_fsmr_changed();
+}
+
+/**
+ * Respond to transitions of states of the robot state machine
+ * Only reacts when there is an actual transition of states for efficiency
+ */
+SceneDragon.prototype.on_fsmr_changed = function () {
+
     this.fsm_r.update_state();
-    if (this.fsm_r.current_is_bullet_traveling()) {
-        this.removeTrajectory();
+    
+    if (this.fsm_r.state_has_changed()) {
+
+        if (this.fsm_r.current_is_bullet_traveling()) {
+            this.removeTrajectory();
+        }
     }
 }
 
