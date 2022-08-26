@@ -15,6 +15,8 @@ import ModelRobot from './ModelRobot'
 import ModelTrajectory from './ModelTrajectory'
 import InputManager from './InputManager'
 import FSM_Robot, {R_States, R_Events} from './FSM_Robot'
+import ModelBullet from './ModelBullet'
+import { Scene } from 'three'
 
 /**
  * Creating a child object (kind of child class) by Inheriting from GPT_Scene (Follow steps 1 to 3)
@@ -152,13 +154,15 @@ SceneDragon.prototype.createInputManager = function () {
     }
 
     _cbs.on_change_robot_shoot = () => {
+        
         if (this.fsm_r.current_is_idle()) {
-
             this.fsm_r.transit(FSM_Robot.R_Events.SHOOT_STARTED);
+            
             const _c = this.im.controllers.get("robot_status");
             _c.setValue(this.fsm_r.state.description);
 
             this.createTrajectory();
+            this.createBullet();
         }
     }
 
@@ -218,6 +222,7 @@ SceneDragon.prototype.updateRobot = function (ms) {
 
         if (this.fsm_r.current_is_hit() || this.fsm_r.current_is_no_hit()) {
             this.removeTrajectory();
+            this.removeBullet();
         }
     }
 }
@@ -225,7 +230,7 @@ SceneDragon.prototype.updateRobot = function (ms) {
 /**
  * We only create a trajectory while robot is shooting and remove it after shoot end
  * This method is cpu expensive
- * @param {*} ms 
+ * @param {Float} ms milliseconds passed since last frame
  */
 SceneDragon.prototype.createTrajectory = function (ms) {
     
@@ -242,25 +247,51 @@ SceneDragon.prototype.createTrajectory = function (ms) {
 
     const _r_power = this.im.controllers.get("robot_power").getValue();
 
-    this._tr_model = new ModelTrajectory(_p1, _p2, _r_power);
-    this._tr_model.mesh.castShadow = false;
-    this._tr_model.mesh.receiveShadow = false;
+    this.tra_model = new ModelTrajectory(_p1, _p2, _r_power);
+    this.tra_model.mesh.castShadow = false;
+    this.tra_model.mesh.receiveShadow = false;
 
     // add new model at runtime to THREE.Scene (also to gpt_models)
-    this.AddModelToScene("trajectory", this._tr_model.mesh);
+    this.AddModelToScene("trajectory", this.tra_model.mesh);
 }
 
 /**
  * if trajectory previously created then disposes gl buffers and removes object
  */
 SceneDragon.prototype.removeTrajectory = function () {
-    if (undefined !== this._tr_model) {
-        // destroy geom buffer, mat buffer, etc
-        this._tr_model.dispose_buffers();
-        this._tr_model = undefined;
+    if (undefined !== this.tra_model) {
+        // destroy geom and mat buffers
+        this.tra_model.dispose_buffers();
+        this.tra_model = undefined;
     
-        // destroy trajectory at runtime from THREE.Scene (also from gpt_models)
+        // remove it at runtime from THREE.Scene (also from gpt_models)
         this.removeModelFromScene("trajectory");
+    }
+}
+
+SceneDragon.prototype.createBullet = function () {
+    this.removeBullet();
+
+    this.bullet_model = new ModelBullet();
+    this.bullet_model.mesh.castShadow = true;
+    this.bullet_model.mesh.receiveShadow = false;
+
+    const _forearm = this.robotLinked.links.get("gripper");
+    const _p = new THREE.Vector3();
+    _forearm.getWorldPosition(_p);
+    this.bullet_model.mesh.position.set(_p.x, _p.y, _p.z);
+
+    this.AddModelToScene("bullet", this.bullet_model.mesh);
+}
+
+SceneDragon.prototype.removeBullet = function () {
+    if (undefined !== this.bullet_model) {
+        // destroy geo and mat buffers
+        this.bullet_model.dispose_buffers();
+        this.bullet_model = undefined;
+
+        // remove it at runtime from THREE.Scene (also from gpt_models)
+        this.removeModelFromScene("bullet");
     }
 }
 
