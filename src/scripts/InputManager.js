@@ -1,6 +1,5 @@
 
 import { GUI } from 'dat.gui'
-import { ShortType } from 'three';
 
 /**
  * Manages input from UI or Keyboard and sends actions to update models
@@ -40,17 +39,17 @@ InputManager.prototype.check_is_mobile_device = function () {
 }
 
 /**
- * The GUI stores values in `effect` variables, then on main update
- *      we apply the stored values to the model
+ * dat.gui will store values in `effect` variables, then on Scene.update
+ *      we will apply those values to the models
  * 
- * Note: "dat.gui" assumes the GUI type based on the target's initial value type:
+ * NOTE: dat.gui assumes the GUI type based on the target's initial value type:
  *      boolean: checkbox
  *      int / float: slider
  *      string: text input
  *      function: button
  * 
- * @attribute {Dictionary} this.cbs "on change" callbacks to be triggered when value changes
- * @returns {Map} contains a Map with keys (names of the effects / panels)
+ * @attribute {Dictionary} this.cbs are the "on_change" callbacks to be triggered
+ * @returns {Map} we save references to the gui.controllers for each gui item, so we can update them later
  */
 InputManager.prototype.create_ui_controller = function () {
     this.gui = new GUI();
@@ -115,7 +114,6 @@ InputManager.prototype.create_ui_controller = function () {
         .setValue(45.0);
     this.controllers.set("robot_aim_angle", _c);
 
-    // NOTE: not used
     // _c = _f.add(_e, "shoot").name("Shoot")
     //     .onChange(
     //         this.cbs.on_change_robot_shoot
@@ -133,15 +131,16 @@ InputManager.prototype.create_shoot_button_html = function () {
     const _shoot_button = document.createElement("button");
 
     _shoot_button.innerHTML = "Shoot";
-    _shoot_button.id = "shoot_button_id";    
-    // IMPORTANT attach callback to handle bullet trajectory
+    _shoot_button.id = "shoot_button_id";
+
+    // IMPORTANT: attach onclick callback to handle bulltet trajectory
     _shoot_button.onclick = this.cbs.on_change_robot_shoot;
 
     // attach to dat.gui
     const _r = this.gui.getRoot();
     _r.domElement.appendChild(_shoot_button);
 
-    // positioning: when the child has position "absolute", its coordinates are relative to its offset parent
+    // positioning
     _shoot_button.style.position = "relative";
     _shoot_button.style.width = "55px";
     _shoot_button.style.height = "45px";
