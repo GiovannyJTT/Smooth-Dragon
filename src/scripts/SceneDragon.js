@@ -120,23 +120,6 @@ SceneDragon.prototype.createRobot = function () {
     this.gpt_models.set("robot", _root);
 }
 
-SceneDragon.prototype.createTrajectory = function () {
-
-    const _forearm = this.robotLinked.links.get("forearm");
-    const _p1 = new THREE.Vector3();
-    _forearm.getWorldPosition(_p1);
-
-    const _hand = this.robotLinked.links.get("hand");
-    const _p2 = new THREE.Vector3();
-    _hand.getWorldPosition(_p2)
-
-    this._tr_model = new ModelTrajectory(_p1, _p2);
-    this._tr_model.mesh.castShadow = false;
-    this._tr_model.mesh.receiveShadow = false;
-
-    this.gpt_models.set("trajectory", this._tr_model.mesh);
-}
-
 SceneDragon.prototype.createInputManager = function () {
 
     // preapre "on_change" callbacks
@@ -175,7 +158,7 @@ SceneDragon.prototype.createInputManager = function () {
             const _c = this.im.controllers.get("robot_status");
             _c.setValue(this.fsm_r.state.description);
 
-            this.updateTrajectory();
+            this.createTrajectory();
         }
     }
 
@@ -183,6 +166,7 @@ SceneDragon.prototype.createInputManager = function () {
 }
 
 /**
+ * Per-frame update
  * Overrides updateObjects function in child object
  * @param {float} ms milliseconds passed since last frame
  */
@@ -193,24 +177,9 @@ SceneDragon.prototype.updateObjects = function (ms) {
 }
 
 /**
- * Respond to transitions of states of the robot state machine
- * Only reacts when there is an actual transition of states for efficiency
+ * Per-frame update of dragon
+ * @param {Float} ms milliseconds passed since last frame
  */
-SceneDragon.prototype.on_fsmr_changed = function () {
-
-    this.fsm_r.update_state();
-    
-    if (this.fsm_r.state_has_changed()) {
-
-        const _c = this.im.controllers.get("robot_status");
-        _c.setValue(this.fsm_r.state.description);
-
-        if (this.fsm_r.current_is_bullet_traveling()) {
-            this.removeTrajectory();
-        }
-    }
-}
-
 SceneDragon.prototype.updateDragon = function (ms) {
 
     const _dragon = this.gpt_models.get("dragon");
@@ -220,16 +189,45 @@ SceneDragon.prototype.updateDragon = function (ms) {
     _dragon.rotation.y = (_dragon.rotation.y >= 2 * Math.PI) ? 0.0 : _dragon.rotation.y;
 }
 
+/**
+ * Per-frame update of robot
+ * @param {Float} ms milliseconds passed since last frame
+ */
 SceneDragon.prototype.updateRobot = function (ms) {
+    
+    if (this.fsm_r.current_is_loading_bullet()) {
+        const _forearm = this.robotLinked.links.get("forearm");
 
-    const _forearm = this.robotLinked.links.get("forearm");
-
-    // 5 degrees per frame
-    _forearm.rotation.x += 0.0872665;
-    _forearm.rotation.x = (_forearm.rotation.x >= 2 * Math.PI) ? 0.0 : _forearm.rotation.x;
+        // 10 degrees per frame
+        _forearm.rotation.x += 0.174533;
+        _forearm.rotation.x = (_forearm.rotation.x >= 2 * Math.PI) ? 0.0 : _forearm.rotation.x;
+    }
 }
 
-SceneDragon.prototype.updateTrajectory = function (ms) {
+/**
+ * Perform operations only once when there is a state-transition of the robot-state-machine
+ */
+ SceneDragon.prototype.on_fsmr_changed = function () {
+
+    this.fsm_r.update_state();
+    
+    if (this.fsm_r.state_has_changed()) {
+
+        const _c = this.im.controllers.get("robot_status");
+        _c.setValue(this.fsm_r.state.description);
+
+        if (this.fsm_r.current_is_hit() || this.fsm_r.current_is_no_hit()) {
+            this.removeTrajectory();
+        }
+    }
+}
+
+/**
+ * We only create a trajectory while robot is shooting and remove it after shoot end
+ * This method is cpu expensive
+ * @param {*} ms 
+ */
+SceneDragon.prototype.createTrajectory = function (ms) {
     
     this.removeTrajectory();
 
@@ -242,7 +240,9 @@ SceneDragon.prototype.updateTrajectory = function (ms) {
     const _p2 = new THREE.Vector3();
     _hand.getWorldPosition(_p2)
 
-    this._tr_model = new ModelTrajectory(_p1, _p2);
+    const _r_power = this.im.controllers.get("robot_power").getValue();
+
+    this._tr_model = new ModelTrajectory(_p1, _p2, _r_power);
     this._tr_model.mesh.castShadow = false;
     this._tr_model.mesh.receiveShadow = false;
 
