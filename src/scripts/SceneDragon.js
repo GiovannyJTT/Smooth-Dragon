@@ -154,12 +154,11 @@ SceneDragon.prototype.createInputManager = function () {
         if (new_val_) {
             // for surface smoothing: flatShading false and computeVertexNormals
             _dragon.material.flatShading = false;
-            _dragon.material.needsUpdate = true;
         }
         else {
             _dragon.material.flatShading = true;
-            _dragon.material.needsUpdate = true;
         }
+        _dragon.material.needsUpdate = true;
     };
 
     _cbs.on_change_robot_aim_rotation = (new_val_) => {
@@ -171,15 +170,16 @@ SceneDragon.prototype.createInputManager = function () {
 
     _cbs.on_change_robot_shoot = () => {
         if (this.fsm_r.current_is_idle()) {
+
             this.fsm_r.transit(FSM_Robot.R_Events.SHOOT_STARTED);
-            this.fsm_r.state_has_changed();
-            
+            const _c = this.im.controllers.get("robot_status");
+            _c.setValue(this.fsm_r.state.description);
+
             this.updateTrajectory();
         }
     }
 
-    const _im = new InputManager(_cbs);
-    _im.controllers.get("dragon_status").setValue("ROTATING");
+    this.im = new InputManager(_cbs);
 }
 
 /**
@@ -201,6 +201,9 @@ SceneDragon.prototype.on_fsmr_changed = function () {
     this.fsm_r.update_state();
     
     if (this.fsm_r.state_has_changed()) {
+
+        const _c = this.im.controllers.get("robot_status");
+        _c.setValue(this.fsm_r.state.description);
 
         if (this.fsm_r.current_is_bullet_traveling()) {
             this.removeTrajectory();

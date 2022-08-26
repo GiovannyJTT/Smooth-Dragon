@@ -97,7 +97,7 @@ InputManager.prototype.create_ui_controller = function () {
 
     // robot
     _e = {
-        status: "armed",
+        status: "idle",
         aim_angle: 0.0,
         shoot: function () {} // button
     }
