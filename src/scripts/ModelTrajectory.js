@@ -2,10 +2,6 @@
 import THREE from "../external-libs/threejs-0.118.3/three-global";
 import GPT_Model from "../libgptjs/GPT_Model";
 
-const TRAJECTORY_DIST_INIT = 100;
-const TRAJECTORY_DIST_STEP = 50;
-const TRAJECTORY_DIST_END = 1000;
-const TRAJECTORY_DIST_MIDDLE = TRAJECTORY_DIST_END / 2;
 const ANGLE_DECAY = 0.5;
 const TRACJETORY_SPLINE_NUM_SEGMENTS = 30;
 
@@ -16,20 +12,29 @@ const TRACJETORY_SPLINE_NUM_SEGMENTS = 30;
  * @param {THREE.Vector3} start_point3D_ coordinates of starting point to be used to compute the
  *      direction vector and hence the inclination angle of the trajectory
  * @param {THREE.Vector3} end_point3D_ coordinates of the ending point ...
+ * @param {Float} trajectory_dist_end_ max distance of trajectory is the "bullet power"
  */
-function ModelTrajectory (start_point3D_, end_point3D_) {
+function ModelTrajectory (start_point3D_, end_point3D_, trajectory_dist_end_) {
 
     this.p1 = start_point3D_;
-    if (this.p1 === undefined){
+    if (undefined === this.p1){
         console.error("ModelTrajectory: 'p1' is undefined");
         return;
     }
 
     this.p2 = end_point3D_;
-    if (this.p2 === undefined){
+    if (undefined === this.p2){
         console.error("ModelTrajectory: 'p2' is undefined");
         return;
     }
+
+    this.TRAJECTORY_DIST_END = trajectory_dist_end_;
+    if (undefined == this.TRAJECTORY_DIST_END) {
+        console.error("ModelTrajectory: 'TRAJECTORY_DIST_END' is undefined");
+        return;
+    }
+
+    this.TRAJECTORY_DIST_MIDDLE = this.TRAJECTORY_DIST_END / 2;
 
     // get control points (vertices p1,p2,p3,peak,end) before calling GPT_Model (where geometry is computeds from vertices)
     this.trajectory_control_points = this.compute_control_points();
@@ -88,7 +93,7 @@ ModelTrajectory.prototype.compute_control_points = function () {
 
     // Since n is perpendicular to ground plane then we have a right-angled triangle
     // opposite = tan(a) * adjacent
-    const _perpendicular = Math.tan(_a) * TRAJECTORY_DIST_MIDDLE;
+    const _perpendicular = Math.tan(_a) * this.TRAJECTORY_DIST_MIDDLE;
 
     // projecting on the ground plane
     const _v_plane = new THREE.Vector3(_v.x, 0, _v.z);
@@ -100,18 +105,18 @@ ModelTrajectory.prototype.compute_control_points = function () {
     // end = p3_plane + v_plane * dist_end
     const _end = _p3_plane.clone().add(
         new THREE.Vector3(
-            _v_plane.x * TRAJECTORY_DIST_END,
+            _v_plane.x * this.TRAJECTORY_DIST_END,
             0,
-            _v_plane.z * TRAJECTORY_DIST_END
+            _v_plane.z * this.TRAJECTORY_DIST_END
         )
     );
 
     // peak = p3_plane + v * dist_middle
     const _peak = _p3_plane.clone().add(
         new THREE.Vector3(
-            _v_plane.x * TRAJECTORY_DIST_MIDDLE,
+            _v_plane.x * this.TRAJECTORY_DIST_MIDDLE,
             _p3.y + _perpendicular,
-            _v_plane.z * TRAJECTORY_DIST_MIDDLE
+            _v_plane.z * this.TRAJECTORY_DIST_MIDDLE
         )
     );
 
