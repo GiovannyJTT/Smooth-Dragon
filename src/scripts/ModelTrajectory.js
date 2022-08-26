@@ -13,6 +13,7 @@ const TRACJETORY_SPLINE_NUM_SEGMENTS = 30;
  *      direction vector and hence the inclination angle of the trajectory
  * @param {THREE.Vector3} end_point3D_ coordinates of the ending point ...
  * @param {Float} trajectory_dist_end_ max distance of trajectory is the "bullet power"
+ * @param {[THREE.Vector3]} spline_points3D vector of points forming the spline (TRACJETORY_SPLINE_NUM_SEGMENTS)
  */
 function ModelTrajectory (start_point3D_, end_point3D_, trajectory_dist_end_) {
 
@@ -40,6 +41,8 @@ function ModelTrajectory (start_point3D_, end_point3D_, trajectory_dist_end_) {
     this.trajectory_control_points = this.compute_control_points();
 
     // 1. Call parent object constructor (trigger get_geometry, get_material)
+    // whem computing geometry it will save "spline_points3D" to move the bullet along
+    this.spline_points3D = [];
     GPT_Model.call(this);
 
     // overriding default construction of mesh (after constructed GPT_Model)
@@ -195,13 +198,16 @@ ModelTrajectory.prototype.get_spline_points_and_colors = function () {
     for (let i = 0, v = 0; i < TRACJETORY_SPLINE_NUM_SEGMENTS; i++, v += 3) {
         const t = i / TRACJETORY_SPLINE_NUM_SEGMENTS;
 
-        // get extrapolaed coordinates
+        // get spline point (extrapolated coordinates)
         const _p = new THREE.Vector3();
         _spline.getPoint(t, _p);
 
         _positions[v] = _p.x;
         _positions[v + 1] = _p.y;
         _positions[v + 2] = _p.z;
+
+        // save spline_points3D
+        this.spline_points3D.push(_p);
 
         _tmpColor.setHSL(t, 1, 0.5);
         _colors[v ] = _tmpColor.r;
