@@ -16,7 +16,6 @@ import ModelTrajectory from './ModelTrajectory'
 import InputManager from './InputManager'
 import FSM_Robot, {R_States, R_Events} from './FSM_Robot'
 import ModelBullet from './ModelBullet'
-import { Scene } from 'three'
 
 /**
  * Creating a child object (kind of child class) by Inheriting from GPT_Scene (Follow steps 1 to 3)
@@ -302,7 +301,9 @@ SceneDragon.prototype.removeBullet = function () {
 SceneDragon.prototype.updateBullet = function () {
     if (this.fsm_r.current_is_bullet_traveling()) {
         this.bullet_model.move_to_next_point_interpolated();
-        this.bullet_model.mesh.rotation.x -= 0.0872665;
+
+        // 10 degrees per frame
+        this.bullet_model.mesh.rotation.x -= 0.174533;
     }
 }
 
