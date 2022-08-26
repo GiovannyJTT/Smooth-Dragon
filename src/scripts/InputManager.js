@@ -1,5 +1,5 @@
-
 import { GUI } from 'dat.gui'
+import Common from './Common';
 
 /**
  * Manages input from UI or Keyboard and sends actions to update models
@@ -108,7 +108,7 @@ InputManager.prototype.create_ui_controller = function () {
     _c = _f.add(_e, "status").name("Status");
     this.controllers.set("robot_status", _c);
 
-    _c = _f.add(_e, "power", 200, 1000, 200).name("Power")
+    _c = _f.add(_e, "power", Common.TRAJECTORY_DIST_MIN, Common.TRAJECTORY_DIST_MAX, 200).name("Power")
         .setValue(600);
     this.controllers.set("robot_power", _c);
     
