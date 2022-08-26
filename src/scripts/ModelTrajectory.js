@@ -173,7 +173,7 @@ ModelTrajectory.prototype.get_material = function () {
 /**
  * Using Common.SPLINE_NUM_SEGMENTS (30)
  * Creates a Spline using the input 'trajectory_control_points'
- * @param {[THREE.Vector3]} this.vertices_trajectory cotaining the control points2D of the trajectory (p1, p2, p3, peak, end)
+ * @param {[THREE.Vector3]} this.vertices_trajectory cotaining the control points3D of the trajectory (p1, p2, p3, peak, end)
  *      Control points are used to build the spline curve using SPLINE_NUM_SEGMENTS (30) and catmullrom technique
  * @returns {{Float32Array, Float32Array}} {positions, colors} Both same size (3 * SPLINE_NUM_SEGMENTS)
  */

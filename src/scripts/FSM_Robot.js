@@ -163,10 +163,6 @@ FSM_Robot.prototype.current_is_no_hit = function () {
     return R_States.NO_HIT == this.state;
 }
 
-FSM_Robot.prototype.set_new_state = function (new_state_) {
-    this.state = new_state_;
-}
-
 FSM_Robot.prototype.state_has_changed = function () {
     return this.prev_state != this.state;
 }
@@ -176,7 +172,7 @@ const DURATION_BULLET_TRAVELLING_MS = 5000;
 const DURATION_RESTART_MS = 1000;
 
 /**
- * Transits betweens stats when timers get expired
+ * Transits betweens states when timers get expired
  */
 FSM_Robot.prototype.update_state = function () {
     this.prev_state = this.state;
