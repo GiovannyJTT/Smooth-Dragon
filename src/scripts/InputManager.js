@@ -98,14 +98,19 @@ InputManager.prototype.create_ui_controller = function () {
     // robot
     _e = {
         status: "idle",
+        power: 500,
         aim_angle: 0.0,
-        shoot: function () {} // button
+        // shoot: function () {} // button
     }
 
     _f = this.gui.addFolder("robot");
 
     _c = _f.add(_e, "status").name("Status");
     this.controllers.set("robot_status", _c);
+
+    _c = _f.add(_e, "power", 200, 1000, 200).name("Power")
+        .setValue(400);
+    this.controllers.set("robot_power", _c);
     
     _c = _f.add(_e, "aim_angle", 35.0, 80.0, 3.0).name("Aim Angle")
         .onChange(
