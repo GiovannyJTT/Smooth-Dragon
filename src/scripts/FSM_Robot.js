@@ -97,9 +97,10 @@ FSM_Robot.prototype.get_dest_state = function (event_) {
 }
 
 /**
- * Performs 2 operations:
+ * Performs 3 operations:
  *      1. Gets the destination-state from the current-state given the event_
  *      2. Sets the destination-state as current state
+ *      3. Starts the corresponding timer 
  * @param {R_Events} event_ 
  * @return {Bool} true transited properly (current state is now dest state), false otherwise
  */
@@ -109,12 +110,144 @@ FSM_Robot.prototype.transit = function (event_) {
     const _dest = this.get_dest_state(event_);
 
     if (undefined !== _dest) {
+
+        this.prev_state = this.state;
         this.state = _dest;
         console.debug("current state: " + this.state.description);
+
+        // start timers depending on state
+        switch (this.state) {
+            case R_States.IDLE:
+                this.restart_start = undefined;
+                break;
+
+            case R_States.LOADING_BULLET:
+                this.loading_bullet_start = performance.now();
+                break;
+
+            case R_States.BULLET_TRAVELING:
+                this.loading_bullet_start = undefined;
+                this.bullet_traveling_start = performance.now();
+                break;
+
+            case R_States.HIT:
+            case R_States.NO_HIT:
+                this.bullet_traveling_start = undefined;
+                this.restart_start = performance.now();
+                break;
+        };
+
         return true;
     }
     else {
         return false;
+    }
+}
+
+const DURATION_LOADING_BULLET_MS = 2000;
+const DURATION_BULLET_TRAVELLING_MS = 5000;
+const DURATION_RESTART_MS = 1000;
+
+/**
+ * Changes current state
+ * Transits betweens stats when timers get expired
+ */
+FSM_Robot.prototype.update = function () {
+    switch (this.state) {
+        case R_States.IDLE:
+            // doing nothing until "loading bullet event"
+            break;
+        case R_States.LOADING_BULLET:
+            if (this.loading_bullet_expired()) {
+                this.transit(R_Events.SHOOT_ENDED);
+            }
+            break;
+        case R_States.BULLET_TRAVELING:
+            if (this.bullet_traveling_expired()) {
+                this.transit(R_Events.END_OF_TRAJECTORY);
+            }
+            else {
+                // TODO: detect collision
+            }
+            break;
+        case R_States.HIT:
+        case R_States.NO_HIT:
+            if (this.restart_expired()) {
+                console.log("restart expired")
+                this.transit(R_Events.RESTART);
+            }
+            break;
+    }
+}
+
+/**
+ * Based on DURATION_LOADING_BULLET_MS
+ * @return {Bool} true bullet still travelling (duration not expired), false otherwise
+ */
+FSM_Robot.prototype.loading_bullet_expired = function () {
+    
+    if (this.state != R_States.LOADING_BULLET) {
+        return false;
+    }
+    else {
+        if (undefined === this.loading_bullet_start) {
+            return false;
+        }
+        else {
+            const _now = performance.now();
+            const _elapsed = _now - this.loading_bullet_start; // ms
+
+            if (_elapsed >= DURATION_LOADING_BULLET_MS) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    }
+}
+
+FSM_Robot.prototype.bullet_traveling_expired = function () {
+    if (this.state != R_States.BULLET_TRAVELING) {
+        return false;
+    }
+    else {
+        if (undefined === this.bullet_traveling_start) {
+            return false;
+        }
+        else {
+            const _now = performance.now();
+            const _elapsed = _now - this.bullet_traveling_start;
+
+            if (_elapsed >= DURATION_BULLET_TRAVELLING_MS) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    }
+}
+
+FSM_Robot.prototype.restart_expired = function () {
+    if (this.state != R_States.HIT || this.state != R_States.NO_HIT) {
+        return false;
+    }
+    else {
+        if (undefined === this.restart_start) {
+            return false;
+        }
+        else {
+            const _now = performance.now();
+            const _elapsed = _now - this.restart_start;
+
+            if (_elapsed >= DURATION_RESTART_MS) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
     }
 }
 
