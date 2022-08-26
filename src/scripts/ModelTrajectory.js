@@ -57,7 +57,8 @@ ModelTrajectory.prototype.constructor = ModelTrajectory;
 /**
  * Gets Initial input control points (p1, p2) as direction vector and
  *      computes control points (p3, peak, end) forming a right-angled triangle
- * @return {[THREE.Vector3]} Array of Vector3 containing coordinates of control points (to be vertices of the Mesh)
+ * @return {[THREE.Vector3]} Array of Vector3 ([p1, p2, p3, peak, end]) containing coordinates
+ *      of control points (to be vertices of the Mesh)
  */
 ModelTrajectory.prototype.compute_control_points = function () {
 
