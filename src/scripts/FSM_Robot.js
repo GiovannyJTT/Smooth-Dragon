@@ -144,15 +144,34 @@ FSM_Robot.prototype.transit = function (event_) {
     }
 }
 
+FSM_Robot.prototype.current_is_idle = function () {
+    return R_States.IDLE == this.state;
+}
+
+FSM_Robot.prototype.current_is_loading_bullet = function () {
+    return R_States.LOADING_BULLET == this.state;
+}
+
+FSM_Robot.prototype.current_is_bullet_traveling = function () {
+    return R_States.BULLET_TRAVELING == this.state;
+}
+
+FSM_Robot.prototype.current_is_hit = function () {
+    return R_States.HIT == this.state;
+}
+
+FSM_Robot.prototype.current_is_no_hit = function () {
+    return R_States.NO_HIT == this.state;
+}
+
 const DURATION_LOADING_BULLET_MS = 2000;
 const DURATION_BULLET_TRAVELLING_MS = 5000;
 const DURATION_RESTART_MS = 1000;
 
 /**
- * Changes current state
  * Transits betweens stats when timers get expired
  */
-FSM_Robot.prototype.update = function () {
+FSM_Robot.prototype.update_state = function () {
     switch (this.state) {
         case R_States.IDLE:
             // doing nothing until "loading bullet event"
@@ -182,7 +201,7 @@ FSM_Robot.prototype.update = function () {
 
 /**
  * Based on DURATION_LOADING_BULLET_MS
- * @return {Bool} true bullet still travelling (duration not expired), false otherwise
+ * @return {Bool} true while duration not expired / reached, false otherwise
  */
 FSM_Robot.prototype.loading_bullet_expired = function () {
     
@@ -207,6 +226,10 @@ FSM_Robot.prototype.loading_bullet_expired = function () {
     }
 }
 
+/**
+ * Based on DURATION_BULLET_TRAVELLING_MS
+ * @return {Bool} true while duration not expired / reached, false otherwise
+ */
 FSM_Robot.prototype.bullet_traveling_expired = function () {
     if (this.state != R_States.BULLET_TRAVELING) {
         return false;
@@ -229,8 +252,12 @@ FSM_Robot.prototype.bullet_traveling_expired = function () {
     }
 }
 
+/**
+ * Based on DURATION_RESTART_MS
+ * @return {Bool} true while duration not expired / reached, false otherwise
+ */
 FSM_Robot.prototype.restart_expired = function () {
-    if (this.state != R_States.HIT || this.state != R_States.NO_HIT) {
+    if (this.state != R_States.HIT && this.state != R_States.NO_HIT) {
         return false;
     }
     else {
