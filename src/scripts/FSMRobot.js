@@ -47,9 +47,6 @@ const R_Events = Object.freeze(
  * Using symbol as key of the dictionary
  */
 function FSM_Robot () {
-    this.state = undefined;
-    this.prev_state = undefined;
-
     this.transitions = {
         // symbol as key
         [R_States.IDLE]: {
@@ -70,6 +67,9 @@ function FSM_Robot () {
         }
     };
 
+    // initialization
+    this.state = R_States.IDLE;
+    this.prev_state = undefined;
 }
 
 /**
