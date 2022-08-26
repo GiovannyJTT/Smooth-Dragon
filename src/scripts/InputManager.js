@@ -109,7 +109,7 @@ InputManager.prototype.create_ui_controller = function () {
     this.controllers.set("robot_status", _c);
 
     _c = _f.add(_e, "power", Common.TRAJECTORY_DIST_MIN, Common.TRAJECTORY_DIST_MAX, 200).name("Power")
-        .setValue(600);
+        .setValue(400);
     this.controllers.set("robot_power", _c);
     
     _c = _f.add(_e, "aim_angle", 35.0, 80.0, 3.0).name("Aim Angle")

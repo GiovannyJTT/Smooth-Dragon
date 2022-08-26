@@ -43,12 +43,12 @@ const TRAJECTORY_DIST_MAX = 1000;
 const TRAJECTORY_DIST_MIN = 200;
 
 // used to interpolate bullet position between to points3D
-const BULLET_STEP_DURATION_MS = 100;
+const BULLET_STEP_DURATION_MS = 50;
 
 // robot state machine timeouts
 const FSM_DURATION_LOADING_BULLET_MS = 1000;
 const FSM_DURATION_BULLET_TRAVELLING_MS = 30 * BULLET_STEP_DURATION_MS;
-const FSM_DURATION_RESTART_MS = 1000;
+const FSM_DURATION_RESTART_MS = 500;
 
 export default {
     FLOOR_WIDTH,
