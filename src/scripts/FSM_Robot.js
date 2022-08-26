@@ -192,7 +192,6 @@ FSM_Robot.prototype.update_state = function () {
         case R_States.HIT:
         case R_States.NO_HIT:
             if (this.restart_expired()) {
-                console.log("restart expired")
                 this.transit(R_Events.RESTART);
             }
             break;
