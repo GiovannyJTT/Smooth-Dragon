@@ -301,7 +301,7 @@ SceneDragon.prototype.removeBullet = function () {
  */
 SceneDragon.prototype.updateBullet = function () {
     if (this.fsm_r.current_is_bullet_traveling()) {
-        this.bullet_model.move_to_next_point();
+        this.bullet_model.move_to_next_point_interpolated();
         this.bullet_model.mesh.rotation.x -= 0.0872665;
     }
 }
