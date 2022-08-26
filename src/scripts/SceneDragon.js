@@ -14,6 +14,7 @@ import ModelSkybox from './ModelSkybox'
 import ModelRobot from './ModelRobot'
 import ModelTrajectory from './ModelTrajectory'
 import InputManager from './InputManager'
+import FSM_Robot, {R_States, R_Events} from './FSM_Robot'
 
 /**
  * Creating a child object (kind of child class) by Inheriting from GPT_Scene (Follow steps 1 to 3)
@@ -39,10 +40,7 @@ SceneDragon.prototype.createObjects = function () {
     this.createDragon();
     this.createSkybox();
     this.createRobot();
-    this.createTrajectory();
     this.createInputManager();
-
-    this.prevTS = performance.now();
 }
 
 SceneDragon.prototype.createAxes = function () {
@@ -89,8 +87,8 @@ SceneDragon.prototype.createDragon = function () {
     // model = contains geometry, material and mesh
     const m_dragon = new ModelDragon();
 
-    m_dragon.mesh.scale.set(1000, 1000, 1000);
-    m_dragon.mesh.position.set(200, -50, -250);
+    m_dragon.mesh.scale.set(2000, 2000, 2000);
+    m_dragon.mesh.position.set(200, -100, -250);
     m_dragon.mesh.castShadow = true;
     m_dragon.mesh.receiveShadow = true;
 
@@ -115,6 +113,7 @@ SceneDragon.prototype.createSkybox = function () {
 SceneDragon.prototype.createRobot = function () {
     // GPT_LinkedModel instance
     this.robotLinked = new ModelRobot();
+    this.fsm_r = new FSM_Robot.FSM_Robot();
 
     // TRHEE.Object3D
     const _root = this.robotLinked.links.get("root");
@@ -140,6 +139,7 @@ SceneDragon.prototype.createTrajectory = function () {
 
 SceneDragon.prototype.createInputManager = function () {
 
+    // preapre "on_change" callbacks
     const _cbs = {};
     
     _cbs.on_change_dragon_rot_angle = (new_val_) => {
@@ -170,7 +170,8 @@ SceneDragon.prototype.createInputManager = function () {
     }
 
     _cbs.on_change_robot_shoot = () => {
-        console.debug("bullet on trajectory");
+        this.fsm_r.transit(FSM_Robot.R_Events.SHOOT_STARTED);
+        this.updateTrajectory();
     }
 
     const _im = new InputManager(_cbs);
@@ -184,12 +185,10 @@ SceneDragon.prototype.createInputManager = function () {
 SceneDragon.prototype.updateObjects = function (ms) {
     this.updateDragon(ms);
     this.updateRobot(ms);
-
-    this.nowTS = performance.now();
-    this.elapsedMS = this.nowTS - this.prevTS;
-    if (this.elapsedMS > 1000) {
-        this.prevTS = performance.now();
-        this.updateTrajectory(ms);
+    
+    this.fsm_r.update_state();
+    if (this.fsm_r.current_is_bullet_traveling()) {
+        this.removeTrajectory();
     }
 }
 
@@ -213,12 +212,7 @@ SceneDragon.prototype.updateRobot = function (ms) {
 
 SceneDragon.prototype.updateTrajectory = function (ms) {
     
-    // destroy geom buffer, mat buffer, etc
-    this._tr_model.dispose_buffers();
-    this._tr_model = null;
-
-    // destroy trajectory at runtime from THREE.Scene (also from gpt_models)
-    this.removeModelFromScene("trajectory");
+    this.removeTrajectory();
 
     // create new
     const _forearm = this.robotLinked.links.get("forearm");
@@ -235,6 +229,20 @@ SceneDragon.prototype.updateTrajectory = function (ms) {
 
     // add new model at runtime to THREE.Scene (also to gpt_models)
     this.AddModelToScene("trajectory", this._tr_model.mesh);
+}
+
+/**
+ * if trajectory previously created then disposes gl buffers and removes object
+ */
+SceneDragon.prototype.removeTrajectory = function () {
+    if (null !== this._tr_model) {
+        // destroy geom buffer, mat buffer, etc
+        this._tr_model.dispose_buffers();
+        this._tr_model = null;
+    
+        // destroy trajectory at runtime from THREE.Scene (also from gpt_models)
+        this.removeModelFromScene("trajectory");
+    }
 }
 
 /**
