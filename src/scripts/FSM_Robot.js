@@ -281,5 +281,8 @@ FSM_Robot.prototype.restart_expired = function () {
 export default {
     FSM_Robot,
     R_Events,
-    R_States
+    R_States,
+    DURATION_LOADING_BULLET_MS,
+    DURATION_BULLET_TRAVELLING_MS,
+    DURATION_RESTART_MS
 }
