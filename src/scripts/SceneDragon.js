@@ -177,6 +177,8 @@ SceneDragon.prototype.createInputManager = function () {
 SceneDragon.prototype.updateObjects = function (ms) {
     this.updateDragon(ms);
     this.updateRobot(ms);
+    this.updateBullet();    
+    
     this.on_fsmr_changed();
 }
 
@@ -272,13 +274,12 @@ SceneDragon.prototype.removeTrajectory = function () {
 SceneDragon.prototype.createBullet = function () {
     this.removeBullet();
 
-    this.bullet_model = new ModelBullet();
+    const _tp = this.tra_model.spline_points3D;
+    this.bullet_model = new ModelBullet(_tp);
     this.bullet_model.mesh.castShadow = true;
     this.bullet_model.mesh.receiveShadow = false;
 
-    const _gripper = this.robotLinked.links.get("gripper");
-    const _p = new THREE.Vector3();
-    _gripper.getWorldPosition(_p);
+    const _p = _tp[0];
     this.bullet_model.mesh.position.set(_p.x, _p.y, _p.z);
 
     this.AddModelToScene("bullet", this.bullet_model.mesh);
@@ -292,6 +293,16 @@ SceneDragon.prototype.removeBullet = function () {
 
         // remove it at runtime from THREE.Scene (also from gpt_models)
         this.removeModelFromScene("bullet");
+    }
+}
+
+/**
+ * Per-frame update of bullet
+ */
+SceneDragon.prototype.updateBullet = function () {
+    if (this.fsm_r.current_is_bullet_traveling()) {
+        this.bullet_model.move_to_next_point();
+        this.bullet_model.mesh.rotation.x -= 0.0872665;
     }
 }
 
