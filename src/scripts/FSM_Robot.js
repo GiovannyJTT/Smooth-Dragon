@@ -1,3 +1,4 @@
+import Common from "./Common";
 
 /**
  * States the "shooting robot" can have
@@ -167,10 +168,6 @@ FSM_Robot.prototype.state_has_changed = function () {
     return this.prev_state != this.state;
 }
 
-const DURATION_LOADING_BULLET_MS = 2000;
-const DURATION_BULLET_TRAVELLING_MS = 5000;
-const DURATION_RESTART_MS = 1000;
-
 /**
  * Transits betweens states when timers get expired
  */
@@ -220,7 +217,7 @@ FSM_Robot.prototype.loading_bullet_expired = function () {
             const _now = performance.now();
             const _elapsed = _now - this.loading_bullet_start; // ms
 
-            if (_elapsed >= DURATION_LOADING_BULLET_MS) {
+            if (_elapsed >= Common.FSM_DURATION_LOADING_BULLET_MS) {
                 return true;
             }
             else {
@@ -246,7 +243,7 @@ FSM_Robot.prototype.bullet_traveling_expired = function () {
             const _now = performance.now();
             const _elapsed = _now - this.bullet_traveling_start;
 
-            if (_elapsed >= DURATION_BULLET_TRAVELLING_MS) {
+            if (_elapsed >= Common.FSM_DURATION_BULLET_TRAVELLING_MS) {
                 return true;
             }
             else {
@@ -272,7 +269,7 @@ FSM_Robot.prototype.restart_expired = function () {
             const _now = performance.now();
             const _elapsed = _now - this.restart_start;
 
-            if (_elapsed >= DURATION_RESTART_MS) {
+            if (_elapsed >= Common.FSM_DURATION_RESTART_MS) {
                 return true;
             }
             else {
@@ -285,8 +282,5 @@ FSM_Robot.prototype.restart_expired = function () {
 export default {
     FSM_Robot,
     R_Events,
-    R_States,
-    DURATION_LOADING_BULLET_MS,
-    DURATION_BULLET_TRAVELLING_MS,
-    DURATION_RESTART_MS
+    R_States
 }
