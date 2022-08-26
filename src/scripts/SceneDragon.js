@@ -276,9 +276,9 @@ SceneDragon.prototype.createBullet = function () {
     this.bullet_model.mesh.castShadow = true;
     this.bullet_model.mesh.receiveShadow = false;
 
-    const _forearm = this.robotLinked.links.get("gripper");
+    const _gripper = this.robotLinked.links.get("gripper");
     const _p = new THREE.Vector3();
-    _forearm.getWorldPosition(_p);
+    _gripper.getWorldPosition(_p);
     this.bullet_model.mesh.position.set(_p.x, _p.y, _p.z);
 
     this.AddModelToScene("bullet", this.bullet_model.mesh);
