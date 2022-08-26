@@ -1,6 +1,7 @@
 import { lerp } from "three/src/math/MathUtils";
 import THREE from "../external-libs/threejs-0.118.3/three-global";
 import GPT_Model from "../libgptjs/GPT_Model";
+import Common from "./Common";
 
 /**
  * Creates a model for bullet
@@ -103,12 +104,11 @@ ModelBullet.prototype.move_to_next_point_interpolated = function () {
         return false;
     }
 
-    const BULLET_STEP_DURATION_MS = 100;
     const _now_ts = performance.now();
     const _elapsed = _now_ts - this.prev_ts;
 
-    if (_elapsed < BULLET_STEP_DURATION_MS) {
-        const _i = _elapsed / BULLET_STEP_DURATION_MS;
+    if (_elapsed < Common.BULLET_STEP_DURATION_MS) {
+        const _i = _elapsed / Common.BULLET_STEP_DURATION_MS;
 
         const _p = this.trajectory_points3D[this.current_point_index];
         const _p_next = this.trajectory_points3D[this.current_point_index + 1];
