@@ -1,9 +1,7 @@
 
 import THREE from "../external-libs/threejs-0.118.3/three-global";
 import GPT_Model from "../libgptjs/GPT_Model";
-
-const ANGLE_DECAY = 0.5;
-const TRACJETORY_SPLINE_NUM_SEGMENTS = 30;
+import Common from "./Common";
 
 /**
  * Class that computes the control points, the spline and then creates the line mesh to be rendered
@@ -29,13 +27,13 @@ function ModelTrajectory (start_point3D_, end_point3D_, trajectory_dist_end_) {
         return;
     }
 
-    this.TRAJECTORY_DIST_END = trajectory_dist_end_;
-    if (undefined == this.TRAJECTORY_DIST_END) {
+    this.dist_end = trajectory_dist_end_;
+    if (undefined == this.dist_end) {
         console.error("ModelTrajectory: 'TRAJECTORY_DIST_END' is undefined");
         return;
     }
 
-    this.TRAJECTORY_DIST_MIDDLE = this.TRAJECTORY_DIST_END / 2;
+    this.dist_middle = this.dist_end / 2;
 
     // get control points (vertices p1,p2,p3,peak,end) before calling GPT_Model (where geometry is computeds from vertices)
     this.trajectory_control_points = this.compute_control_points();
@@ -92,12 +90,12 @@ ModelTrajectory.prototype.compute_control_points = function () {
     _plane_normal.normalize();
 
     // decay angle = angle(v, n) / 2;
-    const _a = _v.clone().angleTo(_plane_normal) * ANGLE_DECAY;
+    const _a = _v.clone().angleTo(_plane_normal) * Common.TRAJECTORY_ANGLE_DECAY;
     // console.debug("inclination angle " + (_a * 180 / Math.PI));
 
     // Since n is perpendicular to ground plane then we have a right-angled triangle
     // opposite = tan(a) * adjacent
-    const _perpendicular = Math.tan(_a) * this.TRAJECTORY_DIST_MIDDLE;
+    const _perpendicular = Math.tan(_a) * this.dist_middle;
 
     // projecting on the ground plane
     const _v_plane = new THREE.Vector3(_v.x, 0, _v.z);
@@ -109,18 +107,18 @@ ModelTrajectory.prototype.compute_control_points = function () {
     // end = p3_plane + v_plane * dist_end
     const _end = _p3_plane.clone().add(
         new THREE.Vector3(
-            _v_plane.x * this.TRAJECTORY_DIST_END,
+            _v_plane.x * this.dist_end,
             0,
-            _v_plane.z * this.TRAJECTORY_DIST_END
+            _v_plane.z * this.dist_end
         )
     );
 
     // peak = p3_plane + v * dist_middle
     const _peak = _p3_plane.clone().add(
         new THREE.Vector3(
-            _v_plane.x * this.TRAJECTORY_DIST_MIDDLE,
+            _v_plane.x * this.dist_middle,
             _p3.y + _perpendicular,
-            _v_plane.z * this.TRAJECTORY_DIST_MIDDLE
+            _v_plane.z * this.dist_middle
         )
     );
 
@@ -190,13 +188,13 @@ ModelTrajectory.prototype.get_spline_points_and_colors = function () {
 
     const _spline = new THREE.CatmullRomCurve3(this.trajectory_control_points);
 
-    const _positions = new Float32Array(TRACJETORY_SPLINE_NUM_SEGMENTS * 3);
+    const _positions = new Float32Array(Common.TRAJECTORY_SPLINE_NUM_SEGMENTS * 3);
     const _colors = new Float32Array(_positions);
 
     const _tmpColor = new THREE.Color();
 
-    for (let i = 0, v = 0; i < TRACJETORY_SPLINE_NUM_SEGMENTS; i++, v += 3) {
-        const t = i / TRACJETORY_SPLINE_NUM_SEGMENTS;
+    for (let i = 0, v = 0; i < Common.TRAJECTORY_SPLINE_NUM_SEGMENTS; i++, v += 3) {
+        const t = i / Common.TRAJECTORY_SPLINE_NUM_SEGMENTS;
 
         // get spline point (extrapolated coordinates)
         const _p = new THREE.Vector3();
