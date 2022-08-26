@@ -48,22 +48,22 @@ const R_Events = Object.freeze(
  */
 function FSM_Robot () {
     this.transitions = {
-        // symbol as key
+        // symbol as key needs []
         [R_States.IDLE]: {
-            [R_Events.SHOOT_STARTED]: [R_States.LOADING_BULLET]
+            [R_Events.SHOOT_STARTED]: R_States.LOADING_BULLET
         },
         [R_States.LOADING_BULLET]: {
-            [R_Events.SHOOT_ENDED]: [R_States.BULLET_TRAVELING]
+            [R_Events.SHOOT_ENDED]: R_States.BULLET_TRAVELING
         },
         [R_States.BULLET_TRAVELING]: {
-            [R_Events.BULLET_COLLIDED]: [R_States.HIT],
-            [R_Events.END_OF_TRAJECTORY]: [R_States.NO_HIT]
+            [R_Events.BULLET_COLLIDED]: R_States.HIT,
+            [R_Events.END_OF_TRAJECTORY]: R_States.NO_HIT
         },
         [R_States.HIT]: {
-            [R_Events.RESTART]: [R_States.IDLE]
+            [R_Events.RESTART]: R_States.IDLE
         },
         [R_States.NO_HIT]: {
-            [R_Events.RESTART]: [R_States.IDLE]
+            [R_Events.RESTART]: R_States.IDLE
         }
     };
 
@@ -80,17 +80,17 @@ function FSM_Robot () {
 FSM_Robot.prototype.get_dest_state = function (event_) {
 
     // get possible transitions from current state
-    const _transitions_from_state = self.transitions[this.state];
+    const _transitions_from_state = this.transitions[this.state];
 
     if (undefined === _transitions_from_state) {
-        console.error("State unhandled: " + this.state);
+        console.error("Unhandled state: " + this.state.description);
         return undefined;
     }
     else {
         // get destination state using the event_
         const _dest = _transitions_from_state[event_];
         if (undefined === _dest) {
-            log.error("Event not allowed: " + event_ + " in current state: " + self.state);
+            console.warn("Event not allowed: '" + event_.description + "' in current state '" + this.state.description +"'");
         }
         return _dest;
     }
@@ -105,10 +105,12 @@ FSM_Robot.prototype.get_dest_state = function (event_) {
  */
 FSM_Robot.prototype.transit = function (event_) {
     
-    const _dest = self.get_dest_state(event_);
+    console.debug("input event: " + event_.description);
+    const _dest = this.get_dest_state(event_);
 
     if (undefined !== _dest) {
-        self.state = _dest;
+        this.state = _dest;
+        console.debug("current state: " + this.state.description);
         return true;
     }
     else {
