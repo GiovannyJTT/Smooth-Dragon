@@ -235,10 +235,10 @@ SceneDragon.prototype.updateTrajectory = function (ms) {
  * if trajectory previously created then disposes gl buffers and removes object
  */
 SceneDragon.prototype.removeTrajectory = function () {
-    if (null !== this._tr_model) {
+    if (undefined !== this._tr_model) {
         // destroy geom buffer, mat buffer, etc
         this._tr_model.dispose_buffers();
-        this._tr_model = null;
+        this._tr_model = undefined;
     
         // destroy trajectory at runtime from THREE.Scene (also from gpt_models)
         this.removeModelFromScene("trajectory");
