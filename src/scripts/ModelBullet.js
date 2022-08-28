@@ -2,28 +2,42 @@ import { lerp } from "three/src/math/MathUtils";
 import THREE from "../external-libs/threejs-0.118.3/three-global";
 import GPT_Model from "../libgptjs/GPT_Model";
 import Common from "./Common";
+import ModelCollider from "./ModelCollider";
 
 /**
  * Creates a model for bullet
  * Inherits from GPT_Model
  * @param {[THREE.Vector3]} trajectory_points3D_ array of Vector3 points to move along the bullet
  */
-function ModelBullet (trajectory_points3D_) {
-    // 1. Call parent object
-    GPT_Model.call(this);
+function ModelBullet (trajectory_points3D_, start_pos_) {
 
     this.trajectory_points3D = trajectory_points3D_
 
     if (undefined === this.trajectory_points3D) {
-        console.error("ModelBullet: trajectory_points is undefined");
+        console.error("ModelBullet: 'trajectory_points' is undefined");
         return;
     }
 
     if (this.trajectory_points3D.size == 0) {
-        console.error("ModelBullet: trajectory_points has 0 elements");
+        console.error("ModelBullet: 'trajectory_points' has 0 elements");
         return;
     }
 
+    if (undefined === start_pos_) {
+        console.error("ModelBullet: 'start_pos' is undefined");
+        return;
+    }
+
+    // 1. Call parent object
+    GPT_Model.call(this);
+
+    this.mesh.position.set(start_pos_.x, start_pos_.y, start_pos_.z);
+    console.debug("ModelBullet: start pos: " + JSON.stringify(this.mesh.position));
+
+    // Attach collider once mesh is built
+    this.collider = new ModelCollider(false, this.mesh);
+
+    // initialization
     this.current_point_index = 0;
     this.prev_ts = performance.now();
 }
@@ -68,6 +82,8 @@ ModelBullet.prototype.dispose_buffers = function () {
     this.geometry = null;
     this.material = null;
     this.mesh = null;
+
+    this.collider.dispose_buffers();
 }
 
 /**
@@ -84,6 +100,9 @@ ModelBullet.prototype.move_to_next_point = function () {
     this.current_point_index++;
     const _p = this.trajectory_points3D[this.current_point_index];
     this.mesh.position.set(_p.x, _p.y, _p.z);
+
+    // update collider
+    this.collider.update_aabb();
     
     return true;
 }
@@ -120,6 +139,10 @@ ModelBullet.prototype.move_to_next_point_interpolated = function () {
     
         // apply
         this.mesh.position.set(_ip_x, _ip_y, _ip_z);
+
+        // update collider
+        this.collider.update_aabb();
+
         return true;
     }
     else {
