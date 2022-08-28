@@ -29,7 +29,7 @@ function ModelTrajectory (start_point3D_, end_point3D_, trajectory_dist_end_) {
 
     this.dist_end = trajectory_dist_end_;
     if (undefined == this.dist_end) {
-        console.error("ModelTrajectory: 'TRAJECTORY_DIST_END' is undefined");
+        console.error("ModelTrajectory: 'dist_end' is undefined");
         return;
     }
 
@@ -134,7 +134,7 @@ ModelTrajectory.prototype.compute_control_points = function () {
 }
 
 /**
- * Overriding its
+ * Overriding it
  */
 ModelTrajectory.prototype.get_geometry = function () {    
     
@@ -173,11 +173,11 @@ ModelTrajectory.prototype.get_material = function () {
 }
 
 /**
- * Using Common.SPLINE_NUM_SEGMENTS (30)
+ * Using Common.TRAJECTORY_SPLINE_NUM_SEGMENTS (30)
  * Creates a Spline using the input 'trajectory_control_points'
  * @param {[THREE.Vector3]} this.vertices_trajectory cotaining the control points3D of the trajectory (p1, p2, p3, peak, end)
- *      Control points are used to build the spline curve using SPLINE_NUM_SEGMENTS (30) and catmullrom technique
- * @returns {{Float32Array, Float32Array}} {positions, colors} Both same size (3 * SPLINE_NUM_SEGMENTS)
+ *      Control points are used to build the spline curve using TRAJECTORY_SPLINE_NUM_SEGMENTS (30) and catmull-rom technique
+ * @returns {{Float32Array, Float32Array}} {positions, colors} Both same size (3 * TRAJECTORY_SPLINE_NUM_SEGMENTS)
  */
 ModelTrajectory.prototype.get_spline_points_and_colors = function () {
     
@@ -186,7 +186,7 @@ ModelTrajectory.prototype.get_spline_points_and_colors = function () {
         return;
     }
 
-    const _spline = new THREE.CatmullRomCurve3(this.trajectory_control_points);
+    const _spline_curve = new THREE.CatmullRomCurve3(this.trajectory_control_points);
 
     const _positions = new Float32Array(Common.TRAJECTORY_SPLINE_NUM_SEGMENTS * 3);
     const _colors = new Float32Array(_positions);
@@ -198,7 +198,7 @@ ModelTrajectory.prototype.get_spline_points_and_colors = function () {
 
         // get spline point (extrapolated coordinates)
         const _p = new THREE.Vector3();
-        _spline.getPoint(t, _p);
+        _spline_curve.getPoint(t, _p);
 
         _positions[v] = _p.x;
         _positions[v + 1] = _p.y;

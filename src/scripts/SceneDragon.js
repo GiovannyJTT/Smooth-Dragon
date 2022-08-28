@@ -121,9 +121,10 @@ SceneDragon.prototype.createRobot = function () {
     this.gpt_models.set("robot", _root);
 }
 
+/**
+ * Prepares "on_change" callbacks and an instance of InputManager
+ */
 SceneDragon.prototype.createInputManager = function () {
-
-    // preapre "on_change" callbacks
     const _cbs = {};
     
     _cbs.on_change_dragon_rot_angle = (new_val_) => {
