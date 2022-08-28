@@ -5,7 +5,7 @@ import CoordsGripper from "./CoordsGripper";
 import Common from "./Common"
 
 /**
- * Creates a Robot model by computing its triangles and normals
+ * Creates a Gripper model by computing its triangles and normals
  * Inherits from GPT_Model and overrides get_geometry and get_material
  */
 function ModelGripper() {

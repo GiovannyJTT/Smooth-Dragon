@@ -150,7 +150,7 @@ GPT_Scene.prototype.AddModelToScene = function (obj_name_, obj_mesh_) {
     this.scene.add(_o);
 
     if (this.gpt_models.get(obj_name_) === undefined){
-        console.error("GPT_Scene.AddModelToScene: could not add '" + obj_name_ + "");
+        console.error("GPT_Scene.AddModelToScene: could not add '" + obj_name_ + "'");
         return;
     }
 
