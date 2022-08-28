@@ -275,14 +275,13 @@ SceneDragon.prototype.createBullet = function () {
     this.removeBullet();
 
     const _tp = this.tra_model.spline_points3D;
-    this.bullet_model = new ModelBullet(_tp);
+    const _start_pos = _tp[0];
+    this.bullet_model = new ModelBullet(_tp, _start_pos);
     this.bullet_model.mesh.castShadow = true;
     this.bullet_model.mesh.receiveShadow = false;
 
-    const _p = _tp[0];
-    this.bullet_model.mesh.position.set(_p.x, _p.y, _p.z);
-
     this.AddModelToScene("bullet", this.bullet_model.mesh);
+    this.AddModelToScene("bullet_collider", this.bullet_model.collider.aabb_helper)
 }
 
 SceneDragon.prototype.removeBullet = function () {
@@ -293,6 +292,7 @@ SceneDragon.prototype.removeBullet = function () {
 
         // remove it at runtime from THREE.Scene (also from gpt_models)
         this.removeModelFromScene("bullet");
+        this.removeModelFromScene("bullet_collider");
     }
 }
 
