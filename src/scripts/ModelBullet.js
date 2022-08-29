@@ -32,8 +32,7 @@ function ModelBullet (trajectory_points3D_, start_pos_) {
     GPT_Model.call(this);
 
     this.mesh.position.set(start_pos_.x, start_pos_.y, start_pos_.z);
-    console.debug("ModelBullet: start pos: " + JSON.stringify(this.mesh.position));
-
+ç
     // Attach collider once mesh is built
     this.collider = new ModelCollider(false, this.mesh);
 
