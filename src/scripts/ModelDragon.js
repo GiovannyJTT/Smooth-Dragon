@@ -2,18 +2,29 @@ import THREE from "../external-libs/threejs-0.118.3/three-global"
 import GPT_Model from "../libgptjs/GPT_Model"
 import CoordsDragon from "./CoordsDragon"
 import Common from "./Common"
+import ModelCollider from "./ModelCollider"
 
 /**
  * Creates a dragon model by computing the triangles and normals from its vertices
  * coordinates and edges array.
  * Inherits from GPT_model so we keep references to geometry and material
  */
-function ModelDragon() {
+function ModelDragon (start_pos_) {
+    
+    if (undefined === start_pos_) {
+        console.error("ModelDragon: 'start_pos' is undefined");
+        return;
+    }
+
     // instance coordinates only once
     this.coords = new CoordsDragon();
 
     // 1. Call parent object constructor
     GPT_Model.call(this);
+    this.mesh.position.set(start_pos_.x, start_pos_.y, start_pos_.z);
+
+    // Attach collider once mesh is built and set in intial postion
+    this.collider = new ModelCollider(false, this.mesh);
 }
 
 // 2. Extend from parent object prototype (keep proto clean)
@@ -80,6 +91,10 @@ ModelDragon.prototype.get_material = function () {
 
     _mat.needsUpdate = true;
     return _mat;
+}
+
+ModelDragon.prototype.update_collider = function () {
+    this.collider.update_aabb();
 }
 
 export default ModelDragon;
