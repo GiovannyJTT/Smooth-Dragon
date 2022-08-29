@@ -4,10 +4,11 @@ import THREE from "../external-libs/threejs-0.118.3/three-global";
  * Simple collider using AABB (axis aligned bounding boxes)
  * https://developer.mozilla.org/en-US/docs/Games/Techniques/3D_collision_detection
  * 
- * @param {Bool} is_static true when object doesn't move or rotate, false when is dynamic (rotates, translates, scales)
+ * @param {Bool} static_ true when object doesn't move or rotate, false when is dynamic (rotates, translates, scales)
  * @param {THREE.Object3D} obj_mesh the object from what the aabb (min, max) will be computed
- * @attribute {THREE.Box3} abbb structure containing aabb as "Box3 { min: Vector3, max: Vector3}"
- * @return {THREE.BoxHelper} aabb_helper line_mesh of the aabb to be rendered in Scene
+ * @return {THREE.BoxHelper} `aabb_helper` line_mesh of the aabb to be rendered in Scene
+ * 
+ * @attribute `this.abbb` {THREE.Box3} structure containing aabb as "Box3 { min: Vector3, max: Vector3}"
  */
 function ModelCollider (static_, obj_mesh) {
     
