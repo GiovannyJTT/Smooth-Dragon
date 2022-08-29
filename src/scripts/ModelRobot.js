@@ -44,6 +44,7 @@ ModelRobot.prototype.getRobot = function () {
     const _hand_o = new THREE.Object3D();
 
     const _wrist = this.getWristMesh();
+    _wrist.name = "wrist";
     // _wrist.rotation.x = Math.PI / 2.0;
     _hand_o.add(_wrist);
 
@@ -282,7 +283,7 @@ ModelRobot.prototype.getWristMesh = function () {
 
     const _mat = new THREE.MeshPhongMaterial({
         color: 0xffe5e5,
-        emissive: 0x111010,
+        emissive: 0x000000,
         flatShading: false, // smooth transition in curvature
         specular: 0xff1111,
         shininess: 50,
