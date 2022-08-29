@@ -24,7 +24,7 @@ function ModelCollider (static_, obj_mesh) {
     }
 
     this.aabb = new THREE.Box3().setFromObject(this.obj_mesh);
-    console.debug("ModelCollider: aabb: " + this.aabb)
+    console.debug("ModelCollider: aabb: " + JSON.stringify(this.aabb));
 
     // helper forms the box with lines
     this.aabb_helper = new THREE.BoxHelper(this.obj_mesh, 0x00ff00);
