@@ -222,17 +222,18 @@ ModelTrajectory.prototype.get_spline_points_and_colors = function () {
     return resp;
 }
 
+/**
+ * Extending method (calling parent method and performing pre / post operations)
+ */
 ModelTrajectory.prototype.dispose_buffers = function () {
-    this.geometry.dispose();
-    this.material.dispose();
     
-    this.geometry = null;
-    this.material = null;
-    this.mesh = null;
+    GPT_Model.prototype.dispose_buffers.call(this);
 
     this.trajectory_control_points = null;
     this.p1 = null;
     this.p2 = null;
+    
+    console.log("ModelTrajectory: dispose_buffers()");
 }
 
 export default ModelTrajectory
