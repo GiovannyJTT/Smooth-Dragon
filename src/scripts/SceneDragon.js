@@ -162,20 +162,28 @@ SceneDragon.prototype.createInputManager = function () {
 
     _cbs.on_change_robot_shoot = () => {
         if (this.fsm_r.current_is_idle()) {
-            // trigger fsm update
-
+            
+            // trigger fsm transit so timers starts running
             this.fsm_r.transit(FSM_Robot.R_Events.SHOOT_STARTED);
             const _c = this.im.controllers.get("robot_status");
             _c.setValue(this.fsm_r.state.description);
         }
         else if (this.fsm_r.current_is_loading_bullet()) {
+            
             // increase robot_power with successive clicks (UI it will auto-clamp to max value)
-
             const _c = this.im.controllers.get("robot_power");
             const _rp = _c.getValue() + Common.TRAJECTORY_DIST_STEP;
             _c.setValue(_rp);
 
             // bullet and trajectory will be built at `on_fsmr_changed`
+
+            // increase robot wrist emissive
+            const _wrist = this.robotLinked.links.get("hand").getObjectByName("wrist");
+            const _new_emissive = new THREE.Color(
+                _wrist.material.emissive.r + 0.25,
+                _wrist.material.emissive.g,
+                _wrist.material.emissive.b);
+            _wrist.material.emissive.set(_new_emissive);
         }
     }
 
@@ -265,6 +273,9 @@ SceneDragon.prototype.updateRobot = function (ms) {
 
             const _c = this.im.controllers.get("robot_power");
             _c.setValue(Common.TRAJECTORY_DIST_MIN);
+
+            const _wrist = this.robotLinked.links.get("hand").getObjectByName("wrist");
+            _wrist.material.emissive.set(0x000000);
         }
     }
 }
