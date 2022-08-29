@@ -17,8 +17,7 @@ import THREE from '../external-libs/threejs-0.118.3/three-global'
  * Constructs a Model object. Saves the reference to individual geometry and material, and
  * creates the THREE.Mesh
  */
-function GPT_Model()
-{
+function GPT_Model () {
     this.geometry = this.get_geometry();
     if (this.geometry === undefined)
     {
@@ -39,17 +38,35 @@ function GPT_Model()
 /**
  * Override this method for creating the geometry
  */
-GPT_Model.prototype.get_geometry = function()
-{
+GPT_Model.prototype.get_geometry = function () {
     console.error("GPT_Model.get_geometry: Not implemented");
 }
 
 /**
  * Overrid this method for creating the material
  */
-GPT_Model.prototype.get_material = function()
-{
+GPT_Model.prototype.get_material = function () {
     console.error("GPT_Model.get_material: Not implemented");
+}
+
+/**
+ * When called ensures to free gl buffers of geometry / material
+ * 
+ * For extending in children use:
+ * 
+ *      EXAMPLECHILD.prototype.dispose_buffers = function () {
+ *          GPT_Model.prototype.dispose_buffers.call(this);
+ *          ...
+ *      }
+ */
+GPT_Model.prototype.dispose_buffers = function () {
+    this.geometry.dispose();
+    this.material.dispose();
+    this.geometry = null;
+    this.material = null;
+    this.mesh = null;
+
+    console.log("GPT_Model.dispose_buffers()");
 }
 
 export default GPT_Model;
