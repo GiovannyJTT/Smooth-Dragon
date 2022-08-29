@@ -77,7 +77,7 @@ InputManager.prototype.create_ui_controller = function () {
     
     this.controllers.set("dragon_status", _c);
 
-    _c = _f.add(_e, "rot_angle", -10.0, 10.0, 1.0).name("RotY Angle")
+    _c = _f.add(_e, "rot_angle", -3.0, 3.0, 1.0).name("RotY Angle")
         .onChange(
             // triggered when onChange event
             this.cbs.on_change_dragon_rot_angle
