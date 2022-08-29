@@ -114,7 +114,14 @@ SceneDragon.prototype.createSkybox = function () {
 SceneDragon.prototype.createRobot = function () {
     // GPT_LinkedModel instance
     this.robotLinked = new ModelRobot();
-    this.fsm_r = new FSM_Robot.FSM_Robot();
+
+    // prepare callbacks to be used inside the state machine
+    const _cbs = {
+        bullet_collided: () => {
+            return this.bullet_model.collider.is_colliding_with(this.dragon_model.collider.aabb);
+        }
+    };
+    this.fsm_r = new FSM_Robot.FSM_Robot(_cbs);
 
     // TRHEE.Object3D
     const _root = this.robotLinked.links.get("root");
@@ -177,8 +184,8 @@ SceneDragon.prototype.createInputManager = function () {
 SceneDragon.prototype.updateObjects = function (ms) {
     this.updateDragon(ms);
     this.updateRobot(ms);
-    this.updateBullet();    
-    
+    this.updateBullet();
+
     this.on_fsmr_changed();
 }
 
@@ -190,9 +197,10 @@ SceneDragon.prototype.updateDragon = function (ms) {
 
     // 0.5 degrees per frame
     this.dragon_model.mesh.rotation.y += this.dragon_rot_angle_rads;
-    this.dragon_model.mesh.rotation.y = (this.dragon_model.mesh.rotation.y >= 2 * Math.PI) ? 0.0 : this.dragon_model.mesh.rotation.y;
+    this.dragon_model.mesh.rotation.y = 
+        (this.dragon_model.mesh.rotation.y >= 2 * Math.PI) ? 0.0 : this.dragon_model.mesh.rotation.y;
 
-    this.dragon_model.update_collider(); 
+    this.dragon_model.update_collider();
 }
 
 /**
@@ -222,9 +230,21 @@ SceneDragon.prototype.updateRobot = function (ms) {
         const _c = this.im.controllers.get("robot_status");
         _c.setValue(this.fsm_r.state.description);
 
-        if (this.fsm_r.current_is_hit() || this.fsm_r.current_is_no_hit()) {
+        if (this.fsm_r.current_is_hit()) {
+            // blink dragon to red
+            this.dragon_model.mesh.material.color.set(0xff0000);
+            this.dragon_model.mesh.material.emissive.set(0xff0000);
+            this.dragon_model.mesh.material.specular.set(0xff0000);
+        }
+        // changed from hit / no_hit to idle, then remove trajectory and bullet
+        else if (this.fsm_r.current_is_idle()) {
             this.removeTrajectory();
             this.removeBullet();
+
+            // recover original color
+            this.dragon_model.mesh.material.color.set(0xe5ffe5);
+            this.dragon_model.mesh.material.emissive.set(0xb4ef3e);
+            this.dragon_model.mesh.material.specular.set(0x003300);
         }
     }
 }
@@ -305,6 +325,10 @@ SceneDragon.prototype.updateBullet = function () {
 
         // 10 degrees per frame
         this.bullet_model.mesh.rotation.x -= 0.174533;
+    }
+    else if (this.fsm_r.current_is_hit()) {
+        // 10 degrees per frame
+        this.bullet_model.mesh.rotation.x -= 0.174533;        
     }
 }
 
