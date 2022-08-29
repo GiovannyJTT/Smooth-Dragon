@@ -46,8 +46,16 @@ const R_Events = Object.freeze(
 /**
  * Finite State Machine for Robot
  * Using symbol as key of the dictionary
+ * @param {Dictionary} cbs_ dictionary containing callbacks to be called to retrieve if event is true or false
  */
-function FSM_Robot () {
+function FSM_Robot (cbs_) {
+
+    this.cbs = cbs_;
+    if (undefined === this.cbs) {
+        console.error("FSM_Robot: event_detection callbacks 'cbs' is undefined");
+        return;
+    }
+
     this.transitions = {
         // symbol as key needs []
         [R_States.IDLE]: {
@@ -188,7 +196,9 @@ FSM_Robot.prototype.update_state = function () {
                 this.transit(R_Events.END_OF_TRAJECTORY);
             }
             else {
-                // TODO: detect collision
+                if (this.cbs.bullet_collided()) {
+                    this.transit(R_Events.BULLET_COLLIDED)
+                }
             }
             break;
         case R_States.HIT:
