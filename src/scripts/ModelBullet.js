@@ -6,8 +6,14 @@ import ModelCollider from "./ModelCollider";
 
 /**
  * Creates a model for bullet
+ * 
  * Inherits from GPT_Model
+ * 
+ * Sets initial position of mesh/model (passed as parameter)
+ *      before creating the collider, so collider will be spawn in same position
+ * 
  * @param {[THREE.Vector3]} trajectory_points3D_ array of Vector3 points to move along the bullet
+ * @param {THREE.Vector3} start_pos_ initial position to spawn model and collider
  */
 function ModelBullet (trajectory_points3D_, start_pos_) {
 
@@ -30,10 +36,9 @@ function ModelBullet (trajectory_points3D_, start_pos_) {
 
     // 1. Call parent object
     GPT_Model.call(this);
-
     this.mesh.position.set(start_pos_.x, start_pos_.y, start_pos_.z);
 
-    // Attach collider once mesh is built
+    // Attach collider once mesh is built and set in intial postion
     this.collider = new ModelCollider(false, this.mesh);
 
     // initialization
