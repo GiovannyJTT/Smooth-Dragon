@@ -161,15 +161,21 @@ SceneDragon.prototype.createInputManager = function () {
     }
 
     _cbs.on_change_robot_shoot = () => {
-        
         if (this.fsm_r.current_is_idle()) {
+            // trigger fsm update
+
             this.fsm_r.transit(FSM_Robot.R_Events.SHOOT_STARTED);
-            
             const _c = this.im.controllers.get("robot_status");
             _c.setValue(this.fsm_r.state.description);
+        }
+        else if (this.fsm_r.current_is_loading_bullet()) {
+            // increase robot_power with successive clicks (UI it will auto-clamp to max value)
 
-            this.createTrajectory();
-            this.createBullet();
+            const _c = this.im.controllers.get("robot_power");
+            const _rp = _c.getValue() + Common.TRAJECTORY_DIST_STEP;
+            _c.setValue(_rp);
+
+            // bullet and trajectory will be built at `on_fsmr_changed`
         }
     }
 
@@ -195,12 +201,16 @@ SceneDragon.prototype.updateObjects = function (ms) {
  */
 SceneDragon.prototype.updateDragon = function (ms) {
 
-    // 0.5 degrees per frame
-    this.dragon_model.mesh.rotation.y += this.dragon_rot_angle_rads;
-    this.dragon_model.mesh.rotation.y = 
-        (this.dragon_model.mesh.rotation.y >= 2 * Math.PI) ? 0.0 : this.dragon_model.mesh.rotation.y;
+    // stop robot animation while it is on 'hit'
+    if (!this.fsm_r.current_is_hit()) {
 
-    this.dragon_model.update_collider();
+        // 0.5 degrees per frame
+        this.dragon_model.mesh.rotation.y += this.dragon_rot_angle_rads;
+        this.dragon_model.mesh.rotation.y = 
+            (this.dragon_model.mesh.rotation.y >= 2 * Math.PI) ? 0.0 : this.dragon_model.mesh.rotation.y;
+    
+        this.dragon_model.update_collider();
+    }
 }
 
 /**
@@ -230,21 +240,31 @@ SceneDragon.prototype.updateRobot = function (ms) {
         const _c = this.im.controllers.get("robot_status");
         _c.setValue(this.fsm_r.state.description);
 
-        if (this.fsm_r.current_is_hit()) {
+        // 'loading_bullet' to 'bullet_traveling'
+        if (this.fsm_r.current_is_bullet_traveling()) {
+            this.createTrajectory();
+            this.createBullet();
+        }
+        // 'bullet_traveling' to 'hit'
+        else if (this.fsm_r.current_is_hit()) {
             // blink dragon to red
             this.dragon_model.mesh.material.color.set(0xff0000);
             this.dragon_model.mesh.material.emissive.set(0xff0000);
             this.dragon_model.mesh.material.specular.set(0xff0000);
         }
-        // changed from hit / no_hit to idle, then remove trajectory and bullet
+        // 'hit', 'no_hit' to 'idle'
         else if (this.fsm_r.current_is_idle()) {
+            // restore initial values
+
             this.removeTrajectory();
             this.removeBullet();
 
-            // recover original color
             this.dragon_model.mesh.material.color.set(0xe5ffe5);
             this.dragon_model.mesh.material.emissive.set(0xb4ef3e);
             this.dragon_model.mesh.material.specular.set(0x003300);
+
+            const _c = this.im.controllers.get("robot_power");
+            _c.setValue(Common.TRAJECTORY_DIST_MIN);
         }
     }
 }
@@ -291,6 +311,9 @@ SceneDragon.prototype.removeTrajectory = function () {
     }
 }
 
+/**
+ * Bullet needs `this.tra_model.spline_points3D`
+ */
 SceneDragon.prototype.createBullet = function () {
     this.removeBullet();
 
