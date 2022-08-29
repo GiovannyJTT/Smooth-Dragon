@@ -32,8 +32,10 @@ function ModelCollider (static_, obj_mesh) {
 
 /**
  * In the animation (update) loop, compute the current aabb with the world matrix
+ * 
  * For non-static objects (object is rotating or translating) you need to call mesh.computeBoundingBox
  *      in order to update aabb.min and aabb.max values
+ * 
  * For static objects you only call once to mesh.computeBoundingBox
  */
  ModelCollider.prototype.update_aabb = function () {
