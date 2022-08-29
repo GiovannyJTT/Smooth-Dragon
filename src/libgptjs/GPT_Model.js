@@ -65,8 +65,6 @@ GPT_Model.prototype.dispose_buffers = function () {
     this.geometry = null;
     this.material = null;
     this.mesh = null;
-
-    console.log("GPT_Model.dispose_buffers()");
 }
 
 export default GPT_Model;

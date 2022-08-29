@@ -74,15 +74,15 @@ ModelBullet.prototype.get_material = function () {
     return _mat;
 }
 
+/**
+ * Extending method (calling parent method and performing pre / post operations)
+ */
 ModelBullet.prototype.dispose_buffers = function () {
-    this.geometry.dispose();
-    this.material.dispose();
     
-    this.geometry = null;
-    this.material = null;
-    this.mesh = null;
-
+    GPT_Model.prototype.dispose_buffers.call(this);
     this.collider.dispose_buffers();
+
+    console.log("ModelBullet: dispose_buffers()");
 }
 
 /**
