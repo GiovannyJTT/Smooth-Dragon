@@ -85,21 +85,21 @@ SceneDragon.prototype.createFloor = function () {
 }
 
 SceneDragon.prototype.createDragon = function () {
-    // model = contains geometry, material and mesh
-    const m_dragon = new ModelDragon();
+    const _start_pos = new THREE.Vector3(200, -75, -250);
+    this.dragon_model = new ModelDragon(_start_pos);
 
-    m_dragon.mesh.scale.set(2000, 2000, 2000);
-    m_dragon.mesh.position.set(200, -100, -250);
-    m_dragon.mesh.castShadow = true;
-    m_dragon.mesh.receiveShadow = true;
+    this.dragon_model.mesh.scale.set(1500, 1500, 1500);
+    this.dragon_model.mesh.castShadow = true;
+    this.dragon_model.mesh.receiveShadow = true;
 
-    this.gpt_models.set("dragon", m_dragon.mesh);
+    this.gpt_models.set("dragon", this.dragon_model.mesh);
+    this.gpt_models.set("dragon_collider", this.dragon_model.collider.aabb_helper);
 
     // initialization state of variables used periodically
     this.dragon_rot_angle_rads = 0.0;
 
     // pre-calculated for surface smoothing
-    m_dragon.geometry.computeVertexNormals();
+    this.dragon_model.geometry.computeVertexNormals();
 }
 
 SceneDragon.prototype.createSkybox = function () {
@@ -188,11 +188,11 @@ SceneDragon.prototype.updateObjects = function (ms) {
  */
 SceneDragon.prototype.updateDragon = function (ms) {
 
-    const _dragon = this.gpt_models.get("dragon");
-
     // 0.5 degrees per frame
-    _dragon.rotation.y += this.dragon_rot_angle_rads;
-    _dragon.rotation.y = (_dragon.rotation.y >= 2 * Math.PI) ? 0.0 : _dragon.rotation.y;
+    this.dragon_model.mesh.rotation.y += this.dragon_rot_angle_rads;
+    this.dragon_model.mesh.rotation.y = (this.dragon_model.mesh.rotation.y >= 2 * Math.PI) ? 0.0 : this.dragon_model.mesh.rotation.y;
+
+    this.dragon_model.update_collider(); 
 }
 
 /**
@@ -276,7 +276,7 @@ SceneDragon.prototype.createBullet = function () {
 
     const _tp = this.tra_model.spline_points3D;
     const _start_pos = _tp[0];
-    this.bullet_model = new ModelBullet(_tp, _start_pos);
+    this.bullet_model = new ModelBullet(_tp, _start_pos);    
     this.bullet_model.mesh.castShadow = true;
     this.bullet_model.mesh.receiveShadow = false;
 
