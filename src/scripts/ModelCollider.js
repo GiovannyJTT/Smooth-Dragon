@@ -68,4 +68,14 @@ ModelCollider.prototype.dispose_buffers = function () {
     this.aabb = null;
 }
 
+/**
+ * Checks collision (intersection) with other AABB (axis aligned bounding box)
+ * @return {Bool} `true` colliders are intersecting, `false` otherwise
+ * 
+ * TODO: implement for sphere-collider, triagle-collider, multi-aabb
+ */
+ModelCollider.prototype.is_colliding_with = function (other_aabb_) {
+    return this.aabb.intersectsBox(other_aabb_);
+}
+
 export default ModelCollider
