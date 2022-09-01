@@ -1,3 +1,14 @@
+/**
+ * Library: Graphical Programming with ThreeJS (GPT)
+ * Author: Giovanny Javier Tipantuña Toapanta
+ * Email: giovanny.jtt@gmail.com
+ * Content:
+ *  class GPT_ModelCollider
+ *      Depends on an existing THREE.Mesh object that should be provided
+ *      Using the Axis Aligned Bounding Box to detect a collision (intersection)
+ *          with another AABB
+ */
+
 import THREE from "../external-libs/threejs-0.118.3/three-global";
 
 /**
