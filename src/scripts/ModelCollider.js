@@ -10,7 +10,7 @@ import THREE from "../external-libs/threejs-0.118.3/three-global";
  * 
  * @attribute `this.abbb` {THREE.Box3} structure containing aabb as "Box3 { min: Vector3, max: Vector3}"
  */
-function ModelCollider (static_, obj_mesh) {
+function GPT_ModelCollider (static_, obj_mesh) {
     
     this.is_static = static_
     if (undefined === this.is_static) {
@@ -39,7 +39,7 @@ function ModelCollider (static_, obj_mesh) {
  * 
  * For static objects you only call once to mesh.computeBoundingBox
  */
- ModelCollider.prototype.update_aabb = function () {
+ GPT_ModelCollider.prototype.update_aabb = function () {
     if (!this.is_static) {
         this.obj_mesh.geometry.computeBoundingBox();
     }
@@ -55,11 +55,11 @@ function ModelCollider (static_, obj_mesh) {
  * Updates the helper's geometry to match the dimensions of the object,
  *      including any children, and also its position on the Scene.
  */
-ModelCollider.prototype.update_aabb_helper = function () {
+GPT_ModelCollider.prototype.update_aabb_helper = function () {
     this.aabb_helper.update();
 }
 
-ModelCollider.prototype.dispose_buffers = function () {
+GPT_ModelCollider.prototype.dispose_buffers = function () {
     this.aabb_helper.geometry.dispose();
     this.aabb_helper.material.dispose();
     this.aabb_helper.geometry = null;
@@ -74,8 +74,8 @@ ModelCollider.prototype.dispose_buffers = function () {
  * 
  * TODO: implement for sphere-collider, triagle-collider, multi-aabb
  */
-ModelCollider.prototype.is_colliding_with = function (other_aabb_) {
+GPT_ModelCollider.prototype.is_colliding_with = function (other_aabb_) {
     return this.aabb.intersectsBox(other_aabb_);
 }
 
-export default ModelCollider
+export default GPT_ModelCollider
