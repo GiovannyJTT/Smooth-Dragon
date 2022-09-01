@@ -2,7 +2,7 @@ import THREE from "../external-libs/threejs-0.118.3/three-global"
 import GPT_Model from "../libgptjs/GPT_Model"
 import CoordsDragon from "./CoordsDragon"
 import Common from "./Common"
-import ModelCollider from "./ModelCollider"
+import GPT_ModelCollider from "../libgptjs/GPT_ModelCollider"
 
 /**
  * Creates a dragon model by computing the triangles and normals from its vertices
@@ -24,7 +24,7 @@ function ModelDragon (start_pos_) {
     this.mesh.position.set(start_pos_.x, start_pos_.y, start_pos_.z);
 
     // Attach collider once mesh is built and set in intial postion
-    this.collider = new ModelCollider(false, this.mesh);
+    this.collider = new GPT_ModelCollider(false, this.mesh);
 }
 
 // 2. Extend from parent object prototype (keep proto clean)
