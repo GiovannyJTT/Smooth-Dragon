@@ -27,8 +27,8 @@ This WebGL app can be visualized in github pages because is a "front-end" only (
     * Calculates the normal vector for each triangle
     * Provides a method for calculating the UV coordinates for each triangle
 * `GPT_Model`
-    * mesh + geometry + material
-    * Provides methods for configuring the models with their corresponding group-node (joints), textures, initial position, etc.
+    * Simple class to integrate mesh + geometry + material
+    * Provides method for cleaning gl buffers that were reserved
 * `GPT_LinkedModel`
     * Model formed of joining several `THREE.Object3D` in order to create articulated models like robot arms
     * Provides method for adding a new link between two Object3D and finally linking all of them in sequence
@@ -80,7 +80,7 @@ This WebGL app can be visualized in github pages because is a "front-end" only (
             * `Peak` point is in the middle of triangle and is the highest point
             * `End` point is on the floor
         * Spline points are calculated using catmullrom and N (30) segments
-        * Final spline points are used to create the line geometry
+        * Final spline points are used to create line geometry to be rendered
 * `ModelBullet.js`
     * Creates the geometry, material, mesh, and GPT_ModelCollider
     * Needs a trajectory and a starting point3D
@@ -101,6 +101,20 @@ This WebGL app can be visualized in github pages because is a "front-end" only (
     * Performs all setting up of models and lights: floor, dragon, skybox, robot, trajectory, etc.
     * Performs periodic updates of models and lights: translate, rotate, destroy and create new trajectory, etc.
     * Contains a method where actions are triggered depending on the change of state of `FSM_Robot`
+        * Any change of state is reflected into the UI
+        * `Idle`
+            * Rotate Dragon, update AABB
+        * `loading_bullet`
+            * Rotate shooting arm
+            * Increase power while user keeps clicking and update UI slider
+            * When power increased set shooting arm to red color
+        * `bullet_traveling`
+            * Draw the trajectory
+            * Move the bullet along the trajectory
+            * Rotate while traveling
+        * `hit`
+            * Blink dragon to red
+            * Stop bullet at collision point
     * Limits the reaction to the incoming "shoot events" by checking if current robot state is `idle`
 
 ## Computer Graphics Techniques
