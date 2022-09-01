@@ -94,14 +94,55 @@ This WebGL app can be visualized in github pages because is a "front-end" only (
 
 ### User Interface (widgets) 
 
-## Compiling smooth-dragon project
+## This repository
+
+### NodeJS configuration
+
+This project is buildt with NodeJS. The dependencies packages and configuration are locate at `package.json`
+
+1. Install all dependencies
+    * `npm install`
+2. Two modes of "compiling" the code: `dev` and `build`
+    * Running in development mode with a local webpack-dev-server
+        * `npm run dev`
+    * Building compressed / production code for deployment in a remote server
+        * `npm run build`
+        * Assets (images, index, etc.) and code will be placed at `./dist/`
+        * You can use vs-code-plugin [live-server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) to simulate a remote server and view the result
+
+### Webpack configuration
+
+This project uses webpack-5 for building the final js code. Webpack configuration is done at `./config`
+
+* `paths.js`
+    * `src`
+        * Directory path for source files path (libgptjs, main scripts)
+    * `build`
+        * Directory path for production built files (compressed, images, html, etc.)
+    * `static`
+        * Directory path from which the assets will be to the build folder
+* `webpack.common.js`
+    * Uses webpack-plugins to integrate all resources (js scripts, html, images, etc.)
+    * `entry`
+        * Defines the point as `./src/index.js`, which also loads `./src/styles/index.scss` and `./src/scripts/main.js`
+    * `output`
+        * Defines the final js code bundle `[name].bundle.js` which will be placed at `build`
+    * `HtmlWebpackPlugin`
+        * Plugint that loads `./src/html/init_template.html`, replaces some headers and __defines the div where our project will be embedded into__:
+            * `div id="container"></div>`
+* `webpack.dev.js`
+    * Includes `webpack.common.js` and adds configuraiton for development server
+* `webpack.prod.js`
+    * Includes `webpack.common.js` and adds configuration for building production bundle (split in chunks, minify code, etc.)
+
+### Compiling smooth-dragon project
 
 * The project has been updated to be a NodeJS package
     * In that way we can use threejs as package (from npm) and use it as module in our application
 * We are also using webpack for building an optimized website (javascript code compression)
 
 
-### Compile instructions:
+#### Compile instructions:
 
 ```bash
 git clone https://github.com/GiovannyJTT/Smooth-Dragon.git
@@ -113,7 +154,7 @@ npm run build   # build an optimized website (html + javscript + images) in dist
 
 ---
 
-## Building Threejs.min manually
+#### Building Threejs.min manually
 
 For reducing the transmision of data when loading our webgl app in the client web browser we can build a minified version of ThreeJS. This will compress and unify all the ThreeJS scripts in one.
 
