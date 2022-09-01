@@ -7,7 +7,9 @@ WebGL project using ThreeJS, HTML5 and OOJS (object oriented javasctipt) for exp
 * Lighting and shadows
 * Bump mapping
 * Surface smoothing by using vertex normals
-* User Interface (widgets)
+* User Interface (widgets, buttons)
+* Finite State Machine to handle "shooting robot"
+* Collision detection using AABB
 
 This WebGL app can be visualized in github pages because is a "front-end" only (all models have been converted to data structures and stored in JS files for fast loading).
 
@@ -20,12 +22,19 @@ This WebGL app can be visualized in github pages because is a "front-end" only (
     * It contains several objects (classes) for wrapping all the logic required for creating an scene with threejs.
         * This allows modularity and we can reuse code creating instances of those clases.
 
+* `GPT_Coords`
+    * Gets vertices (Float32Array) and edges array (Uint32Array)
+    * Calculates the normal vector for each triangle
+    * Provides a method for calculating the UV coordinates for each triangle
 * `GPT_Model`
     * mesh + geometry + material
     * Provides methods for configuring the models with their corresponding group-node (joints), textures, initial position, etc.
 * `GPT_LinkedModel`
     * Model formed of joining several `THREE.Object3D` in order to create articulated models like robot arms
     * Provides method for adding a new link between two Object3D and finally linking all of them in sequence
+* `GPT_ModelCollider`
+    * Attaches an AABB (axis aligned bounding box) to an existign Mesh
+    * Provides a method for detecting collision with another AABB
 * `GPT_Scene`
     * List of `GPT_Model`s and `GPT_Light`
     * Provides abstract methods for initial configuration and updates in every frame
@@ -51,30 +60,48 @@ This WebGL app can be visualized in github pages because is a "front-end" only (
 * `CoordsGripper.js`
     * Stores arrays of gripper model (vertices and edges)
     * Since it inherits from `GPT_Coords` it provides methods for computing normals and UVs coordinates
+* `ModelSkybox.js`
+    * Creates a big cube and maps the texture to simulate environment
+    * These skybox images will be reflected on the Dragon surface and Gripper surface
 * `ModelDragon.js`
     * Inherits from `GPT_Model` and overrides `get_geometry` and `get_material` methods
     * Creates and initializes `geometry` and `material` objects to be inserted into a `mesh`
     * Computes `UV` coordinates per face (triangle) in order to simulate reflections of the skybox onto the dragon surface
+    * Contains a `GPT_ModelCollider`
 * `ModelGripper.js`
     * Idem to ModelDragon
-* `ModelSkybox.js`
-    * Creates a big cube and maps the texture to simulate environment
-    * These skybox images will be reflected on the Dragon surface and Gripper surface
-* `ModelTrajectory.js`
+* `ModelRobot.js`
     * Inherits from `GPT_LinkedModel`
-    * Creates separately the parts of the robot (base, arm, forearm, hand and gripper). Then links all of them in sequence
+    * Creates separately the parts of the robot (base, arm, forearm, hand and gripper). Then links them all in sequence
 * `ModelTrajectory.js`
     * Given 2 initial points to be used as direction vector
-        * It computes the control points (p1, p2, p3, peak and end) to be used later into the spline points calculation
-        * Control points form a triangle with one of the edges following the p1 and p2 direction
-            * Peak point is in the middle of triangle and is the highest point
-            * End point is on the floor
+        * It computes the control points (`p1, p2, p3, peak and end`) to be used later into the spline points calculation
+        * Control points form a triangle with one of the edges following the `p1` and `p2` direction
+            * `Peak` point is in the middle of triangle and is the highest point
+            * `End` point is on the floor
         * Spline points are calculated using catmullrom and N (30) segments
         * Final spline points are used to create the line geometry
+* `ModelBullet.js`
+    * Creates the geometry, material, mesh, and GPT_ModelCollider
+    * Needs a trajectory and a starting point3D
+    * Provides a method for moving the bullet between 2 consecutive points3D of the trajectory based on time passed since last frame
+* `InputManager.js`
+    * Checks if it is running on mobile device or desktop
+    * Creates the UI (sliders, toggles, etc.) and installs the "onChange event" callbacks to be executed when a value is updated by the user
+    * Creates html button for "shoot" and attaches the corresponding callback
+* `FSM_Robot.js`
+    * Defines a finite state machine for robot shooter
+    * Defines States, Events and Transitions
+    * Defines Transitions as a dictionary of allowed state-event pairs
+    * Provides methods for transiting from one state to other depending on the "Event"
+    * Provides method for updating the current state based on timers expiration
 * `SceneDragon.js`
+    * Contains the handling of main interactions: InputManager, animation (update) of objects, etc.
     * Inherits from `GPT_Scene` and overrides `createObjects`, `createLights`, `updateObjects` and `updateLights` methods
     * Performs all setting up of models and lights: floor, dragon, skybox, robot, trajectory, etc.
     * Performs periodic updates of models and lights: translate, rotate, destroy and create new trajectory, etc.
+    * Contains a method where actions are triggered depending on the change of state of `FSM_Robot`
+    * Limits the reaction to the incoming "shoot events" by checking if current robot state is `idle`
 
 ## Computer Graphics Techniques
 
