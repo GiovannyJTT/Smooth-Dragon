@@ -2,12 +2,13 @@
 
 WebGL project using ThreeJS, HTML5 and OOJS (object oriented javasctipt) for exploring several computer-graphics techniques:
 
-* Mesh creation
-* Texture UVs mapping in complex object
-* Lighting and shadows
-* Bump mapping
-* Surface smoothing by using vertex normals
-* User Interface (widgets, buttons)
+* Geometry and Normals calculation for complex models
+* UV coordinates calculation
+* Surface Smoothing by using Vertices Normals
+* Lighting and Shadows
+* Bump Mapping
+* User Interface (sliders, toggles, buttons)
+* Skybox and reflections
 * Finite State Machine to handle "shooting robot"
 * Collision detection using AABB
 
@@ -125,21 +126,21 @@ This WebGL app can be visualized in github pages because is a "front-end" only (
 
 ## Computer Graphics Techniques
 
-### Geometry Creation
+### Geometry and Normals calculation for complex models
 
-### Texture UVs mapping
+### UV coordinates calculation
+
+### Surface Smoothing by using Vertices Normals
 
 ### Lighting and Shadows
 
-### Update and Animate
+### User Interface (sliders, toggles, buttons)
 
-### Game Manager
+### Skybox and reflections
 
-### Bump Mapping
+### Finite State Machine to handle "shooting robot"
 
-### Surface Smoothing
-
-### User Interface (widgets) 
+### Collision detection using AABB
 
 ## This repository
 
