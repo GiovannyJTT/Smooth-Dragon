@@ -398,7 +398,7 @@ SceneDragon.prototype.createLights = function () {
 
     // 75% white light. Focal-Light: emits light with "cone" volume
     const lFocal = new THREE.SpotLight(new THREE.Color(0xbfbfbf));
-    lFocal.position.set(50, 330, -150);
+    lFocal.position.set(200, 330, -300);
 
     // direction of the central lighting vector
     lFocal.target.position.set(0, 0, 0);
