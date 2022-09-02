@@ -21,8 +21,8 @@ import THREE from "../external-libs/threejs-0.118.3/three-global";
  * 
  * @attribute `this.abbb` {THREE.Box3} structure containing aabb as "Box3 { min: Vector3, max: Vector3}"
  */
-function GPT_ModelCollider (static_, obj_mesh) {
-    
+function GPT_ModelCollider(static_, obj_mesh) {
+
     this.is_static = static_
     if (undefined === this.is_static) {
         console.error("Collider: 'is_static' is undefined");
@@ -50,7 +50,7 @@ function GPT_ModelCollider (static_, obj_mesh) {
  * 
  * For static objects you only call once to mesh.computeBoundingBox
  */
- GPT_ModelCollider.prototype.update_aabb = function () {
+GPT_ModelCollider.prototype.update_aabb = function () {
     if (!this.is_static) {
         this.obj_mesh.geometry.computeBoundingBox();
     }

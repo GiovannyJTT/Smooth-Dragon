@@ -17,17 +17,15 @@ import THREE from '../external-libs/threejs-0.118.3/three-global'
  * Constructs a Model object. Saves the reference to individual geometry and material, and
  * creates the THREE.Mesh
  */
-function GPT_Model () {
+function GPT_Model() {
     this.geometry = this.get_geometry();
-    if (this.geometry === undefined)
-    {
+    if (this.geometry === undefined) {
         console.error("Geometry undefined when constructing model");
-        return;        
+        return;
     }
 
     this.material = this.get_material();
-    if (this.material === undefined)
-    {
+    if (this.material === undefined) {
         console.error("Material undefined when constructing model");
         return;
     }

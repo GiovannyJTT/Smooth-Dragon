@@ -20,7 +20,7 @@ import THREE from '../external-libs/threejs-0.118.3/three-global'
  * @attribute {Map} links is a `Map JS structure`
  *      It can be iterated in order of insertion and can have any object type as key
  */
-function GPT_LinkedModel () {
+function GPT_LinkedModel() {
     this.links = new Map();
 }
 
@@ -43,7 +43,7 @@ GPT_LinkedModel.prototype.createLinksHierarchy = function () {
     let _prevValue = undefined;
     let i = 0;
 
-    for(let [key, value] of this.links) {
+    for (let [key, value] of this.links) {
         if (i == 0) {
             if ("root" != key) {
                 console.error("GPT_LinkedModel.createLinksHierarchy: first key is not 'root'. Found: " + key);
@@ -53,7 +53,7 @@ GPT_LinkedModel.prototype.createLinksHierarchy = function () {
                 _prevKey = key;
                 _prevValue = value;
                 i++;
-    
+
                 // jump to next iteration
                 continue;
             }
@@ -69,7 +69,7 @@ GPT_LinkedModel.prototype.createLinksHierarchy = function () {
         i++;
     }
 
-    console.debug("GPT_LinkedModel.createLinksHierarchy: total nodes: " + this.links.size + ", total links: " + (this.links.size-1));
+    console.debug("GPT_LinkedModel.createLinksHierarchy: total nodes: " + this.links.size + ", total links: " + (this.links.size - 1));
     return this.links.get("root");
 }
 

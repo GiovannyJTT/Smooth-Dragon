@@ -25,7 +25,7 @@ function GPT_Coords() {
     // initialization empty values (will be filled when calculateNormals)
     this.points3d = undefined;
     this.triangles_indices = undefined;
-    
+
     // initial operations
     this.vertices_coordinates = this.getArrayVertices();
     this.edges_indices = this.getArrayEdges();
@@ -60,7 +60,7 @@ GPT_Coords.prototype.getArrayEdges = function () {
  * @param { [myVec3] } this.triangles_indices array of myVec3 formed from this.edges_indices. 3 components form a triangle
  * @returns { [Float32Array] } Array of values of the computed normal vectors packed all together to be set in a BufferArray
  */
-GPT_Coords.prototype.calculateNormals = function(){
+GPT_Coords.prototype.calculateNormals = function () {
 
     // group 3d points
     this.points3d = [];
@@ -74,7 +74,7 @@ GPT_Coords.prototype.calculateNormals = function(){
         );
     }
 
-    function myVec3(a, b, c){
+    function myVec3(a, b, c) {
         this.a = a;
         this.b = b;
         this.c = c;
@@ -82,7 +82,7 @@ GPT_Coords.prototype.calculateNormals = function(){
 
     // group triangles indices
     this.triangles_indices = [];
-    for (let i = 0; i < this.edges_indices.length; i += 3){
+    for (let i = 0; i < this.edges_indices.length; i += 3) {
         this.triangles_indices.push(
             new myVec3(
                 this.edges_indices[i],
@@ -96,10 +96,10 @@ GPT_Coords.prototype.calculateNormals = function(){
     const _normals = new Float32Array(3 * this.triangles_indices.length);
 
     // compute normals: in threejs normals are clockwise by default
-    for (let i = 0, n = 0; i < this.triangles_indices.length; i++, n += 3){
-        const p1 = this.points3d[ this.triangles_indices[i].a ];
-        const p2 = this.points3d[ this.triangles_indices[i].b ];
-        const p3 = this.points3d[ this.triangles_indices[i].c ];
+    for (let i = 0, n = 0; i < this.triangles_indices.length; i++, n += 3) {
+        const p1 = this.points3d[this.triangles_indices[i].a];
+        const p2 = this.points3d[this.triangles_indices[i].b];
+        const p3 = this.points3d[this.triangles_indices[i].c];
 
         // v1 = p2 - p1 = destination - origin
         const v1 = new THREE.Vector3(p2.x - p1.x, p2.y - p1.y, p2.z - p1.z);
@@ -126,7 +126,7 @@ GPT_Coords.prototype.calculateNormals = function(){
         // pack all normals-coordinates adjacently for attributeBuffer
         _normals[n] = normal.x;
         _normals[n + 1] = normal.y;
-        _normals[n + 2] = normal.z;   
+        _normals[n + 2] = normal.z;
     }
 
     return _normals;
@@ -141,8 +141,8 @@ GPT_Coords.prototype.calculateNormals = function(){
  * @param {Array} this.triangles_indices reusing to compute uvs
  * @return {Float32Array} Array containing all UVs for all faces to be ready to copy in a THREE.BufferArray
  */
- GPT_Coords.prototype.getUVs = function(geom_){
-    if (geom_ === undefined){
+GPT_Coords.prototype.getUVs = function (geom_) {
+    if (geom_ === undefined) {
         console.error("GPT_Coords.getUVs: 'geom_' is undefined");
         return;
     }
@@ -157,10 +157,10 @@ GPT_Coords.prototype.calculateNormals = function(){
     // each UV has 2 coordinates, each face (triangle) has 3 vertice, one UV per face
     const _uvs = new Float32Array(6 * this.triangles_indices.length);
 
-    for (let i = 0, n = 0; i < this.triangles_indices.length; i++, n += 6){
-        const p1 = this.points3d[ this.triangles_indices[i].a ];
-        const p2 = this.points3d[ this.triangles_indices[i].b ];
-        const p3 = this.points3d[ this.triangles_indices[i].c ];
+    for (let i = 0, n = 0; i < this.triangles_indices.length; i++, n += 6) {
+        const p1 = this.points3d[this.triangles_indices[i].a];
+        const p2 = this.points3d[this.triangles_indices[i].b];
+        const p3 = this.points3d[this.triangles_indices[i].c];
 
         // pack all UV together for bufferAtrribute
         _uvs[n] = (p1.x + offset.x) / range.x;
