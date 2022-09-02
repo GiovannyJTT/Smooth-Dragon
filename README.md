@@ -282,6 +282,17 @@ This WebGL app can be visualized in github pages because is a "front-end" only (
         * They need to be mapped properly ordered
             * `posx, negx, posy, negy, posz, negz`
     * Makes the inner of the box visible instead of the outside
+        ```javascript
+        ModelSkybox.prototype.get_material = function () {
+            ...
+                _cubeFacesMaterials.push(
+                new THREE.MeshBasicMaterial({
+                    map: _loader.load(_img_path),
+                    color: 0xffffff, // white
+                    side: THREE.BackSide // inside the cube
+                })
+            ...
+        ```
 2. Reflections on [ModelDragon.js](./src/scripts/ModelDragon.js)
     * Sets `transparent`, `opacity`, and `shinines` to simulate "glass"
     * Sets the `Skybox Textures Array` as `envMap`
@@ -319,11 +330,29 @@ This WebGL app can be visualized in github pages because is a "front-end" only (
     * Reflects text of `robot_state`
     * Reflects value of `robot_power`
 4. Creates a custom html button for `shoot`, which is separated from the rest of the panel for better usability
-5. Creates a `stats` widget
+5. Creates a `stats` widget at the bottom of the canvas container. This reflects the frames per second
 
 ### Finite State Machine to handle "shooting robot"
 
+[FSM_Robot.js](./src/scripts/FSM_Robot.js)
+
+1. Defines `States`, `Events` and allowed `Transitions`
+2. A transition is defined as `destination state` given a pair `State-Event`
+3. Updates the current state based on the expiration of timers
+    * `IDLE` --> shoot --> `LOADING_BULLET`
+    * `LOADING_BULLET` --> timer.expired --> `BULLET_TRAVELING`
+    * `BULLET_TRAVELING` --> collision -->  `HIT`
+    * `BULLET_TRAVELING` --> timer.expired --> `NO_HIT`
+    * `HIT` / `NO_HIT` --> timer.expired --> `IDLE`
+
 ### Collision detection using AABB
+
+[GPT_ModelCollider.js](./src/libgptjs/GPT_ModelCollider.js)
+
+* Main concept can be read at [link](https://developer.mozilla.org/en-US/docs/Games/Techniques/3D_collision_detection)
+1. Attaches an AABB (axis aligned bounding box)
+2. Updates the dimensions of the AABB at runtime
+3. Checks if intersects with other AABB (collided)
 
 ## This repository
 
