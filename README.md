@@ -231,7 +231,7 @@ This WebGL app can be visualized in github pages because is a "front-end" only (
             3. cross_product(v1, v2)
             4. Applies modulus
             5. Stores normal (3 float components)
-2. Then you can invoke computeVertexNormals in order to make the transition between faces (triangles) smoother when computing the lighting
+2. Then you can invoke `computeVertexNormals` in order to make the transition between faces (triangles) smoother when computing the lighting
     ```javascript
     SceneDragon.prototype.createDragon = function () {
         // pre-calculated for surface smoothing
@@ -257,7 +257,7 @@ This WebGL app can be visualized in github pages because is a "front-end" only (
 
 [SceneDragon.js](./src/scripts/SceneDragon.js) `createLights`
 
-1. Creates ambient light that will be added when shading the models surface
+1. Creates an `ambient light` that will be added when shading the models surface
     * 5% white
     * It doesn't need a position into the Scene
 2. Creates a `point light`
@@ -265,14 +265,17 @@ This WebGL app can be visualized in github pages because is a "front-end" only (
     * Emits in all directions
 3. Creates a `directional light`
     * 75% white
-    * Emits only in the direction vector provided
+    * Emits only in the direction vector provided (-200, 200, 0)
 4. Creates a `focal light`
     * 75% white
     * Emits light in a cone volume
     * Direction of the central lighting vector is pointing to the center of the floor (0,0,0)
-    * You need to define near, far, and fov to make a `fading lighting`
+    * Defines `angle` and `distance` to make a `fading lighting` from the center of the cone to the exterior
+    * Defines the cone like shape by defining parameters of shador: `near`, `far` and `fov`
 
 ### User Interface (sliders, toggles, buttons)
+
+
 
 ### Skybox and reflections
 
