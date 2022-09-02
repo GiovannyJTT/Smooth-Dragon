@@ -1,5 +1,6 @@
 import { GUI } from 'dat.gui'
 import Common from './Common';
+import Stats from "three/examples/jsm/libs/stats.module"
 
 /**
  * Manages input from UI or Keyboard and sends actions to update models
@@ -128,6 +129,9 @@ InputManager.prototype.create_ui_controller = function () {
 
     _c = this.create_shoot_button_html();
     this.controllers.set("robot_shoot", _c);
+
+    _c = this.create_stats_widget();
+    this.controllers.set("stats", _c);
 }
 
 /**
@@ -163,6 +167,27 @@ InputManager.prototype.create_shoot_button_html = function () {
     _shoot_button.style.left = "190px";
 
     return _shoot_button;
+}
+
+/**
+ * Creates a Stats widget located at bottom-left corner of container
+ * @returns Stats object to be updated every frame
+ */
+InputManager.prototype.create_stats_widget = function () {
+    const _stats = new Stats();
+    
+    // positioning at bottom-left
+    _stats.dom.style.position = "absolute";
+    _stats.dom.style.left = "0px";
+    const _t = (window.innerHeight - 50).toString() + "px";
+    _stats.dom.style.top = _t;
+
+    document.getElementById("container").appendChild(_stats.dom);
+
+    // update every frame into Scene
+    // _stats.update;
+
+    return _stats;
 }
 
 InputManager.prototype.create_kb_controller = function () {

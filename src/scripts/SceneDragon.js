@@ -201,6 +201,8 @@ SceneDragon.prototype.updateObjects = function (ms) {
     this.updateBullet();
 
     this.on_fsmr_changed();
+
+    this.im.controllers.get("stats").update();
 }
 
 /**
