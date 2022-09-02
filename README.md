@@ -6,7 +6,6 @@ WebGL project using ThreeJS, HTML5 and OOJS (object oriented javasctipt) for exp
 * UV coordinates calculation
 * Surface Smoothing by using Vertices Normals
 * Lighting and Shadows
-* Bump Mapping
 * Skybox and reflections
 * User Interface (sliders, toggles, buttons)
 * Finite State Machine to handle "shooting robot"
