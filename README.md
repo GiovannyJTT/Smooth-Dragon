@@ -94,14 +94,14 @@ This WebGL app can be visualized in github pages because is a "front-end" only (
     * Provides a method for moving the bullet between 2 consecutive points3D of the trajectory based on time passed since last frame
 * [InputManager.js](./src/scripts/InputManager.js)
     * Checks if it is running on mobile device or desktop
-    * Creates the UI (sliders, toggles, etc.) and installs the "onChange event" callbacks to be executed when a value is updated by the user
+    * Creates the UI (sliders, toggles, etc.) and installs the `onChange` event callbacks to be executed when a value is updated by the user
     * Creates html button for "shoot" and attaches the corresponding callback
 * [FSM_Robot.js](./src/scripts/FSM_Robot.js)
     * Defines a finite state machine for robot shooter
-    * Defines States, Events and Transitions
+    * Defines `States`, `Events` and `Transitions`
     * Defines Transitions as a dictionary of allowed state-event pairs
-    * Provides methods for transiting from one state to other depending on the "Event"
-    * Provides method for updating the current state based on timers expiration
+    * Provides methods for `transiting` from one state to other depending on the "Event"
+    * Provides method for `updating` the current state based on timers expiration
 * [SceneDragon.js](./src/scripts/SceneDragon.js)
     * Contains the handling of main interactions: InputManager, animation (update) of objects, etc.
     * Inherits from `GPT_Scene` and overrides `createObjects`, `createLights`, `updateObjects` and `updateLights` methods
