@@ -17,10 +17,17 @@ This WebGL app can be visualized in github pages because is a "front-end" only (
 
 ## LIBGPT
 
-* Graphical Programming with Threejs (libgpt)
+* [three-global.js](./src/external-libs/threejs-0.118.3/three-global.js)
+    * It is used to create a global object `THREE` and add functionalities to it
+        1. Imports `three.js` library as module from npm
+        2. Names it `THREE` (following the nomenclature used in other modules)
+        3. Exports the object `THREE` from this script / module to be imported into the rest (ex: in OrbitControls.js)
+        4. In `OrbitControls.js` (or other scripts) new functionality is added to `THREE` object
+    * The classes at `libgptjs/` import `three-global.js`
+* Graphical Programming with Threejs [libgptjs](./src/libgptjs/)
     * Wrapper / Library to facilitate re-use of code and organize the graphics pipeline
-    * It contains several objects (classes) for wrapping all the logic required for creating an scene with threejs.
-        * This allows modularity and we can reuse code creating instances of those clases.
+    * It contains several objects (classes) for wrapping all the logic required for creating an scene with threejs
+        * This allows modularity and we can reuse code creating instances of those clases
 
 * `GPT_Coords`
     * Gets vertices (Float32Array) and edges array (Uint32Array)
