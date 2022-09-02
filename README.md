@@ -159,35 +159,31 @@ This project is buildt with NodeJS. The dependencies packages and configuration 
 
 ### Webpack configuration
 
-This project uses webpack-5 for building the final js code. Webpack configuration is done at `./config`
+This project uses webpack-5 for building the final js code. Webpack configuration is done at [config/](./config)
 
-* `paths.js`
+* [paths.js](./config/paths.js)
     * `src`
         * Directory path for source files path (libgptjs, main scripts)
     * `build`
         * Directory path for production built files (compressed, images, html, etc.)
     * `static`
         * Directory path from which the assets will be to the build folder
-* `webpack.common.js`
+* [webpack.common.js](./config/webpack.common.js)
     * Uses webpack-plugins to integrate all resources (js scripts, html, images, etc.)
     * `entry`
-        * Defines the point as `./src/index.js`, which also loads `./src/styles/index.scss` and `./src/scripts/main.js`
+        * Defines the point as [index.js](./src/index.js), which also loads [index.scss](./src/styles/index.scss) and [main.js](./src/scripts/main.js)
+            * This makes canvas background green and starts our app entry point (main.js)
     * `output`
         * Defines the final js code bundle `[name].bundle.js` which will be placed at `build`
     * `HtmlWebpackPlugin`
-        * Plugint that loads `./src/html/init_template.html`, replaces some headers and __defines the div where our project will be embedded into__:
+        * Plugint that loads [init_template.html](./src/html/init_template.html), replaces some headers and __defines the div where our project will be embedded into__:
             * `div id="container"></div>`
-* `webpack.dev.js`
+* [webpack.dev.js](./config/webpack.dev.js)
     * Includes `webpack.common.js` and adds configuraiton for development server
-* `webpack.prod.js`
+* [webpack.prod.js](./config/webpack.prod.js)
     * Includes `webpack.common.js` and adds configuration for building production bundle (split in chunks, minify code, etc.)
 
 ### Compiling smooth-dragon project
-
-* The project has been updated to be a NodeJS package
-    * In that way we can use threejs as package (from npm) and use it as module in our application
-* We are also using webpack for building an optimized website (javascript code compression)
-
 
 #### Compile instructions:
 
