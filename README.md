@@ -86,7 +86,7 @@ This WebGL app can be visualized in github pages because is a "front-end" only (
         * Control points form a triangle with one of the edges following the `p1` and `p2` direction
             * `Peak` point is in the middle of triangle and is the highest point
             * `End` point is on the floor
-        * Spline points are calculated using catmullrom and N (30) segments
+        * Spline points are calculated using the control points and `catmullrom` with N (30) segments
         * Final spline points are used to create line geometry to be rendered
 * [ModelBullet.js](./src/scripts/ModelBullet.js)
     * Creates the geometry, material, mesh, and GPT_ModelCollider
