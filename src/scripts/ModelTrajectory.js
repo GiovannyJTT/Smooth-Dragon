@@ -89,12 +89,12 @@ ModelTrajectory.prototype.compute_control_points = function () {
     const _plane_normal = new THREE.Vector3(0, 1, 0);
     _plane_normal.normalize();
 
-    // decay angle = angle(v, n) / 2;
+    // angle = angle_between(v, n) * factor_decay(0.5);
     const _a = _v.clone().angleTo(_plane_normal) * Common.TRAJECTORY_ANGLE_DECAY;
     // console.debug("inclination angle " + (_a * 180 / Math.PI));
 
     // Since n is perpendicular to ground plane then we have a right-angled triangle
-    // opposite = tan(a) * adjacent
+    // perpendicular = opposite = tan(a) * adjacent
     const _perpendicular = Math.tan(_a) * this.dist_middle;
 
     // projecting on the ground plane
@@ -214,7 +214,7 @@ ModelTrajectory.prototype.get_spline_points_and_colors = function () {
     }
 
     const resp = {
-        // size is 3 * NUM DIVISIONS (10)
+        // size = 3 floats * TRAJECTORY_SPLINE_NUM_SEGMENTS
         "positions": _positions,
         "colors": _colors
     }
