@@ -128,11 +128,149 @@ This WebGL app can be visualized in github pages because is a "front-end" only (
 
 ### Geometry and Normals calculation for complex models
 
+* A triangle is the basic polygone
+    * It is formed of 3 vertices, each vertex has 3 components float (x, y, z)
+    * Its vertices are defined clockwise by default. This is taken into account when computing the face (triangle) normal vector
+* A `geometry` in threejs is formed of several arrays
+    * `position`
+        * It is a `Float32Array` in which all the coordinates of all vertices of all triangles are packed together
+        * Array lenght is `3 * num vertices`
+        * Example forming the first __2 triangles__
+            ```javascript
+            CoordsGripper.prototype.getArrayVertices = function () {
+                return new Float32Array([
+                    0, 0, 0,
+                    0, 20, 0,
+                    19, 20, 0,
+                    19, 0, 0,
+                    0, 20, 4,
+                    0, 0, 4,
+            ```
+        * `itemSize` 3 because there are 3 components per vertex
+            ```javascript
+            ModelDragon.prototype.get_geometry = function () {
+                const _geom = new THREE.BufferGeometry();
+
+                _geom.setAttribute(
+                    "position",
+                    new THREE.BufferAttribute(this.coords.vertices_coordinates, 3)
+                );
+            ```
+    * `normal`
+        * It is a `Float32Array` containing all the normal vectors for all triangles
+        * Array lenght is `3 * num triangles`
+        * It is computed at [GPT_Coords](./src/libgptjs/GPT_Coords.js) `calculateNormals`
+        * Idem to `positions`
+    * `indices`
+        * It is a `UInt32Array` containing all the sequence of  indices (of `positions` array) to form triangles
+        * Example forming the first __2 triangles__
+            ```javascript
+            CoordsGripper.prototype.getArrayEdges = function () {
+                return new Uint32Array([
+                    2, 0, 1,
+                    3, 0, 2,
+            ```
+        * `itemSize` 1 because there are 1 component per vertex-index
+            ```javascript
+            _geom.setIndex(new THREE.BufferAttribute(this.coords.edges_indices, 1));
+            ```
+    * `uv`
+        * It is a `Float32Array` containing the UV coordinates for all vertices of all triangles
+        * Each vertex will have 2 UV components (texture coordinates)
+        * UV coordinate values are in range [0.0, 1.0]
+        * Array lenght is `6 * num triangles`
+        * It is computed at [GPT_Coords.js](./src/libgptjs/GPT_Coords.js) `getUVs`
+        * `itemSize` 2 because each vertex has 2 UV componets
+            ```javascript
+            _geom.setAttribute(
+                "uv",
+                new THREE.BufferAttribute(uvs, 2)
+            );
+            ```
+* A `Mesh Phong Material` in threejs is needed to define the rendering of the geometry
+    ```javascript
+    ModelDragon.prototype.get_material = function () {
+        // loading TextureCube as skybox
+        const _mat = new THREE.MeshPhongMaterial(
+            {
+                color: 0xe5ffe5,
+                emissive: 0xb4ef3e,
+                flatShading: true, // initially per-triangle normals
+                specular: 0x003300,
+                shininess: 70,
+                side: THREE.FrontSide,
+                transparent: true,
+                opacity: 0.75,
+                envMap: Common.SKYBOX_CUBE_TEXTURE
+            }
+        );
+    ```
+* A mesh in threejs is formed of a geometry and a material
+    ```javascript
+    this.mesh = new THREE.Mesh(this.geometry, this.material);
+    ```
+
 ### UV coordinates calculation
+
+[GPT_Coords.js](./src/libgptjs/GPT_Coords.js) `getUVs`
+
+1. Calculates UV for planar surface (x, y, z) where z = 0
+2. Depends on geometry bounding box
+3. Computes the UV values for each face (triangle)
+4. Stores UV coordinates for each triangle (6 float components)
 
 ### Surface Smoothing by using Vertices Normals
 
+1. First you need to have per-face (triangle) normals
+    * [GPT_Coords.js](./src/libgptjs/GPT_Coords.js) `calculateNormals`
+        1. Creates `points3D` array by grouping 3 values from `positions` array
+        2. Creates triagles array by grouping 3 values from `points3D` array
+        3. Computes normals for each triangle clockwise
+            1. v1 = p2 - p1
+            2. v2 = p3 - p2
+            3. cross_product(v1, v2)
+            4. Applies modulus
+            5. Stores normal (3 float components)
+2. Then you can invoke computeVertexNormals in order to make the transition between faces (triangles) smoother when computing the lighting
+    ```javascript
+    SceneDragon.prototype.createDragon = function () {
+        // pre-calculated for surface smoothing
+        this.dragon_model.geometry.computeVertexNormals();
+    ```
+3. You must update the material to be `smooth shading` ( `flatShading` = false)
+    ```javascript
+    _cbs.on_change_dragon_smoothing = (new_val_) => {
+        const _dragon = this.gpt_models.get("dragon");
+
+        // boolean
+        if (new_val_) {
+            _dragon.material.flatShading = false;
+        }
+        else {
+            _dragon.material.flatShading = true;
+        }
+        _dragon.material.needsUpdate = true;
+    };
+    ```
+
 ### Lighting and Shadows
+
+[SceneDragon.js](./src/scripts/SceneDragon.js) `createLights`
+
+1. Creates ambient light that will be added when shading the models surface
+    * 5% white
+    * It doesn't need a position into the Scene
+2. Creates a `point light`
+    * 75% white
+    * Emits in all directions
+3. Creates a `directional light`
+    * 75% white
+    * Emits only in the direction vector provided
+4. Creates a `focal light`
+    * 75% white
+    * Emits light in a cone volume
+    * Direction of the central lighting vector is pointing to the center of the floor (0,0,0)
+    * You need to define near, far, and fov to make a `fading lighting`
 
 ### User Interface (sliders, toggles, buttons)
 
