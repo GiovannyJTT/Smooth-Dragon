@@ -13,16 +13,16 @@ import Common from "./Common";
  * @param {Float} trajectory_dist_end_ max distance of trajectory is the "bullet power"
  * @param {[THREE.Vector3]} spline_points3D vector of points forming the spline (TRACJETORY_SPLINE_NUM_SEGMENTS)
  */
-function ModelTrajectory (start_point3D_, end_point3D_, trajectory_dist_end_) {
+function ModelTrajectory(start_point3D_, end_point3D_, trajectory_dist_end_) {
 
     this.p1 = start_point3D_;
-    if (undefined === this.p1){
+    if (undefined === this.p1) {
         console.error("ModelTrajectory: 'p1' is undefined");
         return;
     }
 
     this.p2 = end_point3D_;
-    if (undefined === this.p2){
+    if (undefined === this.p2) {
         console.error("ModelTrajectory: 'p2' is undefined");
         return;
     }
@@ -136,9 +136,9 @@ ModelTrajectory.prototype.compute_control_points = function () {
 /**
  * Overriding it
  */
-ModelTrajectory.prototype.get_geometry = function () {    
-    
-    const _spline = this.get_spline_points_and_colors();    
+ModelTrajectory.prototype.get_geometry = function () {
+
+    const _spline = this.get_spline_points_and_colors();
     const _vertices = _spline["positions"];
     const _colors = _spline["colors"];
 
@@ -180,7 +180,7 @@ ModelTrajectory.prototype.get_material = function () {
  * @returns {{Float32Array, Float32Array}} {positions, colors} Both same size (3 * TRAJECTORY_SPLINE_NUM_SEGMENTS)
  */
 ModelTrajectory.prototype.get_spline_points_and_colors = function () {
-    
+
     if (this.trajectory_control_points === undefined) {
         console.error("ModelTrajectory.get_spline_points_and_colors: 'trajectory_control_points' is undefined");
         return;
@@ -208,7 +208,7 @@ ModelTrajectory.prototype.get_spline_points_and_colors = function () {
         this.spline_points3D.push(_p);
 
         _tmpColor.setHSL(t, 1, 0.5);
-        _colors[v ] = _tmpColor.r;
+        _colors[v] = _tmpColor.r;
         _colors[v + 1] = _tmpColor.g;
         _colors[v + 2] = _tmpColor.b;
     }
@@ -226,13 +226,13 @@ ModelTrajectory.prototype.get_spline_points_and_colors = function () {
  * Extending method (calling parent method and performing pre / post operations)
  */
 ModelTrajectory.prototype.dispose_buffers = function () {
-    
+
     GPT_Model.prototype.dispose_buffers.call(this);
 
     this.trajectory_control_points = null;
     this.p1 = null;
     this.p2 = null;
-    
+
     console.log("ModelTrajectory: dispose_buffers()");
 }
 

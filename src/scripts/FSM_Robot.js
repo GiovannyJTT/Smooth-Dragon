@@ -10,7 +10,7 @@ const R_States = Object.freeze(
     {
         // waiting for event from user
         IDLE: Symbol("idle"),
-        
+
         // shoot-button clicked, loading bullet (longer time bigger bullet)
         LOADING_BULLET: Symbol("loading_bullet"),
 
@@ -48,7 +48,7 @@ const R_Events = Object.freeze(
  * Using symbol as key of the dictionary
  * @param {Dictionary} cbs_ dictionary containing callbacks to be called to retrieve if event is true or false
  */
-function FSM_Robot (cbs_) {
+function FSM_Robot(cbs_) {
 
     this.cbs = cbs_;
     if (undefined === this.cbs) {
@@ -99,7 +99,7 @@ FSM_Robot.prototype.get_dest_state = function (event_) {
         // get destination state using the event_
         const _dest = _transitions_from_state[event_];
         if (undefined === _dest) {
-            console.warn("Event not allowed: '" + event_.description + "' in current state '" + this.state.description +"'");
+            console.warn("Event not allowed: '" + event_.description + "' in current state '" + this.state.description + "'");
         }
         return _dest;
     }
@@ -114,7 +114,7 @@ FSM_Robot.prototype.get_dest_state = function (event_) {
  * @return {Bool} true transited properly (current state is now dest state), false otherwise
  */
 FSM_Robot.prototype.transit = function (event_) {
-    
+
     console.debug("input event: " + event_.description);
     const _dest = this.get_dest_state(event_);
 
@@ -215,7 +215,7 @@ FSM_Robot.prototype.update_state = function () {
  * @return {Bool} true while duration not expired / reached, false otherwise
  */
 FSM_Robot.prototype.loading_bullet_expired = function () {
-    
+
     if (this.state != R_States.LOADING_BULLET) {
         return false;
     }

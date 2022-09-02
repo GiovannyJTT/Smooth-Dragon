@@ -14,7 +14,7 @@ import ModelSkybox from './ModelSkybox'
 import ModelRobot from './ModelRobot'
 import ModelTrajectory from './ModelTrajectory'
 import InputManager from './InputManager'
-import FSM_Robot, {R_States, R_Events} from './FSM_Robot'
+import FSM_Robot, { R_States, R_Events } from './FSM_Robot'
 import ModelBullet from './ModelBullet'
 
 /**
@@ -133,7 +133,7 @@ SceneDragon.prototype.createRobot = function () {
  */
 SceneDragon.prototype.createInputManager = function () {
     const _cbs = {};
-    
+
     _cbs.on_change_dragon_rot_angle = (new_val_) => {
         // new_val_ is degrees
         this.dragon_rot_angle_rads = new_val_ * Math.PI / 180.0;
@@ -162,14 +162,14 @@ SceneDragon.prototype.createInputManager = function () {
 
     _cbs.on_change_robot_shoot = () => {
         if (this.fsm_r.current_is_idle()) {
-            
+
             // trigger fsm transit so timers starts running
             this.fsm_r.transit(FSM_Robot.R_Events.SHOOT_STARTED);
             const _c = this.im.controllers.get("robot_status");
             _c.setValue(this.fsm_r.state.description);
         }
         else if (this.fsm_r.current_is_loading_bullet()) {
-            
+
             // increase robot_power with successive clicks (UI it will auto-clamp to max value)
             const _c = this.im.controllers.get("robot_power");
             const _rp = _c.getValue() + Common.TRAJECTORY_DIST_STEP;
@@ -216,9 +216,9 @@ SceneDragon.prototype.updateDragon = function (ms) {
 
         // 0.5 degrees per frame
         this.dragon_model.mesh.rotation.y += this.dragon_rot_angle_rads;
-        this.dragon_model.mesh.rotation.y = 
+        this.dragon_model.mesh.rotation.y =
             (this.dragon_model.mesh.rotation.y >= 2 * Math.PI) ? 0.0 : this.dragon_model.mesh.rotation.y;
-    
+
         this.dragon_model.update_collider();
     }
 }
@@ -228,7 +228,7 @@ SceneDragon.prototype.updateDragon = function (ms) {
  * @param {Float} ms milliseconds passed since last frame
  */
 SceneDragon.prototype.updateRobot = function (ms) {
-    
+
     if (this.fsm_r.current_is_loading_bullet()) {
         const _forearm = this.robotLinked.links.get("forearm");
 
@@ -241,10 +241,10 @@ SceneDragon.prototype.updateRobot = function (ms) {
 /**
  * Perform operations only once when there is a state-transition of the robot-state-machine
  */
- SceneDragon.prototype.on_fsmr_changed = function () {
+SceneDragon.prototype.on_fsmr_changed = function () {
 
     this.fsm_r.update_state();
-    
+
     if (this.fsm_r.state_has_changed()) {
 
         const _c = this.im.controllers.get("robot_status");
@@ -288,7 +288,7 @@ SceneDragon.prototype.updateRobot = function (ms) {
  * @param {Float} ms milliseconds passed since last frame
  */
 SceneDragon.prototype.createTrajectory = function (ms) {
-    
+
     this.removeTrajectory();
 
     // create new
@@ -318,7 +318,7 @@ SceneDragon.prototype.removeTrajectory = function () {
         // destroy geom and mat buffers
         this.tra_model.dispose_buffers();
         this.tra_model = undefined;
-    
+
         // remove it at runtime from THREE.Scene (also from gpt_models)
         this.removeModelFromScene("trajectory");
     }
@@ -332,7 +332,7 @@ SceneDragon.prototype.createBullet = function () {
 
     const _tp = this.tra_model.spline_points3D;
     const _start_pos = _tp[0];
-    this.bullet_model = new ModelBullet(_tp, _start_pos);    
+    this.bullet_model = new ModelBullet(_tp, _start_pos);
     this.bullet_model.mesh.castShadow = true;
     this.bullet_model.mesh.receiveShadow = false;
 
@@ -364,7 +364,7 @@ SceneDragon.prototype.updateBullet = function () {
     }
     else if (this.fsm_r.current_is_hit()) {
         // 10 degrees per frame
-        this.bullet_model.mesh.rotation.x -= 0.174533;        
+        this.bullet_model.mesh.rotation.x -= 0.174533;
     }
 }
 

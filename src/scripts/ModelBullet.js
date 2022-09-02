@@ -15,7 +15,7 @@ import GPT_ModelCollider from "../libgptjs/GPT_ModelCollider";
  * @param {[THREE.Vector3]} trajectory_points3D_ array of Vector3 points to move along the bullet
  * @param {THREE.Vector3} start_pos_ initial position to spawn model and collider
  */
-function ModelBullet (trajectory_points3D_, start_pos_) {
+function ModelBullet(trajectory_points3D_, start_pos_) {
 
     this.trajectory_points3D = trajectory_points3D_
 
@@ -83,7 +83,7 @@ ModelBullet.prototype.get_material = function () {
  * Extending method (calling parent method and performing pre / post operations)
  */
 ModelBullet.prototype.dispose_buffers = function () {
-    
+
     GPT_Model.prototype.dispose_buffers.call(this);
     this.collider.dispose_buffers();
 
@@ -100,14 +100,14 @@ ModelBullet.prototype.move_to_next_point = function () {
     if (this.current_point_index >= _last_index) {
         return false;
     }
-    
+
     this.current_point_index++;
     const _p = this.trajectory_points3D[this.current_point_index];
     this.mesh.position.set(_p.x, _p.y, _p.z);
 
     // update collider
     this.collider.update_aabb();
-    
+
     return true;
 }
 
@@ -121,7 +121,7 @@ ModelBullet.prototype.move_to_next_point = function () {
  * @returns {Bool} true object moved, false otherwise
  */
 ModelBullet.prototype.move_to_next_point_interpolated = function () {
-    
+
     const _last_index = this.trajectory_points3D.length - 1;
     if (this.current_point_index >= _last_index) {
         return false;
@@ -135,12 +135,12 @@ ModelBullet.prototype.move_to_next_point_interpolated = function () {
 
         const _p = this.trajectory_points3D[this.current_point_index];
         const _p_next = this.trajectory_points3D[this.current_point_index + 1];
-    
+
         // interpolate coordinates between current and next
         const _ip_x = lerp(_p.x, _p_next.x, _i);
         const _ip_y = lerp(_p.y, _p_next.y, _i);
         const _ip_z = lerp(_p.z, _p_next.z, _i);
-    
+
         // apply
         this.mesh.position.set(_ip_x, _ip_y, _ip_z);
 

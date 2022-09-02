@@ -9,7 +9,7 @@ import Stats from "three/examples/jsm/libs/stats.module"
  * @param {Dictionary} on_change_callbacks_ callback functions to fire when GUI elements change
  */
 function InputManager(on_change_callbacks_) {
-    
+
     this.cbs = on_change_callbacks_;
     if (this.cbs === undefined) {
         console.error("InputManager: on_change_callbacks is undefined");
@@ -20,7 +20,7 @@ function InputManager(on_change_callbacks_) {
     if (!this.is_mobile) {
         this.keyboard = this.create_kb_controller();
     }
-    
+
     // fills controllers with references to the GUI panels
     this.gui = null;
     this.controllers = null;
@@ -58,7 +58,7 @@ InputManager.prototype.create_ui_controller = function () {
 
     // semi-transparent gui
     Array.from(document.getElementsByClassName('dg')).forEach(
-        function(element, index, array) {
+        function (element, index, array) {
             element.style.opacity = 0.85;
         }
     );
@@ -75,7 +75,7 @@ InputManager.prototype.create_ui_controller = function () {
     let _f = this.gui.addFolder("dragon");
 
     let _c = _f.add(_e, "status").name("Status");
-    
+
     this.controllers.set("dragon_status", _c);
 
     _c = _f.add(_e, "rot_angle", -3.0, 3.0, 1.0).name("RotY Angle")
@@ -85,7 +85,7 @@ InputManager.prototype.create_ui_controller = function () {
         )
         // trigger first event
         .setValue(1.0)
-    
+
     this.controllers.set("dragon_rot_angle", _c);
 
     _c = _f.add(_e, "smoothing", false).name("Smoothing")
@@ -114,7 +114,7 @@ InputManager.prototype.create_ui_controller = function () {
         .name("Power")
         .setValue(Common.TRAJECTORY_DIST_MIN);
     this.controllers.set("robot_power", _c);
-    
+
     _c = _f.add(_e, "aim_angle", 35.0, 80.0, 3.0).name("Aim Angle")
         .onChange(
             this.cbs.on_change_robot_aim_rotation
@@ -175,7 +175,7 @@ InputManager.prototype.create_shoot_button_html = function () {
  */
 InputManager.prototype.create_stats_widget = function () {
     const _stats = new Stats();
-    
+
     // positioning at bottom-left
     _stats.dom.style.position = "absolute";
     _stats.dom.style.left = "0px";

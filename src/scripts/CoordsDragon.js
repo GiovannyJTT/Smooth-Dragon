@@ -3,7 +3,7 @@ import GPT_Coords from "../libgptjs/GPT_Coords";
 /**
  * Contains vertices and edges and computes normals
  */
-function CoordsDragon () {
+function CoordsDragon() {
     // 1. Call parent object constructor
     GPT_Coords.call(this);
 }
@@ -18,7 +18,7 @@ CoordsDragon.prototype.constructor = CoordsDragon;
  * Overriding it
  * @return {Float32Array}
  */
-CoordsDragon.prototype.getArrayVertices = function(){
+CoordsDragon.prototype.getArrayVertices = function () {
     return new Float32Array([
         0.00469467, 0.0921578, -0.0204182,
         -0.085233, 0.150314, -0.00360416,
@@ -1284,7 +1284,7 @@ CoordsDragon.prototype.getArrayVertices = function(){
  * Overriding it
  * @returns {Uint32Array}
  */
-CoordsDragon.prototype.getArrayEdges = function(){
+CoordsDragon.prototype.getArrayEdges = function () {
     // references the indices of vertices_coordinates (less points to save on disk)
     return new Uint32Array([
         797, 643, 795, 406, 609, 1092,

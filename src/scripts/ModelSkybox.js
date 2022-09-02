@@ -35,7 +35,7 @@ ModelSkybox.prototype.get_geometry = function () {
 ModelSkybox.prototype.get_material = function () {
     const _cubeFacesMaterials = [];
     const _loader = new THREE.TextureLoader();
-    
+
     for (let i = 0; i < Common.SKYBOX_TEXTURE_IMAGES_NAMES.length; i++) {
         const _img_path = Common.SKYBOX_TEXTURE_PATH + Common.SKYBOX_TEXTURE_IMAGES_NAMES[i];
         _cubeFacesMaterials.push(

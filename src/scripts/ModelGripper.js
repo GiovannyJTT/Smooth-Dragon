@@ -61,7 +61,7 @@ ModelGripper.prototype.get_geometry = function () {
  * Overriding it
  */
 ModelGripper.prototype.get_material = function () {
-    
+
     // loading TextureCube as skybox
     // creating material with all config
     const _mat = new THREE.MeshPhongMaterial({

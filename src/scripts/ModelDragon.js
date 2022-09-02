@@ -9,8 +9,8 @@ import GPT_ModelCollider from "../libgptjs/GPT_ModelCollider"
  * coordinates and edges array.
  * Inherits from GPT_model so we keep references to geometry and material
  */
-function ModelDragon (start_pos_) {
-    
+function ModelDragon(start_pos_) {
+
     if (undefined === start_pos_) {
         console.error("ModelDragon: 'start_pos' is undefined");
         return;
