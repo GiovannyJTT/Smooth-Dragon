@@ -7,8 +7,8 @@ WebGL project using ThreeJS, HTML5 and OOJS (object oriented javasctipt) for exp
 * Surface Smoothing by using Vertices Normals
 * Lighting and Shadows
 * Bump Mapping
-* User Interface (sliders, toggles, buttons)
 * Skybox and reflections
+* User Interface (sliders, toggles, buttons)
 * Finite State Machine to handle "shooting robot"
 * Collision detection using AABB
 
@@ -223,9 +223,9 @@ This WebGL app can be visualized in github pages because is a "front-end" only (
 
 1. First you need to have per-face (triangle) normals
     * [GPT_Coords.js](./src/libgptjs/GPT_Coords.js) `calculateNormals`
-        1. Creates `points3D` array by grouping 3 values from `positions` array
-        2. Creates triagles array by grouping 3 values from `points3D` array
-        3. Computes normals for each triangle clockwise
+        * Creates `points3D` array by grouping 3 values from `positions` array
+        * Creates triagles array by grouping 3 values from `points3D` array
+        * Computes normals for each triangle clockwise
             1. v1 = p2 - p1
             2. v2 = p3 - p2
             3. cross_product(v1, v2)
@@ -273,11 +273,38 @@ This WebGL app can be visualized in github pages because is a "front-end" only (
     * Defines `angle` and `distance` to make a `fading lighting` from the center of the cone to the exterior
     * Defines the cone like shape by defining parameters of shador: `near`, `far` and `fov`
 
+### Skybox and reflections
+
+1. [ModelSkyBox.js](./src/scripts/ModelSkybox.js)
+    * Creates a `BoxGeometry`
+    * Attaches a texture (material) per face
+        * The texture images must be specifically for a cube texture, like the ones at [skybox_images/](./src/resources/images/Yokohama3/)
+        * They need to be mapped properly ordered
+            * `posx, negx, posy, negy, posz, negz`
+    * Makes the inner of the box visible instead of the outside
+2. Reflections on [ModelDragon.js](./src/scripts/ModelDragon.js)
+    * Sets `transparent`, `opacity`, and `shinines` to simulate "glass"
+    * Sets the `Skybox Textures Array` as `envMap`
+    ```javascript
+    ModelDragon.prototype.get_material = function () {
+        const _mat = new THREE.MeshPhongMaterial(
+            {
+                color: 0xe5ffe5,
+                emissive: 0xb4ef3e,
+                flatShading: true, // initially per-triangle normals
+                specular: 0x003300,
+                shininess: 70,
+                side: THREE.FrontSide,
+                transparent: true,
+                opacity: 0.75,
+                envMap: Common.SKYBOX_CUBE_TEXTURE
+            }
+        );
+    ```
+3. Idem for [ModelGripper.js](./src/scripts/ModelGripper.js)
+
 ### User Interface (sliders, toggles, buttons)
 
-
-
-### Skybox and reflections
 
 ### Finite State Machine to handle "shooting robot"
 
