@@ -175,8 +175,10 @@ This project uses webpack-5 for building the final js code. Webpack configuratio
             * This makes canvas background green and starts our app entry point (main.js)
     * `output`
         * Defines the final js code bundle `[name].bundle.js` which will be placed at `build`
+    * `CopyWebpackPlugin`
+        * Used to copy resources from origin to destination assets folders
     * `HtmlWebpackPlugin`
-        * Plugint that loads [init_template.html](./src/html/init_template.html), replaces some headers and __defines the div where our project will be embedded into__:
+        * Used to load [init_template.html](./src/html/init_template.html), replaces some headers and __defines the div where our project will be embedded into__:
             * `div id="container"></div>`
 * [webpack.dev.js](./config/webpack.dev.js)
     * Includes `webpack.common.js` and adds configuraiton for development server
