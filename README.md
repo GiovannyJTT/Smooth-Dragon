@@ -301,10 +301,25 @@ This WebGL app can be visualized in github pages because is a "front-end" only (
             }
         );
     ```
-3. Idem for [ModelGripper.js](./src/scripts/ModelGripper.js)
+3. Idem for hand of the robot [ModelGripper.js](./src/scripts/ModelGripper.js)
 
 ### User Interface (sliders, toggles, buttons)
 
+[InputManager.js](./src/scripts/InputManager.js)
+
+1. It creates a `dat.gui` object
+    *  dat.gui assumes the GUI type based on the target's initial value type:
+        * boolean: `checkbox`
+        * int / float: `slider`
+        * string: `text input`
+        * function: `button`
+    * When user updates a value with the UI we store the new value in `effect` variables
+2. It attaches the corresponding `onChange` callbacks to be executed when a new value is set using the UI
+3. Saves references to UI controllers, so we can reflect updates on the UI
+    * Reflects text of `robot_state`
+    * Reflects value of `robot_power`
+4. Creates a custom html button for `shoot`, which is separated from the rest of the panel for better usability
+5. Creates a `stats` widget
 
 ### Finite State Machine to handle "shooting robot"
 
