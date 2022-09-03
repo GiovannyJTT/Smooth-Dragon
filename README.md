@@ -383,7 +383,7 @@ This project uses webpack-5 for building the final js code. Webpack configuratio
     * `build`
         * Directory path for production built files (compressed, images, html, etc.)
     * `static`
-        * Directory path from which the assets will be to the build folder
+        * Directory path from which the assets will be copied to the build folder
 * [webpack.common.js](./config/webpack.common.js)
     * Uses webpack-plugins to integrate all resources (js scripts, html, images, etc.)
     * `entry`
