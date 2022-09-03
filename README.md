@@ -1,6 +1,6 @@
 # Smooth-Dragon
 
-* [Video Demo - Smooth Dragon App]()
+* [Video Demo - Smooth Dragon app](https://www.youtube.com/watch?v=XLefL8KpBRI)
 
 ![smooth_dragon_app.gif](./docs/smooth_dragon_app.gif)
 
