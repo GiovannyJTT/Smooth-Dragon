@@ -15,6 +15,8 @@ WebGL project using ThreeJS, HTML5 and OOJS (object oriented javasctipt) for exp
 * Finite State Machine to handle "shooting robot"
 * Collision detection using AABB
 
+__NOTE:__ You can play this app at [smooth-dragon-github-page](https://giovannyjtt.github.io/Smooth-Dragon/) (desktop or mobile device)
+
 ---
 
 ## LIBGPT
