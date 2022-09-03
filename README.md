@@ -1,5 +1,9 @@
 # Smooth-Dragon
 
+* [Video Demo - Smooth Dragon App]()
+
+![smooth_dragon_app.gif](./docs/smooth_dragon_app.gif)
+
 WebGL project using ThreeJS, HTML5 and OOJS (object oriented javasctipt) for exploring several computer-graphics techniques:
 
 * Geometry and Normals calculation for complex models
@@ -10,8 +14,6 @@ WebGL project using ThreeJS, HTML5 and OOJS (object oriented javasctipt) for exp
 * User Interface (sliders, toggles, buttons)
 * Finite State Machine to handle "shooting robot"
 * Collision detection using AABB
-
-This WebGL app can be visualized in github pages because is a "front-end" only (all models have been converted to data structures and stored in JS files for fast loading).
 
 ---
 
