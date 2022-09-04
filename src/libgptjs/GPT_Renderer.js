@@ -1,9 +1,7 @@
 /**
- * Library: Graphical Programming with ThreeJS (GPT)
- * Author: Giovanny Javier Tipantuña Toapanta
- * Email: giovanny.jtt@gmail.com
- * Content:
- *  class GPT_Renderer
+ * @module libgptjs Graphical Programming with ThreeJS (GPT)
+ * @class GPT_Renderer
+ * @summary
  *      Base class Renderer grouping all utilities needed in the "low level" of THREE.js
  */
 

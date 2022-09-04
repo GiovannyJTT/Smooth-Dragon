@@ -1,9 +1,7 @@
 /**
- * Library: Graphical Programming with ThreeJS (GPT)
- * Author: Giovanny Javier Tipantuña Toapanta
- * Email: giovanny.jtt@gmail.com
- * Content:
- *  class GPT_App
+ * @module libgptjs Graphical Programming with ThreeJS (GPT)
+ * @class GPT_App
+ * @summary
  *      Groups all high level functionalities of the application: init, run, pause
  */
 

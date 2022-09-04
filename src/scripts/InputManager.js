@@ -1,3 +1,8 @@
+/**
+ * @module libgptjs Graphical Programming with ThreeJS (GPT)
+ * @class InputManager
+ */
+
 import { GUI } from 'dat.gui'
 import Common from './Common';
 import Stats from "three/examples/jsm/libs/stats.module"

@@ -1,11 +1,9 @@
 /**
- * Library: Graphical Programming with ThreeJS (GPT)
- * Author: Giovanny Javier Tipantuña Toapanta
- * Email: giovanny.jtt@gmail.com
- * Content:
- *  class GPT_Coords
+ * @module libgptjs Graphical Programming with ThreeJS (GPT)
+ * @class GPT_Coords
+ * @summary
  *      A Coordinates object contains all vertices, edges and methods for
- *      computing triangles, normals, and UVs per face
+ *      computing triangles, normals, and UV coordinates per face
  */
 
 import THREE from "../external-libs/threejs-0.118.3/three-global";

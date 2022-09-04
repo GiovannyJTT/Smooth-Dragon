@@ -1,3 +1,10 @@
+/**
+ * @module libgptjs Graphical Programming with ThreeJS (GPT)
+ * @class FSM_Robot
+ * @member R_States
+ * @member R_Events
+ */
+
 import Common from "./Common";
 
 /**

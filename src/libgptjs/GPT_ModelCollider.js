@@ -1,9 +1,7 @@
 /**
- * Library: Graphical Programming with ThreeJS (GPT)
- * Author: Giovanny Javier Tipantuña Toapanta
- * Email: giovanny.jtt@gmail.com
- * Content:
- *  class GPT_ModelCollider
+ * @module libgptjs Graphical Programming with ThreeJS (GPT)
+ * @class GPT_ModelCollider
+ * @summary
  *      Depends on an existing THREE.Mesh object that should be provided
  *      Using the Axis Aligned Bounding Box to detect a collision (intersection)
  *          with another AABB
@@ -13,7 +11,7 @@ import THREE from "../external-libs/threejs-0.118.3/three-global";
 
 /**
  * Simple collider using AABB (axis aligned bounding boxes)
- * https://developer.mozilla.org/en-US/docs/Games/Techniques/3D_collision_detection
+ * @link https://developer.mozilla.org/en-US/docs/Games/Techniques/3D_collision_detection
  * 
  * @param {Bool} static_ true when object doesn't move or rotate, false when is dynamic (rotates, translates, scales)
  * @param {THREE.Object3D} obj_mesh the object from what the aabb (min, max) will be computed

@@ -1,7 +1,12 @@
+/**
+ * @module libgptjs Graphical Programming with ThreeJS (GPT)
+ * @class CoordsGripper
+ */
+
 import GPT_Coords from "../libgptjs/GPT_Coords";
 
 /**
- * Contains vertices and edges and computes normals
+ * Contains vertices and edges. Computes normals and UV coordinates
  */
 function CoordsGripper() {
     // 1. Call parent object constructor

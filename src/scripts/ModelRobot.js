@@ -1,3 +1,8 @@
+/**
+ * @module libgptjs Graphical Programming with ThreeJS (GPT)
+ * @class ModelRobot
+ */
+
 import THREE from "../external-libs/threejs-0.118.3/three-global";
 import GPT_LinkedModel from "../libgptjs/GPT_LinkedModel";
 import ModelGripper from "./ModelGripper";

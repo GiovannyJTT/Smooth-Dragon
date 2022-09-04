@@ -1,9 +1,6 @@
 /**
- * Using library: Graphical Programming with ThreeJS (GPT)
- * Author: Giovanny Javier Tipantuña Toapanta
- * Email: giovanny.jtt@gmail.com
- * Content:
- *  configScene     creation of models and lights and methods for updating them
+ * @module libgptjs Graphical Programming with ThreeJS (GPT)
+ * @class SceneDragon
  */
 
 import THREE from '../external-libs/threejs-0.118.3/three-global'

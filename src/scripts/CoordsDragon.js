@@ -1,7 +1,12 @@
+/**
+ * @module libgptjs Graphical Programming with ThreeJS (GPT)
+ * @class CoordsDragon
+ */
+
 import GPT_Coords from "../libgptjs/GPT_Coords";
 
 /**
- * Contains vertices and edges and computes normals
+ * Contains vertices and edges. Computes normals and UV coordinates
  */
 function CoordsDragon() {
     // 1. Call parent object constructor

@@ -1,9 +1,7 @@
 /**
- * Library: Graphical Programming with ThreeJS (GPT)
- * Author: Giovanny Javier Tipantuña Toapanta
- * Email: giovanny.jtt@gmail.com
- * Content:
- *  class GPT_LikedModel
+ * @module libgptjs Graphical Programming with ThreeJS (GPT)
+ * @class GPT_LikedModel
+ * @summary
  *      A LinkedModel is a structure that contains a THREE.Object3D as root
  *      and several children that form a final Model.
  *      It is used for creating a Model formed of several parts,

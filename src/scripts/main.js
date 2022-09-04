@@ -1,12 +1,10 @@
 /**
- * Using library: Graphical Programming with ThreeJS (GPT)
- * Author: Giovanny Javier Tipantuña Toapanta
- * Email: giovanny.jtt@gmail.com
- * Content:
- *  main    entry point of this webGL app
+ * @module libgptjs Graphical Programming with ThreeJS (GPT)
+ * @class main
+ * @summary
+ *      entry point of this webGL app
  *      WebGL app using ThreeJS, Html5 and OOJS for exploring surface smoothing technique
  */
-
 
 import WebGL from 'three/examples/jsm/capabilities/WebGL'
 

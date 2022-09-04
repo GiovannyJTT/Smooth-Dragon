@@ -1,3 +1,8 @@
+/**
+ * @module libgptjs Graphical Programming with ThreeJS (GPT)
+ * @class ModelBullet
+ */
+
 import { lerp } from "three/src/math/MathUtils";
 import THREE from "../external-libs/threejs-0.118.3/three-global";
 import GPT_Model from "../libgptjs/GPT_Model";
