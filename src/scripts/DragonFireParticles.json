@@ -75,8 +75,8 @@
                         "id": "c6e9d2f4-33a0-11ed-9266-858aed5b80dc",
                         "type": "Radius",
                         "properties": {
-                            "width": 1,
-                            "height": 4,
+                            "width": 20,
+                            "height": 80,
                             "isEnabled": true
                         }
                     },
@@ -84,7 +84,7 @@
                         "id": "c6e9d2f5-33a0-11ed-9266-858aed5b80dc",
                         "type": "RadialVelocity",
                         "properties": {
-                            "radius": 20,
+                            "radius": 400,
                             "x": 0,
                             "y": 0,
                             "z": 1,
@@ -169,7 +169,7 @@
                         "properties": {
                             "x": 0,
                             "y": 0,
-                            "z": -2,
+                            "z": 0,
                             "life": null,
                             "easing": "easeLinear"
                         }
