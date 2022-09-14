@@ -394,7 +394,7 @@ __NOTE:__ You can play this app at [smooth-dragon-github-page](https://giovannyj
 
 1. Loads the particle system from json file and creates an instance of `nebula` that will be used to render
     * `Nebula.SpriteRenderer` needs the main `THREE.Scene`
-2. Provides a method for updating the `dragon fire particles` according to dragon mouth position after
+2. Provides a method for updating the `dragon fire particles` according to dragon mouth position
     * `DragonFire.update_to_dragon_mouth` performs a sequence of translations and rotations to place / update properly the particles emitter while dragon is rotating
 
 ## This repository
