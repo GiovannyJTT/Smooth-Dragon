@@ -83,7 +83,7 @@ SceneDragon.prototype.createFloor = function () {
 
 SceneDragon.prototype.createDragon = function () {
     const _start_pos = new THREE.Vector3(200, -75, -250);
-    this.dragon_model = new ModelDragon(_start_pos);
+    this.dragon_model = new ModelDragon(_start_pos, this.scene);
 
     this.dragon_model.mesh.scale.set(1500, 1500, 1500);
     this.dragon_model.mesh.castShadow = true;
@@ -218,6 +218,8 @@ SceneDragon.prototype.updateDragon = function (ms) {
 
         this.dragon_model.update_collider();
     }
+
+    this.dragon_model.update_fire();
 }
 
 /**

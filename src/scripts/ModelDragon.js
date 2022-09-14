@@ -8,13 +8,16 @@ import GPT_Model from "../libgptjs/GPT_Model"
 import CoordsDragon from "./CoordsDragon"
 import Common from "./Common"
 import GPT_ModelCollider from "../libgptjs/GPT_ModelCollider"
+import DragonFire from "./DragonFire"
 
 /**
  * Creates a dragon model by computing the triangles and normals from its vertices
  * coordinates and edges array.
  * Inherits from GPT_model so we keep references to geometry and material
+ * @param {THREE.Vector3} start_pos_ initial position to spawn
+ * @param {THREE.Scene} scene_ reference to the main threejs scene to be used into the particles system
  */
-function ModelDragon(start_pos_) {
+function ModelDragon(start_pos_, scene_) {
 
     if (undefined === start_pos_) {
         console.error("ModelDragon: 'start_pos' is undefined");
@@ -30,6 +33,9 @@ function ModelDragon(start_pos_) {
 
     // Attach collider once mesh is built and set in intial postion
     this.collider = new GPT_ModelCollider(false, this.mesh);
+
+    // add fire particles
+    this.fire = new DragonFire(scene_);
 }
 
 // 2. Extend from parent object prototype (keep proto clean)
@@ -100,6 +106,10 @@ ModelDragon.prototype.get_material = function () {
 
 ModelDragon.prototype.update_collider = function () {
     this.collider.update_aabb();
+}
+
+ModelDragon.prototype.update_fire = function () {
+    this.fire.update_to_dragon_mouth(this.mesh.position, this.mesh.rotation);
 }
 
 export default ModelDragon;
