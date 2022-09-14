@@ -14,6 +14,7 @@ WebGL project using ThreeJS, HTML5 and OOJS (object oriented javasctipt) for exp
 * User Interface (sliders, toggles, buttons)
 * Finite State Machine to handle "shooting robot"
 * Collision detection using AABB
+* Particle System with Nebula-Threejs
 
 __NOTE:__ You can play this app at [smooth-dragon-github-page](https://giovannyjtt.github.io/Smooth-Dragon/) (desktop or mobile device)
 
@@ -356,6 +357,45 @@ __NOTE:__ You can play this app at [smooth-dragon-github-page](https://giovannyj
 1. Attaches an AABB (axis aligned bounding box)
 2. Updates the dimensions of the AABB at runtime
 3. Checks if intersects with other AABB (collided)
+
+### Particle System with Nebula-Threejs
+
+* Follow tutorial at [three-nebula.org](https://three-nebula.org/)
+* Nebula is a particle system engine that works with threejs
+* It provides an editor to create manually and save to json file
+
+#### Integration with libgptjs
+
+[DragonFireParticles.json](./src/scripts/DragonFireParticles.json)
+
+1. Adapted manually for our SceneDragon scale:
+    ```json
+        {
+            "type": "Radius",
+            "properties": {
+                "width": 20,
+                "height": 80,
+                "isEnabled": true
+        },
+        {
+            "type": "RadialVelocity",
+            "properties": {
+                "radius": 400,
+                "x": 0,
+                "y": 0,
+                "z": 1,
+                "theta": 10,
+                "isEnabled": true
+        }
+    ```
+2. The rest of values (color, sprite, life cycle, etc.) were edited using the Nebula editor (windows)
+
+[DragonFire.js](./src/scripts/DragonFire.js)
+
+1. Loads the particle system from json file and creates an instance of `nebula` that will be used to render
+    * `Nebula.SpriteRenderer` needs the main `THREE.Scene`
+2. Provides a method for updating the `dragon fire particles` according to dragon mouth position after
+    * `DragonFire.update_to_dragon_mouth` performs a sequence of translations and rotations to place / update properly the particles emitter while dragon is rotating
 
 ## This repository
 
