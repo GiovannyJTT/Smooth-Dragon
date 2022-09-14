@@ -14,7 +14,7 @@ WebGL project using ThreeJS, HTML5 and OOJS (object oriented javasctipt) for exp
 * User Interface (sliders, toggles, buttons)
 * Finite State Machine to handle "shooting robot"
 * Collision detection using AABB
-* Particle System with Nebula-Threejs
+* Particles System with Nebula-Threejs
 
 __NOTE:__ You can play this app at [smooth-dragon-github-page](https://giovannyjtt.github.io/Smooth-Dragon/) (desktop or mobile device)
 
