@@ -363,12 +363,12 @@ __NOTE:__ You can play this app at [smooth-dragon-github-page](https://giovannyj
 
 This project is buildt with NodeJS. The dependencies packages and configuration are locate at `package.json`
 
-0. Working with versions:
+1. Working with versions:
     * npm: `6.14.17`
     * nodejs: `v16.15.0`
-1. Install all dependencies
+2. Install all dependencies
     * `npm install`
-2. Two modes of "compiling" the code: `dev` and `build`
+3. Two modes of "compiling" the code: `dev` and `build`
     * Running in development mode with a local webpack-dev-server
         * `npm run dev`
     * Building compressed / production code for deployment in a remote server
