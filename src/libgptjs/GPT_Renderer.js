@@ -11,9 +11,8 @@
 import THREE from '../external-libs/threejs-0.118.3/three-global'
 
 // using our custom import
-import OrbitControls from '../external-libs/threejs-0.118.3/OrbitControls'
-
-// import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
+// import OrbitControls from '../external-libs/threejs-0.118.3/OrbitControls'
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
 
 /**
  * Create a GPT Renderer object with a scene already configured. It creates a THREE.WebGLRenderer internally tha twill be used in the other metho
@@ -46,8 +45,8 @@ GPT_Renderer.prototype.setCameraForDragon = function () {
  * Creates a THREE.Controls with by default values (orbit control)
  */
 GPT_Renderer.prototype.setCameraHandler = function () {
-    this.cameraHandler = new THREE.OrbitControls(this.camera, this.wglrenderer.domElement);
-    // this.cameraHandler = new OrbitControls(this.camera, this.wglrenderer.domElement);
+    // this.cameraHandler = new THREE.OrbitControls(this.camera, this.wglrenderer.domElement);
+    this.cameraHandler = new OrbitControls(this.camera, this.wglrenderer.domElement);
     this.cameraHandler.target.set(0, 100, 0);
     this.cameraHandler.noKeys = true; // moving with keyboard not allowed
 }
