@@ -135,7 +135,7 @@ InputManager.prototype.create_ui_controller = function () {
     _c = this.create_shoot_button_html();
     this.controllers.set("robot_shoot", _c);
 
-    _c = this.create_stats_widget();
+    _c = this.create_stats_widget(Common.CANVAS_CONTAINER_NAME_FOR_THREEJS);
     this.controllers.set("stats", _c);
 }
 
@@ -178,7 +178,7 @@ InputManager.prototype.create_shoot_button_html = function () {
  * Creates a Stats widget located at bottom-left corner of container
  * @returns Stats object to be updated every frame
  */
-InputManager.prototype.create_stats_widget = function () {
+InputManager.prototype.create_stats_widget = function (_container_name) {
     const _stats = new Stats();
 
     // positioning at bottom-left
@@ -187,7 +187,7 @@ InputManager.prototype.create_stats_widget = function () {
     const _t = (window.innerHeight - 50).toString() + "px";
     _stats.dom.style.top = _t;
 
-    document.getElementById("container").appendChild(_stats.dom);
+    document.getElementById(_container_name).appendChild(_stats.dom);
 
     // update every frame into Scene
     // _stats.update;

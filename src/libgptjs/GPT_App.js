@@ -39,10 +39,10 @@ function GPT_App(gpt_r) {
  * Calls all setup methods for generating geometry (loading models and textures) and attaches events for resizing the window.
  * Using arrow function because it does not have it's own "this" value. It's "this" is lexically bound to the enclosing scope.
  */
-GPT_App.prototype.init = function () {
+GPT_App.prototype.init = function (_container_name) {
     console.debug("GPT_App.init")
 
-    this.gpt_render.setup("container");
+    this.gpt_render.setup(_container_name);
     window.addEventListener("resize", () => { this.gpt_render.reshape(); });
 }
 
