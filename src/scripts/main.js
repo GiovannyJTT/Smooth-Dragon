@@ -15,6 +15,7 @@ if (_c == null) {
     _c = document.createElement("div");
     _c.id = _id_c;
     document.body.appendChild(_c);
+    console.warn("Attached new " + _id_c + " to body")
 }
 
 // check webgl compatibility
@@ -30,6 +31,7 @@ if (WebGL.isWebGLAvailable()) {
     document.getElementById(_id_c).appendChild(warning);
 }
 
+// load library
 console.log("Loading GPT library")
 
 import SceneDragon from './SceneDragon'
@@ -41,6 +43,7 @@ const sce = new SceneDragon();
 const ren = new GPT_Renderer(window.innerWidth, window.innerHeight, sce);
 const app = new GPT_App(ren);
 
-app.init();
+app.init(_id_c);
 
+// start rendering loop
 app.run();
