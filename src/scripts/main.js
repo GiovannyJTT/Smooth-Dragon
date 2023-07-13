@@ -6,6 +6,18 @@
  *      WebGL app using ThreeJS, Html5 and OOJS for exploring surface smoothing technique
  */
 
+// get or create canvas container for threejs
+import Common from './Common';
+
+const _id_c = Common.CANVAS_CONTAINER_NAME_FOR_THREEJS;
+let _c = document.getElementById(_id_c);
+if (_c == null) {
+    _c = document.createElement("div");
+    _c.id = _id_c;
+    document.body.appendChild(_c);
+}
+
+// check webgl compatibility
 import WebGL from 'three/examples/jsm/capabilities/WebGL'
 
 if (WebGL.isWebGLAvailable()) {
@@ -13,8 +25,9 @@ if (WebGL.isWebGLAvailable()) {
     window.alert("This web browser is WebGL compatible. Starting ...");
 } else {
     const warning = WebGL.getWebGLErrorMessage();
-    document.getElementById('container').appendChild(warning);
     window.alert("This web browser is NOT WebGL compatible");
+
+    document.getElementById(_id_c).appendChild(warning);
 }
 
 console.log("Loading GPT library")
