@@ -19,7 +19,7 @@
   "dependencies": {
     "@babel/plugin-proposal-class-properties": "^7.18.6",
     "optimize-css-assets-webpack-plugin": "^6.0.1",
-    "three": "^0.140.2",
+    "three": "^0.151.0",
     "three-nebula": "^10.0.3"
   },
   "devDependencies": {
