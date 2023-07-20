@@ -197,7 +197,8 @@ InputManager.prototype.create_stats_widget = function (_container_name) {
     const _t = (window.innerHeight - 50).toString() + "px";
     _stats.dom.style.top = _t;
 
-    document.getElementById(_container_name).appendChild(_stats.dom);
+    const _r = this.gui.getRoot();
+    _r.domElement.appendChild(_stats.dom);
 
     // update every frame into SceneDragon.js
     // _stats.update;

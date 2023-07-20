@@ -111,8 +111,7 @@ GPT_Scene.prototype.removeModelFromScene = function (object_name_) {
     }
 
     // remove from gpt_models
-    this.gpt_models[object_name_] = null;
-    this.gpt_models.delete(object_name_)
+    this.gpt_models.delete(object_name_);
 
     if (this.gpt_models.get(object_name_) !== undefined) {
         console.error("GPT_Scene.removeModelFromScene: could not remove '" + object_name_ + "'. Object stil in gpt_models");
