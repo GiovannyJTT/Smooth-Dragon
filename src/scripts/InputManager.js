@@ -58,15 +58,10 @@ InputManager.prototype.check_is_mobile_device = function () {
  * @returns {Map} we save references to the gui.controllers for each gui item, so we can update them later
  */
 InputManager.prototype.create_ui_controller = function () {
-    this.gui = new GUI();
+    this.gui = new GUI(); // this will create list of className 'dg' elements
+ 
+    // a map to save the references to control several elements from SceneDragon.js
     this.controllers = new Map();
-
-    // semi-transparent gui
-    Array.from(document.getElementsByClassName('dg')).forEach(
-        function (element, index, array) {
-            element.style.opacity = 0.85;
-        }
-    );
 
     // dragon
     // effect
@@ -137,6 +132,18 @@ InputManager.prototype.create_ui_controller = function () {
 
     _c = this.create_stats_widget(Common.CANVAS_CONTAINER_NAME_FOR_THREEJS);
     this.controllers.set("stats", _c);
+
+    // align elements in z-index
+    const zI = document.getElementById(Common.CANVAS_CONTAINER_NAME_FOR_THREEJS).style.zIndex;
+    this.gui.getRoot().domElement.style.zIndex = zI;
+    
+    // semi-transparent gui
+    Array.from(document.getElementsByClassName('dg')).forEach(
+        function (element, index, array) {
+            element.style.opacity = 0.85;
+            element.style.zIndex = "inherit";
+        }
+    );
 }
 
 /**
@@ -149,7 +156,7 @@ InputManager.prototype.create_shoot_button_html = function () {
     _shoot_button.innerHTML = "Shoot";
     _shoot_button.id = "shoot_button_id";
 
-    // IMPORTANT: attach onclick callback to handle bulltet trajectory
+    // IMPORTANT: attach onclick callback to handle bullet trajectory
     _shoot_button.onclick = this.cbs.on_change_robot_shoot;
 
     // attach to dat.gui
@@ -171,6 +178,9 @@ InputManager.prototype.create_shoot_button_html = function () {
     _shoot_button.style.top = "70px";
     _shoot_button.style.left = "190px";
 
+    // z-index inherited form parent
+    _shoot_button.style.zIndex = "inherit"
+
     return _shoot_button;
 }
 
@@ -189,8 +199,11 @@ InputManager.prototype.create_stats_widget = function (_container_name) {
 
     document.getElementById(_container_name).appendChild(_stats.dom);
 
-    // update every frame into Scene
+    // update every frame into SceneDragon.js
     // _stats.update;
+
+    // z-index inherited from parent
+    _stats.dom.style.zIndex = "inherit";
 
     return _stats;
 }
