@@ -1,12 +1,14 @@
 body {
     background-color: rgb(67, 141, 83);
-    /* Costumize WxH in canvas label, if you do it here it will be out of place */
-    width: 100%;
-    height: 100%;
     margin: 0px;
     overflow: hidden;
+    // default width and height is window-size
+    // the only child is container-for-threejs
 }
 
 #container-for-threejs {
     z-index: 0;
+    // 100% of the viewport (its parent is 'body')
+    width: 100vw; // viewport width
+    height: 100vh; // viewport height
 }

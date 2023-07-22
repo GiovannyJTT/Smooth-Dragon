@@ -40,7 +40,7 @@ import GPT_App from '../libgptjs/GPT_App'
 
 // declared as "const" because: block-scoped, cannot be updated but its properties yes, cannot be redeclared
 const sce = new SceneDragon();
-const ren = new GPT_Renderer(window.innerWidth, window.innerHeight, sce);
+const ren = new GPT_Renderer(Common.CANVAS_CONTAINER_WIDTH, Common.CANVAS_CONTAINER_HEIGHT, sce);
 const app = new GPT_App(ren);
 
 app.init(_id_c);

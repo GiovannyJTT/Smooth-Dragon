@@ -48,7 +48,7 @@ const TRAJECTORY_DIST_MAX = 1000;
 const TRAJECTORY_DIST_MIN = 200;
 const TRAJECTORY_DIST_STEP = 200;
 
-// used to interpolate bullet position between to points3D
+// used to interpolate bullet-position between two points3D
 const BULLET_STEP_DURATION_MS = 75;
 
 // robot state machine timeouts
@@ -57,6 +57,9 @@ const FSM_DURATION_BULLET_TRAVELLING_MS = 30 * BULLET_STEP_DURATION_MS;
 const FSM_DURATION_RESTART_MS = 1000;
 
 const CANVAS_CONTAINER_NAME_FOR_THREEJS = "container-for-threejs"
+const posInfo = document.getElementById(CANVAS_CONTAINER_NAME_FOR_THREEJS).getBoundingClientRect();
+const CANVAS_CONTAINER_WIDTH = posInfo.width;
+const CANVAS_CONTAINER_HEIGHT = posInfo.height;
 
 export default {
     FLOOR_WIDTH,
@@ -83,5 +86,7 @@ export default {
     FSM_DURATION_LOADING_BULLET_MS,
     FSM_DURATION_BULLET_TRAVELLING_MS,
     FSM_DURATION_RESTART_MS,
-    CANVAS_CONTAINER_NAME_FOR_THREEJS
+    CANVAS_CONTAINER_NAME_FOR_THREEJS,
+    CANVAS_CONTAINER_WIDTH,
+    CANVAS_CONTAINER_HEIGHT
 }
