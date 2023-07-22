@@ -7,7 +7,7 @@
  */
 
 // get or create canvas container for threejs
-import Common from './Common';
+import Common from '../libgptjs/scene-dragon/Common';
 
 const _id_c = Common.CANVAS_CONTAINER_NAME_FOR_THREEJS;
 let _c = document.getElementById(_id_c);
@@ -34,7 +34,7 @@ if (WebGL.isWebGLAvailable()) {
 // load library
 console.log("Loading GPT library")
 
-import SceneDragon from './SceneDragon'
+import SceneDragon from '../libgptjs/scene-dragon/SceneDragon'
 import GPT_Renderer from '../libgptjs/GPT_Renderer'
 import GPT_App from '../libgptjs/GPT_App'
 
