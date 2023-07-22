@@ -4,11 +4,12 @@ body {
     overflow: hidden;
     // default width and height is window-size
     // the only child is container-for-threejs
+    // hence container-for-threejs will be equal to (window.innerWidth, window.innerHeight)
 }
 
 #container-for-threejs {
     z-index: 0;
-    // 100% of the viewport (its parent is 'body')
-    width: 100vw; // viewport width == window.innerWidth
-    height: 100vh; // viewport height == windows.innerHeight
+    // 100% of the viewport ('body')
+    width: 100vw; // viewport width
+    height: 100vh; // viewport height
 }
