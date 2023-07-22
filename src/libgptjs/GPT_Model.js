@@ -9,7 +9,7 @@
 /**
  * Importing object THREE from our costumized global script
  */
-import THREE from '../external-libs/threejs-0.118.3/three-global'
+import THREE from './external-libs/three-global'
 
 /**
  * Constructs a Model object. Saves the reference to individual geometry and material, and

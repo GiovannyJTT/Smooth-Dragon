@@ -5,7 +5,7 @@
 
 import Nebula, { SpriteRenderer } from "three-nebula"
 import dfp from "./DragonFireParticles.json"
-import THREE from "../external-libs/threejs-0.118.3/three-global";
+import THREE from "../external-libs/three-global";
 
 /**
  * Creates a fire particles system using Nebula-threejs

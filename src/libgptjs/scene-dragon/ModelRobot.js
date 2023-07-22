@@ -3,8 +3,8 @@
  * @class ModelRobot
  */
 
-import THREE from "../external-libs/threejs-0.118.3/three-global";
-import GPT_LinkedModel from "../libgptjs/GPT_LinkedModel";
+import THREE from "../external-libs/three-global";
+import GPT_LinkedModel from "../GPT_LinkedModel";
 import ModelGripper from "./ModelGripper";
 import Common from "./Common";
 

@@ -3,8 +3,8 @@
  * @class SceneDragon
  */
 
-import THREE from '../external-libs/threejs-0.118.3/three-global'
-import GPT_Scene from '../libgptjs/GPT_Scene'
+import THREE from '../external-libs/three-global'
+import GPT_Scene from '../GPT_Scene'
 import ModelDragon from './ModelDragon'
 import Common from './Common'
 import ModelSkybox from './ModelSkybox'

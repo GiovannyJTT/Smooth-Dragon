@@ -3,7 +3,7 @@
  * @constant Common
  */
 
-import THREE from "../external-libs/threejs-0.118.3/three-global";
+import THREE from "../external-libs/three-global";
 
 /**
  * Values to be reused in several objects

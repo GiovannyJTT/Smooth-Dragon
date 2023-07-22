@@ -4,10 +4,10 @@
  */
 
 import { lerp } from "three/src/math/MathUtils";
-import THREE from "../external-libs/threejs-0.118.3/three-global";
-import GPT_Model from "../libgptjs/GPT_Model";
+import THREE from "../external-libs/three-global";
+import GPT_Model from "../GPT_Model";
 import Common from "./Common";
-import GPT_ModelCollider from "../libgptjs/GPT_ModelCollider";
+import GPT_ModelCollider from "../GPT_ModelCollider";
 
 /**
  * Creates a model for bullet

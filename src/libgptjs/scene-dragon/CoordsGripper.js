@@ -3,7 +3,7 @@
  * @class CoordsGripper
  */
 
-import GPT_Coords from "../libgptjs/GPT_Coords";
+import GPT_Coords from "../GPT_Coords";
 
 /**
  * Contains vertices and edges. Computes normals and UV coordinates

@@ -8,7 +8,7 @@
 /**
  * Importing object THREE from our costumized global script
  */
-import THREE from '../external-libs/threejs-0.118.3/three-global'
+import THREE from './external-libs/three-global'
 
 /**
  * Creates our GPT_Scene object containing initially an empty map of GPT_Model, an empty map of GPT_Lights and a THREE.Scene.

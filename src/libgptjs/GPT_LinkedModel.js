@@ -11,7 +11,7 @@
 /**
  * Importing object THREE from our costumized global script
  */
-import THREE from '../external-libs/threejs-0.118.3/three-global'
+import THREE from './external-libs/three-global'
 
 /**
  * Contains a List of the Links (THREE.Object3D objects) to be configure as hierarchy

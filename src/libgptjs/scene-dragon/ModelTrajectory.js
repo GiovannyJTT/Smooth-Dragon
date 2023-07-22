@@ -3,8 +3,8 @@
  * @class ModelTrajectory
  */
 
-import THREE from "../external-libs/threejs-0.118.3/three-global";
-import GPT_Model from "../libgptjs/GPT_Model";
+import THREE from "../external-libs/three-global";
+import GPT_Model from "../GPT_Model";
 import Common from "./Common";
 
 /**
