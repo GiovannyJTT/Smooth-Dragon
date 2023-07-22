@@ -9,6 +9,6 @@ body {
 #container-for-threejs {
     z-index: 0;
     // 100% of the viewport (its parent is 'body')
-    width: 100vw; // viewport width
-    height: 100vh; // viewport height
+    width: 100vw; // viewport width == window.innerWidth
+    height: 100vh; // viewport height == windows.innerHeight
 }
