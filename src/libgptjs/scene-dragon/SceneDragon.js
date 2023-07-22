@@ -11,7 +11,7 @@ import ModelSkybox from './ModelSkybox'
 import ModelRobot from './ModelRobot'
 import ModelTrajectory from './ModelTrajectory'
 import InputManager from './InputManager'
-import FSM_Robot, { R_States, R_Events } from './FSM_Robot'
+import FSM_Robot, { R_Events } from './FSM_Robot'
 import ModelBullet from './ModelBullet'
 
 /**

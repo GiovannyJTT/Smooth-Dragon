@@ -46,7 +46,7 @@ const R_Events = Object.freeze(
         // bullet reached end without hitting objects
         END_OF_TRAJECTORY: Symbol("end_of_trajectory"),
         // timing event (used to update counters, blink UI, etc.) before going to IDLE state
-        RESTART: Symbol("restart")
+        RESET: Symbol("reset")
     }
 );
 
@@ -76,10 +76,10 @@ function FSM_Robot(cbs_) {
             [R_Events.END_OF_TRAJECTORY]: R_States.NO_HIT
         },
         [R_States.HIT]: {
-            [R_Events.RESTART]: R_States.IDLE
+            [R_Events.RESET]: R_States.IDLE
         },
         [R_States.NO_HIT]: {
-            [R_Events.RESTART]: R_States.IDLE
+            [R_Events.RESET]: R_States.IDLE
         }
     };
 
@@ -133,7 +133,7 @@ FSM_Robot.prototype.transit = function (event_) {
         // start timers depending on state
         switch (this.state) {
             case R_States.IDLE:
-                this.restart_start = undefined;
+                this.reset_fsm_start = undefined;
                 break;
 
             case R_States.LOADING_BULLET:
@@ -148,7 +148,7 @@ FSM_Robot.prototype.transit = function (event_) {
             case R_States.HIT:
             case R_States.NO_HIT:
                 this.bullet_traveling_start = undefined;
-                this.restart_start = performance.now();
+                this.reset_fsm_start = performance.now();
                 break;
         };
 
@@ -194,12 +194,12 @@ FSM_Robot.prototype.update_state = function () {
             // doing nothing until "loading bullet event"
             break;
         case R_States.LOADING_BULLET:
-            if (this.loading_bullet_expired()) {
+            if (this.has_expired(R_States.LOADING_BULLET, this.loading_bullet_start, Common.FSM_DURATION_LOADING_BULLET_MS)) {
                 this.transit(R_Events.SHOOT_ENDED);
             }
             break;
         case R_States.BULLET_TRAVELING:
-            if (this.bullet_traveling_expired()) {
+            if (this.has_expired(R_States.BULLET_TRAVELING, this.bullet_traveling_start, Common.FSM_DURATION_BULLET_TRAVELLING_MS)) {
                 this.transit(R_Events.END_OF_TRAJECTORY);
             }
             else {
@@ -210,88 +210,55 @@ FSM_Robot.prototype.update_state = function () {
             break;
         case R_States.HIT:
         case R_States.NO_HIT:
-            if (this.restart_expired()) {
-                this.transit(R_Events.RESTART);
+            if (this.have_expired([R_States.HIT, R_States.NO_HIT], this.reset_fsm_start, Common.FSM_DURATION_RESET_MS)) {
+                this.transit(R_Events.RESET);
             }
             break;
     }
 }
 
 /**
- * Based on DURATION_LOADING_BULLET_MS
- * @return {Bool} true while duration not expired / reached, false otherwise
+ * Based on duration_ms_
+ * @param {*} rstate_ R_States to be compared with current
+ * @param {*} start_ts_ start-event time-stamp (ms)
+ * @param {*} duration_ms_ duration after the state is considered expired
+ * @returns true while duration not expired / reached, false otherwise
  */
-FSM_Robot.prototype.loading_bullet_expired = function () {
-
-    if (this.state != R_States.LOADING_BULLET) {
+FSM_Robot.prototype.has_expired = function (rstate_, start_ts_, duration_ms_) {
+    if (this.state != rstate_) {
         return false;
     }
     else {
-        if (undefined === this.loading_bullet_start) {
+        if (undefined === start_ts_) {
             return false;
         }
         else {
             const _now = performance.now();
-            const _elapsed = _now - this.loading_bullet_start; // ms
-
-            if (_elapsed >= Common.FSM_DURATION_LOADING_BULLET_MS) {
-                return true;
-            }
-            else {
-                return false;
-            }
+            const _elapsed = _now - start_ts_;
+            return (_elapsed >= duration_ms_);
         }
     }
 }
 
 /**
- * Based on DURATION_BULLET_TRAVELLING_MS
- * @return {Bool} true while duration not expired / reached, false otherwise
+ * Based on duration_ms_
+ * @param {*} rstate_ R_States (Array of R_States) to be compared with current
+ * @param {*} start_ts_ start-event time-stamp (ms)
+ * @param {*} duration_ms_ duration after the state is considered expired
+ * @returns true while duration not expired / reached, false otherwise
  */
-FSM_Robot.prototype.bullet_traveling_expired = function () {
-    if (this.state != R_States.BULLET_TRAVELING) {
+FSM_Robot.prototype.have_expired = function (rstate_, start_ts_, duration_ms_) {
+    if (Array.isArray(rstate_) && !rstate_.includes(this.state)) {
         return false;
     }
     else {
-        if (undefined === this.bullet_traveling_start) {
+        if (undefined === start_ts_) {
             return false;
         }
         else {
             const _now = performance.now();
-            const _elapsed = _now - this.bullet_traveling_start;
-
-            if (_elapsed >= Common.FSM_DURATION_BULLET_TRAVELLING_MS) {
-                return true;
-            }
-            else {
-                return false;
-            }
-        }
-    }
-}
-
-/**
- * Based on DURATION_RESTART_MS
- * @return {Bool} true while duration not expired / reached, false otherwise
- */
-FSM_Robot.prototype.restart_expired = function () {
-    if (this.state != R_States.HIT && this.state != R_States.NO_HIT) {
-        return false;
-    }
-    else {
-        if (undefined === this.restart_start) {
-            return false;
-        }
-        else {
-            const _now = performance.now();
-            const _elapsed = _now - this.restart_start;
-
-            if (_elapsed >= Common.FSM_DURATION_RESTART_MS) {
-                return true;
-            }
-            else {
-                return false;
-            }
+            const _elapsed = _now - start_ts_;
+            return (_elapsed >= duration_ms_);
         }
     }
 }
