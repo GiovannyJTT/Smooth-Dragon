@@ -22,14 +22,14 @@ __NOTE:__ You can play this app at [smooth-dragon-github-page](https://giovannyj
 
 ## LIBGPT
 
-* [three-global.js](./src/external-libs/threejs-0.118.3/three-global.js)
+* [three-global.js](./src/libgptjs/external-libs/three-global.js)
     * It is used to create a global object `THREE` and add functionalities to it
         1. Imports `three.js` library as module from npm
         2. Names it `THREE` (following the nomenclature used in other modules)
         3. Exports the object `THREE` from this script / module to be imported into the rest (ex: in OrbitControls.js)
-        4. In [OrbitControls.js](./src/external-libs/threejs-0.118.3/OrbitControls.js), or other scripts, new functionality is added to `THREE` object
+        4. In [OrbitControls.js](./src/libgptjs/external-libs/OrbitControls.js), or other scripts, new functionality is added to `THREE` object
 * Graphical Programming with Threejs [libgptjs](./src/libgptjs/)
-    * The classes at `libgptjs/` import `three-global.js`
+    * The classes at `libgptjs/` are importing `three-global.js`
     * Wrapper / Library to facilitate re-use of code and organize the graphics pipeline
     * It contains several objects (classes) for wrapping all the logic required for creating an scene with threejs
         * This allows modularity and we can reuse code creating instances of those clases
@@ -58,33 +58,33 @@ __NOTE:__ You can play this app at [smooth-dragon-github-page](https://giovannyj
     * Top-level object that configures the `window` and uses `GPT_Render`
     * It contains the main loop for animation in which the `update` and `render` are being invoked
 
-## App scripts
+## SceneDragon scripts
 
 * [main.js](./src/scripts/main.js)
     * It is the entry point. It checks webgl compatibility and instanciates `GPT_Renderer`, `GPT_App`, and `SceneDragon`
     * Then invokes init and run loop
-* [Common.js](./src/scripts/Common.js)
+* [Common.js](./src/libgptjs/scene-dragon/Common.js)
     * Contains all constants to be re-used in several points in the code
-* [CoordsDragon.js](./src/scripts/CoordsDragon.js)
+* [CoordsDragon.js](./src/libgptjs/scene-dragon/CoordsDragon.js)
     * Stores arrays of dragon model (vertices and edges)
     * Since it inherits from `GPT_Coords` it provides methods for computing normals and UVs coordinates
-* [CoordsGripper.js](./src/scripts/CoordsGripper.js)
+* [CoordsGripper.js](./src/libgptjs/scene-dragon/CoordsGripper.js)
     * Stores arrays of gripper model (vertices and edges)
     * Since it inherits from `GPT_Coords` it provides methods for computing normals and UVs coordinates
-* [ModelSkybox.js](./src/scripts/ModelSkybox.js)
+* [ModelSkybox.js](./src/libgptjs/scene-dragon/ModelSkybox.js)
     * Creates a big cube and maps the texture to simulate environment
     * These skybox images will be reflected on the Dragon surface and Gripper surface
-* [ModelDragon.js](./src/scripts/ModelDragon.js)
+* [ModelDragon.js](./src/libgptjs/scene-dragon/ModelDragon.js)
     * Inherits from `GPT_Model` and overrides `get_geometry` and `get_material` methods
     * Creates and initializes `geometry` and `material` objects to be inserted into a `mesh`
     * Computes `UV` coordinates per face (triangle) in order to simulate reflections of the skybox onto the dragon surface
     * Contains a `GPT_ModelCollider`
-* [ModelGripper.js](./src/scripts/ModelGripper.js)
+* [ModelGripper.js](./src/libgptjs/scene-dragon/ModelGripper.js)
     * Idem to ModelDragon
-* [ModelRobot.js](./src/scripts/ModelRobot.js)
+* [ModelRobot.js](./src/libgptjs/scene-dragon/ModelRobot.js)
     * Inherits from `GPT_LinkedModel`
     * Creates separately the parts of the robot (base, arm, forearm, hand and gripper). Then links them all in sequence
-* [ModelTrajectory.js](./src/scripts/ModelTrajectory.js)
+* [ModelTrajectory.js](./src/libgptjs/scene-dragon/ModelTrajectory.js)
     * Given 2 initial points to be used as direction vector
         * It computes the control points (`p1, p2, p3, peak and end`) to be used later into the spline points calculation
         * Control points form a triangle with one of the edges following the `p1` and `p2` direction
@@ -92,21 +92,21 @@ __NOTE:__ You can play this app at [smooth-dragon-github-page](https://giovannyj
             * `End` point is on the floor
         * Spline points are calculated using the control points and `catmullrom` with N (30) segments
         * Final spline points are used to create line geometry to be rendered
-* [ModelBullet.js](./src/scripts/ModelBullet.js)
+* [ModelBullet.js](./src/libgptjs/scene-dragon/ModelBullet.js)
     * Creates the geometry, material, mesh, and GPT_ModelCollider
     * Needs a trajectory and a starting point3D
     * Provides a method for moving the bullet between 2 consecutive points3D of the trajectory based on time passed since last frame
-* [InputManager.js](./src/scripts/InputManager.js)
+* [InputManager.js](./src/libgptjs/scene-dragon/InputManager.js)
     * Checks if it is running on mobile device or desktop
     * Creates the UI (sliders, toggles, etc.) and installs the `onChange` callbacks to be executed when a value is updated by the user
     * Creates html button for "shoot" and attaches the corresponding callback
-* [FSM_Robot.js](./src/scripts/FSM_Robot.js)
+* [FSM_Robot.js](./src/libgptjs/scene-dragon/FSM_Robot.js)
     * Defines a finite state machine for robot shooter
     * Defines `States`, `Events` and `Transitions`
     * Defines Transitions as a dictionary of allowed state-event pairs
     * Provides methods for `transiting` from one state to other depending on the "Event"
     * Provides method for `updating` the current state based on timers expiration
-* [SceneDragon.js](./src/scripts/SceneDragon.js)
+* [SceneDragon.js](./src/libgptjs/scene-dragon/SceneDragon.js)
     * Contains the handling of main interactions: InputManager, animation (update) of objects, etc.
     * Inherits from `GPT_Scene` and overrides `createObjects`, `createLights`, `updateObjects` and `updateLights` methods
     * Performs all setting up of models and lights: floor, dragon, skybox, robot, trajectory, etc.
@@ -259,7 +259,7 @@ __NOTE:__ You can play this app at [smooth-dragon-github-page](https://giovannyj
 
 ### Lighting and Shadows
 
-[SceneDragon.js](./src/scripts/SceneDragon.js) `createLights`
+[SceneDragon.js](./src/libgptjs/scene-dragon/SceneDragon.js) `createLights`
 
 1. Creates an `ambient light` that will be added when shading the models surface
     * 5% white
@@ -279,7 +279,7 @@ __NOTE:__ You can play this app at [smooth-dragon-github-page](https://giovannyj
 
 ### Skybox and reflections
 
-1. [ModelSkyBox.js](./src/scripts/ModelSkybox.js)
+1. [ModelSkyBox.js](./src/libgptjs/scene-dragon/ModelSkybox.js)
     * Creates a `BoxGeometry`
     * Attaches a texture (material) per face
         * The texture images must be specifically for a cube texture, like the ones at [skybox_images/](./src/resources/images/Yokohama3/)
@@ -297,7 +297,7 @@ __NOTE:__ You can play this app at [smooth-dragon-github-page](https://giovannyj
                 })
             ...
         ```
-2. Reflections on [ModelDragon.js](./src/scripts/ModelDragon.js)
+2. Reflections on [ModelDragon.js](./src/libgptjs/scene-dragon/ModelDragon.js)
     * Sets `transparent`, `opacity`, and `shinines` to simulate "glass"
     * Sets the `Skybox Textures Array` as `envMap`
     ```javascript
@@ -316,11 +316,11 @@ __NOTE:__ You can play this app at [smooth-dragon-github-page](https://giovannyj
             }
         );
     ```
-3. Idem for hand of the robot [ModelGripper.js](./src/scripts/ModelGripper.js)
+3. Idem for hand of the robot [ModelGripper.js](./src/libgptjs/scene-dragon/ModelGripper.js)
 
 ### User Interface (sliders, toggles, buttons)
 
-[InputManager.js](./src/scripts/InputManager.js)
+[InputManager.js](./src/libgptjs/scene-dragon/InputManager.js)
 
 1. It creates a `dat.gui` object
     *  dat.gui assumes the GUI type based on the target's initial value type:
@@ -338,7 +338,7 @@ __NOTE:__ You can play this app at [smooth-dragon-github-page](https://giovannyj
 
 ### Finite State Machine to handle "shooting robot"
 
-[FSM_Robot.js](./src/scripts/FSM_Robot.js)
+[FSM_Robot.js](./src/libgptjs/scene-dragon/FSM_Robot.js)
 
 1. Defines `States`, `Events` and allowed `Transitions`
 2. A transition is defined as `destination state` given a pair `State-Event`
@@ -366,7 +366,7 @@ __NOTE:__ You can play this app at [smooth-dragon-github-page](https://giovannyj
 
 #### Integration with libgptjs
 
-[DragonFireParticles.json](./src/scripts/DragonFireParticles.json)
+[DragonFireParticles.json](./src/libgptjs/scene-dragon/DragonFireParticles.json)
 
 1. Adapted manually for our SceneDragon scale:
     ```json
@@ -390,7 +390,7 @@ __NOTE:__ You can play this app at [smooth-dragon-github-page](https://giovannyj
     ```
 2. The rest of values (color, sprite, life cycle, etc.) were edited using the Nebula editor (windows)
 
-[DragonFire.js](./src/scripts/DragonFire.js)
+[DragonFire.js](./src/libgptjs/scene-dragon/DragonFire.js)
 
 1. Loads the particle system from json file and creates an instance of `nebula` that will be used to render
     * `Nebula.SpriteRenderer` needs the main `THREE.Scene`
