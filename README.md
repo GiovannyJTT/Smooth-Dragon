@@ -33,28 +33,28 @@ __NOTE:__ You can play this app at [smooth-dragon-github-page](https://giovannyj
     * Wrapper / Library to facilitate re-use of code and organize the graphics pipeline
     * It contains several objects (classes) for wrapping all the logic required for creating an scene with threejs
         * This allows modularity and we can reuse code creating instances of those clases
-* [GPT_Coords](./src/libgptjs/GPT_Coords.js)
+* [GPT_Coords](./src/libgptjs/core/GPT_Coords.js)
     * Gets vertices (Float32Array) and edges array (Uint32Array)
     * Calculates the normal vector for each triangle
     * Provides a method for calculating the UV coordinates for each triangle
-* [GPT_Model](./src/libgptjs/GPT_Model.js)
+* [GPT_Model](./src/libgptjs/core/GPT_Model.js)
     * Simple class to integrate mesh + geometry + material
     * Provides method for cleaning gl buffers that were reserved
-* [GPT_LinkedModel](./src/libgptjs/GPT_LinkedModel.js)
+* [GPT_LinkedModel](./src/libgptjs/core/GPT_LinkedModel.js)
     * Model formed of joining several `THREE.Object3D` in order to create articulated models like robot arms
     * Provides method for adding a new link between two Object3D and finally linking all of them in sequence
-* [GPT_ModelCollider](./src/libgptjs/GPT_ModelCollider.js)
+* [GPT_ModelCollider](./src/libgptjs/core/GPT_ModelCollider.js)
     * Attaches an AABB (axis aligned bounding box) to an existign Mesh
     * Provides a method for detecting collision with another AABB
-* [GPT_Scene](./src/libgptjs/GPT_Scene.js)
+* [GPT_Scene](./src/libgptjs/core/GPT_Scene.js)
     * List of `GPT_Model`s and `GPT_Light`
     * Provides abstract methods for initial configuration and updates in every frame
         * These methods have to be overriden when creating the instance of the `GPT_Scene`
     * Provides methods for adding and removing models at runtime
-* [GPT_Render](./src/libgptjs/GPT_Renderer.js)
+* [GPT_Render](./src/libgptjs/core/GPT_Renderer.js)
     * It initializes the camera and camera-handler
     * This is the main object that creates a `webgl-renderer` and invokes methods of `GPT_Scene`
-* [GPT_App](./src/libgptjs/GPT_App.js)
+* [GPT_App](./src/libgptjs/core/GPT_App.js)
     * Top-level object that configures the `window` and uses `GPT_Render`
     * It contains the main loop for animation in which the `update` and `render` are being invoked
 
@@ -163,7 +163,7 @@ __NOTE:__ You can play this app at [smooth-dragon-github-page](https://giovannyj
     * `normal`
         * It is a `Float32Array` containing all the normal vectors for all triangles
         * Array lenght is `3 * num triangles`
-        * It is computed at [GPT_Coords](./src/libgptjs/GPT_Coords.js) `calculateNormals`
+        * It is computed at [GPT_Coords](./src/libgptjs/core/GPT_Coords.js) `calculateNormals`
         * Idem to `positions`
     * `indices`
         * It is a `UInt32Array` containing all the sequence of  indices (of `positions` array) to form triangles
@@ -183,7 +183,7 @@ __NOTE:__ You can play this app at [smooth-dragon-github-page](https://giovannyj
         * Each vertex will have 2 UV components (texture coordinates)
         * UV coordinate values are in range [0.0, 1.0]
         * Array lenght is `6 * num triangles`
-        * It is computed at [GPT_Coords.js](./src/libgptjs/GPT_Coords.js) `getUVs`
+        * It is computed at [GPT_Coords.js](./src/libgptjs/core/GPT_Coords.js) `getUVs`
         * `itemSize` 2 because each vertex has 2 UV componets
             ```javascript
             _geom.setAttribute(
@@ -216,7 +216,7 @@ __NOTE:__ You can play this app at [smooth-dragon-github-page](https://giovannyj
 
 ### UV coordinates calculation
 
-[GPT_Coords.js](./src/libgptjs/GPT_Coords.js) `getUVs`
+[GPT_Coords.js](./src/libgptjs/core/GPT_Coords.js) `getUVs`
 
 1. Calculates UV for planar surface (x, y, z) where z = 0
 2. Depends on geometry bounding box
@@ -226,7 +226,7 @@ __NOTE:__ You can play this app at [smooth-dragon-github-page](https://giovannyj
 ### Surface Smoothing by using Vertices Normals
 
 1. First you need to have per-face (triangle) normals
-    * [GPT_Coords.js](./src/libgptjs/GPT_Coords.js) `calculateNormals`
+    * [GPT_Coords.js](./src/libgptjs/core/GPT_Coords.js) `calculateNormals`
         * Creates `points3D` array by grouping 3 values from `positions` array
         * Creates triagles array by grouping 3 values from `points3D` array
         * Computes normals for each triangle clockwise
@@ -351,7 +351,7 @@ __NOTE:__ You can play this app at [smooth-dragon-github-page](https://giovannyj
 
 ### Collision detection using AABB
 
-[GPT_ModelCollider.js](./src/libgptjs/GPT_ModelCollider.js)
+[GPT_ModelCollider.js](./src/libgptjs/core/GPT_ModelCollider.js)
 
 * Main concept can be read at [link](https://developer.mozilla.org/en-US/docs/Games/Techniques/3D_collision_detection)
 1. Attaches an AABB (axis aligned bounding box)
