@@ -35,8 +35,8 @@ if (WebGL.isWebGLAvailable()) {
 console.log("Loading GPT library")
 
 import SceneDragon from '../libgptjs/scene-dragon/SceneDragon'
-import GPT_Renderer from '../libgptjs/GPT_Renderer'
-import GPT_App from '../libgptjs/GPT_App'
+import GPT_Renderer from '../libgptjs/core/GPT_Renderer'
+import GPT_App from '../libgptjs/core/GPT_App'
 
 // declared as "const" because: block-scoped, cannot be updated but its properties yes, cannot be redeclared
 const sce = new SceneDragon();

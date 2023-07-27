@@ -4,10 +4,10 @@
  */
 
 import THREE from "../external-libs/three-global"
-import GPT_Model from "../GPT_Model"
+import GPT_Model from "../core/GPT_Model"
 import CoordsDragon from "./CoordsDragon"
 import Common from "./Common"
-import GPT_ModelCollider from "../GPT_ModelCollider"
+import GPT_ModelCollider from "../core/GPT_ModelCollider"
 import DragonFire from "./DragonFire"
 
 /**

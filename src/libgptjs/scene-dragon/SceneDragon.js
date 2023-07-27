@@ -4,7 +4,7 @@
  */
 
 import THREE from '../external-libs/three-global'
-import GPT_Scene from '../GPT_Scene'
+import GPT_Scene from '../core/GPT_Scene'
 import ModelDragon from './ModelDragon'
 import Common from './Common'
 import ModelSkybox from './ModelSkybox'

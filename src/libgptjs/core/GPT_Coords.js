@@ -6,7 +6,7 @@
  *      computing triangles, normals, and UV coordinates per face
  */
 
-import THREE from "./external-libs/three-global";
+import THREE from "../external-libs/three-global";
 
 /**
  * Class to manipulate / load vertices coordinates and edges among them

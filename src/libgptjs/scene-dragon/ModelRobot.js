@@ -4,7 +4,7 @@
  */
 
 import THREE from "../external-libs/three-global";
-import GPT_LinkedModel from "../GPT_LinkedModel";
+import GPT_LinkedModel from "../core/GPT_LinkedModel";
 import ModelGripper from "./ModelGripper";
 import Common from "./Common";
 

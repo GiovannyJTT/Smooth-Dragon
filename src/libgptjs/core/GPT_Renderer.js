@@ -8,7 +8,7 @@
 /**
  * Importing object THREE from our costumized global script
  */
-import THREE from './external-libs/three-global'
+import THREE from '../external-libs/three-global'
 
 // using our custom import
 // import OrbitControls from './external-libs/OrbitControls'

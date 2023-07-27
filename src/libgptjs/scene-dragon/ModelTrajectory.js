@@ -4,7 +4,7 @@
  */
 
 import THREE from "../external-libs/three-global";
-import GPT_Model from "../GPT_Model";
+import GPT_Model from "../core/GPT_Model";
 import Common from "./Common";
 
 /**

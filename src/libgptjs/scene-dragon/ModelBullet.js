@@ -5,9 +5,9 @@
 
 import { lerp } from "three/src/math/MathUtils";
 import THREE from "../external-libs/three-global";
-import GPT_Model from "../GPT_Model";
+import GPT_Model from "../core/GPT_Model";
 import Common from "./Common";
-import GPT_ModelCollider from "../GPT_ModelCollider";
+import GPT_ModelCollider from "../core/GPT_ModelCollider";
 
 /**
  * Creates a model for bullet

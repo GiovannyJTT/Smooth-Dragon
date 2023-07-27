@@ -7,7 +7,7 @@
  *          with another AABB
  */
 
-import THREE from "./external-libs/three-global";
+import THREE from "../external-libs/three-global";
 
 /**
  * Simple collider using AABB (axis aligned bounding boxes)
