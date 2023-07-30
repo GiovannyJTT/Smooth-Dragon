@@ -2,6 +2,9 @@
 
 ## git commands quick reference
 
+# add submodule
+git submodule add git@github.com:GiovannyJTT/libgptjs.git ./src/libgptjs
+
 # convert CRLF to LF but not in the other way
 git config --global core.autocrlf input
 
