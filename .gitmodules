@@ -1,4 +1,4 @@
-[submodule "./src/libgptjs"]
-	path = ./src/libgptjs
+[submodule "src/libgptjs"]
+	path = src/libgptjs
 	url = git@github.com:GiovannyJTT/libgptjs.git
 	branch = develop
