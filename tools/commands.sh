@@ -5,6 +5,9 @@
 # add submodule
 git submodule add git@github.com:GiovannyJTT/libgptjs.git ./src/libgptjs
 
+# update submodule
+git submodule update --init --recursive
+
 # convert CRLF to LF but not in the other way
 git config --global core.autocrlf input
 
