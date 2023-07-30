@@ -1,7 +1,7 @@
 {
   "name": "smooth-dragon",
-  "version": "1.0.0",
-  "description": "WebGL app using Threejs for surface smoothing",
+  "version": "1.0.1",
+  "description": "WebGL app using Threejs for surface smoothing, libgptjs as submodule",
   "main": "index.js",
   "author": "Giovanny Javier Tipantuña Toapanta <giovanny.jtt@gmail.com> (https://www.linkedin.com/in/giovanny-javier-tipantuna-toapanta/)",
   "license": "MIT",
