@@ -9,7 +9,7 @@
 // get or create canvas container for threejs
 import Common from '../libgptjs/scene-dragon/Common';
 
-const _id_c = Common.CANVAS_CONTAINER_NAME_FOR_THREEJS;
+const _id_c = Common.CONTAINER_THREEJS_ID;
 let _c = document.getElementById(_id_c);
 if (_c == null) {
     _c = document.createElement("div");
@@ -40,7 +40,7 @@ import GPT_App from '../libgptjs/core/GPT_App'
 
 // declared as "const" because: block-scoped, cannot be updated but its properties yes, cannot be redeclared
 const sce = new SceneDragon();
-const ren = new GPT_Renderer(Common.CANVAS_CONTAINER_WIDTH, Common.CANVAS_CONTAINER_HEIGHT, sce);
+const ren = new GPT_Renderer(Common.CONTAINER_THREEJS_WIDTH, Common.CONTAINER_THREEJS_HEIGHT, sce);
 const app = new GPT_App(ren);
 
 app.init(_id_c);
